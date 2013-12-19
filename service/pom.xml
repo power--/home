@@ -12,7 +12,6 @@
   <artifactId>service</artifactId>
   <packaging>war</packaging>
   <name>goparty open api web application</name>
-  <url>http://maven.apache.org</url>
 
   <properties>
 	<spring.version>3.2.5.RELEASE</spring.version>
