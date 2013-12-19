@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.goparty.biz.model.User;
+import com.goparty.data.service.UserDataService;
 import com.goparty.webservice.UserService;
-import com.party.data.service.UserDataService;
 
 
 @Service("userService")
@@ -49,4 +49,11 @@ public class UserServiceImpl implements UserService {
 		return ret;
 	}
 
+	public UserDataService getUserDataService() {
+		return userDataService;
+	}
+
+	public void setUserDataService(UserDataService userDataService) {
+		this.userDataService = userDataService;
+	}
 }

@@ -6,9 +6,10 @@ import org.springframework.stereotype.Service;
 
 
 
+
 import com.goparty.biz.model.*;
+import com.goparty.data.service.EventDataService;
 import com.goparty.webservice.EventService;
-import com.party.data.service.EventDataService;
 
 @Service("eventService")
 public class EventServiceImpl implements EventService {

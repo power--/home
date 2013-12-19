@@ -1,4 +1,4 @@
-package com.party.data.service;
+package com.goparty.data.service;
 
 import java.util.UUID;
 
@@ -112,4 +112,12 @@ public class UserDataService {
 		
 		return ret;
 	}
+
+	public IUserDataRepository getUserDataRepository() {
+		return userDataRepository;
+	}
+
+	public void setUserDataRepository(IUserDataRepository userDataRepository) {
+		this.userDataRepository = userDataRepository;
+	}	
 }
