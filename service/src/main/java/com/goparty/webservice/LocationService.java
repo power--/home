@@ -21,7 +21,7 @@ import org.apache.cxf.jaxrs.model.wadl.DocTarget;
 
 import com.goparty.exception.DuplicateLocationException;
 import com.goparty.exception.LocationNotFoundException;
-import com.goparty.model.Location;
+import com.goparty.biz.model.Location;
 
 @Path("/location/")
 @WebService

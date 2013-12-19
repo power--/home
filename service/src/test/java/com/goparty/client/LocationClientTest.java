@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.goparty.model.Location;
+import com.goparty.biz.model.Location;
 import com.goparty.webservice.client.LocationClient;
 
 import static org.junit.Assert.assertEquals;
