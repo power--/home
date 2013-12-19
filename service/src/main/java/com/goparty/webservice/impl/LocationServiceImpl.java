@@ -11,7 +11,7 @@ import org.springframework.validation.Validator;
 import com.goparty.exception.DuplicateLocationException;
 import com.goparty.exception.LocationNotFoundException;
 import com.goparty.exception.ValidationException;
-import com.goparty.model.Location;
+import com.goparty.biz.model.Location;
 import com.goparty.webservice.LocationService;
 
 import java.util.Collection;
