@@ -87,4 +87,13 @@ public class Event {
 	public void setVisiblityCategory(VisiblityCategory visiblityCategory) {
 		this.visiblityCategory = visiblityCategory;
 	}
+	@Override
+	public String toString() {
+		return "Event [id=" + id + ", title=" + title + ", location="
+				+ location + ", startTime=" + startTime + ", endTime="
+				+ endTime + ", attendees=" + attendees + ", owner=" + owner
+				+ ", description=" + description + ", eventCategory="
+				+ eventCategory + ", eventStatus=" + eventStatus
+				+ ", visiblityCategory=" + visiblityCategory + "]";
+	}
 }

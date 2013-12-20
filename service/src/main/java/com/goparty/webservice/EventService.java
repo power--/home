@@ -49,7 +49,7 @@ public interface EventService {
 	
 	@WebMethod
 	@DELETE
-	@Path("{location}")
+	@Path("{id}")
 	@Descriptions({
 		@Description(value = "deletes a user data", target = DocTarget.METHOD),
 		@Description(value = "the result of delete user action", target = DocTarget.RETURN)

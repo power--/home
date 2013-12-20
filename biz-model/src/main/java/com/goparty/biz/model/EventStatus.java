@@ -15,4 +15,8 @@ public class EventStatus {
 	public void setName(String name) {
 		this.name = name;
 	}
+	@Override
+	public String toString() {
+		return "EventStatus [id=" + id + ", name=" + name + "]";
+	}
 }

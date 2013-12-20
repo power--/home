@@ -102,4 +102,14 @@ public class User {
 	public void setWeibo(String weibo) {
 		this.weibo = weibo;
 	}
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", phone=" + phone + ", userName=" + userName
+				+ ", password=" + password + ", nickName=" + nickName
+				+ ", birthdate=" + birthdate + ", gender=" + gender
+				+ ", location=" + location + ", signature=" + signature
+				+ ", photo=" + photo + ", weChat=" + weChat + ", QQ=" + QQ
+				+ ", weibo=" + weibo + "]";
+	}
+	
 }
