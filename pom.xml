@@ -8,8 +8,9 @@
   <name>goparty open api web application</name>
   
   <modules>
-    <module>model</module>
+    <module>data-model</module>
     <module>mongo-dao</module>
+	<module>biz-model</module>
     <module>mongo-service</module>
 	<module>service</module>
   </modules>

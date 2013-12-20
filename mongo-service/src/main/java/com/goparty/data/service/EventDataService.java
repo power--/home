@@ -220,20 +220,4 @@ public class EventDataService {
 		
 		return ret;
 	}
-
-	public IEventDataRepository getEventDataRepository() {
-		return eventDataRepository;
-	}
-
-	public void setEventDataRepository(IEventDataRepository eventDataRepository) {
-		this.eventDataRepository = eventDataRepository;
-	}
-
-	public IUserDataRepository getUserDataRepository() {
-		return userDataRepository;
-	}
-
-	public void setUserDataRepository(IUserDataRepository userDataRepository) {
-		this.userDataRepository = userDataRepository;
-	}
 }
