@@ -4,9 +4,16 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.cxf.interceptor.LoggingInInterceptor;
+import org.apache.cxf.interceptor.LoggingOutInterceptor;
+import org.apache.cxf.jaxrs.client.ClientConfiguration;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
+import org.apache.cxf.jaxrs.client.WebClient;
+import org.apache.cxf.jaxrs.provider.json.JSONProvider;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.goparty.biz.model.*;
 import com.goparty.webservice.EventService;
@@ -14,18 +21,38 @@ import com.goparty.webservice.LocationService;
 import com.goparty.webservice.UserService;
 
 public class UserAndEventTest {
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	private EventService eventService;
 	private UserService userService;
-	private static final String applicationURI ="http://localhost";
+	private static final String applicationURI ="http://goparty.cloudapp.net";
 	
 	
 	@Before
 	public void setUp(){
-		List<Object> providers = new LinkedList<Object>();
+		List<Object> providers = getJsonProvider();
 		
 		eventService = JAXRSClientFactory.create(applicationURI + "/cxf/rest/", EventService.class, providers, true);
+		ClientConfiguration cfgProxy = WebClient.getConfig(eventService);
+		cfgProxy.getOutInterceptors().add(new LoggingOutInterceptor());
+		cfgProxy.getInInterceptors().add(new LoggingInInterceptor());
+
+		
+		
 		userService = JAXRSClientFactory.create(applicationURI + "/cxf/rest/", UserService.class, providers, true);
-	}  
+		cfgProxy = WebClient.getConfig(userService);
+		cfgProxy.getOutInterceptors().add(new LoggingOutInterceptor());
+		cfgProxy.getInInterceptors().add(new LoggingInInterceptor());
+	} 
+	
+	
+
+	private static List<Object> getJsonProvider(){ 
+		List<Object> providers = new LinkedList<Object>(); 
+		JSONProvider jsonProvider = new JSONProvider();
+		providers.add(jsonProvider); 
+        return providers; 
+    } 
+
 	
 	@Test
 	public void test(){
@@ -45,8 +72,17 @@ public class UserAndEventTest {
 		owner.setPassword("password");
 		
 		owner  = userService.addUser(owner);
+		
+		logger.error("*******************************");
+		owner  = userService.getUser(owner.getId());
+		logger.error("*******************************");
+		owner.setNickName("Chen, Bo");
+		userService.updateUser(owner);
+		
 		att1 = userService.addUser(att1);
 		att2 = userService.addUser(att2);
+		
+		
 		
 		Event event = new Event();
 		event.setOwner(owner);
@@ -71,7 +107,12 @@ public class UserAndEventTest {
 		event.setVisiblityCategory(v);
 		
 		event = eventService.addEvent(event);
+		event.setDescription("Hi Man");
+		eventService.updateUser(event);
 		
+		logger.error("*******************************");
+		event = eventService.getEvent(event.getId());
+		logger.error("*******************************");
 		eventService.deleteEvent(event.getId());
 		userService.deleteUser(att1.getId());
 		userService.deleteUser(att2.getId());
