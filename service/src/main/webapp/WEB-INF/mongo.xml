@@ -12,23 +12,10 @@
   
 	<!-- Default bean name is 'mongo' -->
 	<mongo:mongo host="localhost" port="27017"/>
-	<mongo:db-factory dbname="eventdb" />
 	
 	<!-- Offers convenience methods and automatic mapping between MongoDB JSON documents and your domain classes. -->
-  	<bean id="mappingContext" class="org.springframework.data.mongodb.core.mapping.MongoMappingContext" />
- 
-    <bean id="defaultMongoTypeMapper" class="org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper">
-	    <constructor-arg name="typeKey"><null/></constructor-arg>
-    </bean>
- 
-    <bean id="mappingMongoConverter" class="org.springframework.data.mongodb.core.convert.MappingMongoConverter">
-	    <constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
-	    <constructor-arg name="mappingContext" ref="mappingContext" />
-	    <property name="typeMapper" ref="defaultMongoTypeMapper" />
-    </bean>
- 
-    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-	    <constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
-	    <constructor-arg name="mongoConverter" ref="mappingMongoConverter" />
+  	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg ref="mongo" />
+        <constructor-arg value="eventdb" />
     </bean>
 </beans>
