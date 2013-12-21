@@ -11,7 +11,7 @@
   
   <artifactId>service</artifactId>
   <packaging>war</packaging>
-  <name>goparty open api web application</name>
+  <name>goparty open api  web application</name>
 
   <properties>
 	<spring.version>3.2.5.RELEASE</spring.version>
