@@ -29,7 +29,7 @@ public interface EventService {
 		@Description(value = "returns a event by id", target = DocTarget.METHOD),
 		@Description(value = "event of the id", target = DocTarget.RETURN)
 	})
-	public Event getEvent(@Description(value = "the id of the user") @PathParam("id") String id);
+	public Event read(@Description(value = "the id of the event") @PathParam("id") String id);
 	
 	@WebMethod
 	@POST
@@ -37,7 +37,7 @@ public interface EventService {
 		@Description(value = "stores a new event data", target = DocTarget.METHOD),
 		@Description(value = "the newly created event data", target = DocTarget.RETURN)
 	})
-	public Event addEvent(Event event);
+	public Event create(Event event);
 	
 	@WebMethod
 	@PUT
@@ -45,7 +45,7 @@ public interface EventService {
 		@Description(value = "updates or creates a new event data", target = DocTarget.METHOD),
 		@Description(value = "the newly created or updated event data", target = DocTarget.RETURN)
 	})
-	public Event updateUser(Event event);
+	public Event update(Event event);
 	
 	@WebMethod
 	@DELETE
@@ -54,5 +54,5 @@ public interface EventService {
 		@Description(value = "deletes a user data", target = DocTarget.METHOD),
 		@Description(value = "the result of delete user action", target = DocTarget.RETURN)
 	})
-	public boolean deleteEvent(@Description(value = "the id of the event") @PathParam("id")String id);
+	public boolean delete(@Description(value = "the id of the event") @PathParam("id")String id);
 }

@@ -25,9 +25,10 @@ public class EventServiceTest {
 		data.setDescription("test");
 		
 		eventDataRepository.save(data);
-		Assert.assertEquals(1, eventDataRepository.count());
+		
+		EventData d = eventDataRepository.findOne(id);
+		Assert.assertNotNull(d);
 		eventDataRepository.delete(id);
-		Assert.assertEquals(0, eventDataRepository.count());
 	}
 	
 }

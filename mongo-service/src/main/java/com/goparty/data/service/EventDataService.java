@@ -70,6 +70,10 @@ public class EventDataService {
 			}
 			
 			eventDataRepository.save(data);
+			
+			data = eventDataRepository.findOne(id);
+			
+			logger.info("data"+data.toString());
 		}catch(Exception ex){
 			logger.error("error happended to add a user",ex);
 			throw ex;
@@ -124,19 +128,19 @@ public class EventDataService {
 	}
 	
 	public Event read(String id){
-		Event data = null;
+		Event event = new Event();
 		try{
 			
-			EventData event = eventDataRepository.findOne(id);
-			data.setId(event.getId());
-			data.setTitle(event.getTitle());
-			data.setStartTime(event.getStartTime());
-			data.setEndTime(event.getEndTime());
+			EventData data = eventDataRepository.findOne(id);
+			event.setId(data.getId());
+			event.setTitle(data.getTitle());
+			event.setStartTime(data.getStartTime());
+			event.setEndTime(data.getEndTime());
 			
-			if(event.getAttendeeIds()!=null&&event.getAttendeeIds().size()>0){
+			if(data.getAttendeeIds()!=null&&data.getAttendeeIds().size()>0){
 				List<User> attendees = new ArrayList<User>();
 				
-				for(String userId : event.getAttendeeIds()){
+				for(String userId : data.getAttendeeIds()){
 					
 					UserData userData = userDataRepository.findOne(id);
 					
@@ -145,35 +149,35 @@ public class EventDataService {
 					}
 				}
 				
-				data.setAttendees(attendees);
+				event.setAttendees(attendees);
 			}
 			
-			if(event.getOwnerId()!=null){
-				UserData userData = userDataRepository.findOne(event.getOwnerId());
-				data.setOwner(this.toUser(userData));
+			if(data.getOwnerId()!=null){
+				UserData userData = userDataRepository.findOne(data.getOwnerId());
+				event.setOwner(this.toUser(userData));
 			}
 			
-			data.setDescription(event.getDescription());
+			event.setDescription(data.getDescription());
 			
-			if(event.getEventCategoryId()!=null){
+			if(data.getEventCategoryId()!=null){
 				EventCategory eventCategory = new EventCategory();
-				eventCategory.setId(event.getEventCategoryId());
+				eventCategory.setId(data.getEventCategoryId());
 				eventCategory.setName("Not implemented yet");
-				data.setEventCategory(eventCategory);
+				event.setEventCategory(eventCategory);
 			}
 			
-			if(event.getEventStatusId()!=null){
+			if(data.getEventStatusId()!=null){
 				EventStatus status = new EventStatus();
-				status.setId(event.getEventStatusId());
+				status.setId(data.getEventStatusId());
 				status.setName("Not implemented yet");
-				data.setEventStatus(status);
+				event.setEventStatus(status);
 			}
 			
-			if((event.getVisiblityCategoryId()!=null)){
+			if((data.getVisiblityCategoryId()!=null)){
 				VisiblityCategory vc = new VisiblityCategory();
 				vc.setName("Not implemented yet");
-				vc.setId(event.getVisiblityCategoryId());
-				data.setVisiblityCategory(vc);
+				vc.setId(data.getVisiblityCategoryId());
+				event.setVisiblityCategory(vc);
 			}
 			
 			
@@ -182,7 +186,7 @@ public class EventDataService {
 			throw ex;
 		}
 		
-		return data;
+		return event;
 	}
 	
 	private User toUser(UserData userData){

@@ -17,25 +17,25 @@ public class EventServiceImpl implements EventService {
 	private EventDataService eventDataService;
 
 	@Override
-	public Event getEvent(String id) {
+	public Event read(String id) {
 		Event ret = eventDataService.read(id);
 		return ret;
 	}
 
 	@Override
-	public Event addEvent(Event event) {
+	public Event create(Event event) {
 		eventDataService.create(event);
 		return event;
 	}
 
 	@Override
-	public Event updateUser(Event event) {
+	public Event update(Event event) {
 		eventDataService.update(event);
 		return event;
 	}
 
 	@Override
-	public boolean deleteEvent(String id) {
+	public boolean delete(String id) {
 		boolean ret = false;
 		try{
 			eventDataService.delete(id);

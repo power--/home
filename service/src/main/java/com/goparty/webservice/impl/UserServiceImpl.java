@@ -18,25 +18,28 @@ public class UserServiceImpl implements UserService {
 	private UserDataService userDataService;
 
 	@Override
-	public User getUser(String id) {
+	public User read(String id) {
 		User ret = userDataService.read(id);
+		if(ret==null){
+			logger.error("NULLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
+		}
 		return ret;
 	}
 
 	@Override
-	public User addUser(User user) {
+	public User create(User user) {
 		userDataService.create(user);
 		return user;
 	}
 
 	@Override
-	public User updateUser(User user) {
+	public User update(User user) {
 		userDataService.update(user);
 		return user;
 	}
 
 	@Override
-	public boolean deleteUser(String id) {
+	public boolean delete(String id) {
 		boolean ret = false;
 		try{
 			userDataService.delete(id);

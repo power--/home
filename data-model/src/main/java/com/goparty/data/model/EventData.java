@@ -83,4 +83,13 @@ public class EventData {
 	public void setVisiblityCategoryId(String visiblityCategoryId) {
 		this.visiblityCategoryId = visiblityCategoryId;
 	}
+	@Override
+	public String toString() {
+		return "EventData [id=" + id + ", title=" + title + ", startTime="
+				+ startTime + ", endTime=" + endTime + ", attendeeIds="
+				+ attendeeIds + ", ownerId=" + ownerId + ", description="
+				+ description + ", eventCategoryId=" + eventCategoryId
+				+ ", eventStatusId=" + eventStatusId + ", visiblityCategoryId="
+				+ visiblityCategoryId + "]";
+	}
 }

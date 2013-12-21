@@ -29,7 +29,7 @@ public interface UserService {
 		@Description(value = "returns a user by id", target = DocTarget.METHOD),
 		@Description(value = "user of the id", target = DocTarget.RETURN)
 	})
-	public User getUser(@Description(value = "the id of the user") @PathParam("id") String id);
+	public User read(@Description(value = "the id of the user") @PathParam("id") String id);
 	
 	@WebMethod
 	@POST
@@ -37,7 +37,7 @@ public interface UserService {
 		@Description(value = "stores a new user data", target = DocTarget.METHOD),
 		@Description(value = "the newly created user data", target = DocTarget.RETURN)
 	})
-	public User addUser(User user);
+	public User create(User user);
 	
 	@WebMethod
 	@PUT
@@ -45,7 +45,7 @@ public interface UserService {
 		@Description(value = "updates or creates a new user data", target = DocTarget.METHOD),
 		@Description(value = "the newly created or updated user data", target = DocTarget.RETURN)
 	})
-	public User updateUser(User user);
+	public User update(User user);
 	
 	@WebMethod
 	@DELETE
@@ -54,5 +54,5 @@ public interface UserService {
 		@Description(value = "deletes a user data", target = DocTarget.METHOD),
 		@Description(value = "the result of delete user action", target = DocTarget.RETURN)
 	})
-	public boolean deleteUser(@Description(value = "the id of the user") @PathParam("id")String id);
+	public boolean delete(@Description(value = "the id of the user") @PathParam("id")String id);
 }
