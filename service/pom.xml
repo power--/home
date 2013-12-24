@@ -14,8 +14,6 @@
   <name>goparty open api web application</name>
 
   <properties>
-	<spring.version>3.2.5.RELEASE</spring.version>
-	<slf4j.version>1.6.2</slf4j.version>
 	<spring-security.version>3.1.4.RELEASE</spring-security.version>
 	<cxf.version>2.7.8</cxf.version>
 	<server.port>8080</server.port>
