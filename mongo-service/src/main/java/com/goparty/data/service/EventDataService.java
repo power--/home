@@ -14,7 +14,7 @@ import com.goparty.biz.model.Event;
 import com.goparty.biz.model.EventCategory;
 import com.goparty.biz.model.EventStatus;
 import com.goparty.biz.model.User;
-import com.goparty.biz.model.VisiblityCategory;
+import com.goparty.biz.model.VisibilityCategory;
 import com.goparty.data.model.EventData;
 import com.goparty.data.model.UserData;
 import com.goparty.repository.IEventDataRepository;
@@ -65,8 +65,8 @@ public class EventDataService {
 				data.setEventStatusId(event.getEventStatus().getId());
 			}
 			
-			if((event.getVisiblityCategory()!=null)){
-				data.setVisiblityCategoryId(event.getVisiblityCategory().getId());
+			if((event.getVisibilityCategory()!=null)){
+				data.setVisiblityCategoryId(event.getVisibilityCategory().getId());
 			}
 			
 			eventDataRepository.save(data);
@@ -114,8 +114,8 @@ public class EventDataService {
 				data.setEventStatusId(event.getEventStatus().getId());
 			}
 			
-			if((event.getVisiblityCategory()!=null)){
-				data.setVisiblityCategoryId(event.getVisiblityCategory().getId());
+			if((event.getVisibilityCategory()!=null)){
+				data.setVisiblityCategoryId(event.getVisibilityCategory().getId());
 			}
 			
 			eventDataRepository.save(data);
@@ -174,10 +174,10 @@ public class EventDataService {
 			}
 			
 			if((data.getVisiblityCategoryId()!=null)){
-				VisiblityCategory vc = new VisiblityCategory();
+				VisibilityCategory vc = new VisibilityCategory();
 				vc.setName("Not implemented yet");
 				vc.setId(data.getVisiblityCategoryId());
-				event.setVisiblityCategory(vc);
+				event.setVisibilityCategory(vc);
 			}
 			
 			

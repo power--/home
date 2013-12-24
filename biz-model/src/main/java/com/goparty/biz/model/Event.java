@@ -18,7 +18,7 @@ public class Event {
 	 private String description;
 	 private EventCategory eventCategory;
 	 private EventStatus eventStatus;
-	 private VisiblityCategory visiblityCategory;
+	 private VisibilityCategory visibilityCategory;
 	public String getId() {
 		return id;
 	}
@@ -81,11 +81,11 @@ public class Event {
 	public void setEventStatus(EventStatus eventStatus) {
 		this.eventStatus = eventStatus;
 	}
-	public VisiblityCategory getVisiblityCategory() {
-		return visiblityCategory;
+	public VisibilityCategory getVisibilityCategory() {
+		return visibilityCategory;
 	}
-	public void setVisiblityCategory(VisiblityCategory visiblityCategory) {
-		this.visiblityCategory = visiblityCategory;
+	public void setVisibilityCategory(VisibilityCategory visibilityCategory) {
+		this.visibilityCategory = visibilityCategory;
 	}
 	@Override
 	public String toString() {
@@ -94,6 +94,6 @@ public class Event {
 				+ endTime + ", attendees=" + attendees + ", owner=" + owner
 				+ ", description=" + description + ", eventCategory="
 				+ eventCategory + ", eventStatus=" + eventStatus
-				+ ", visiblityCategory=" + visiblityCategory + "]";
+				+ ", visiblityCategory=" + visibilityCategory + "]";
 	}
 }

@@ -1,6 +1,6 @@
 package com.goparty.biz.model;
 
-public class VisiblityCategory {
+public class VisibilityCategory {
 	private String id;
 	private String name;
 	public String getId() {

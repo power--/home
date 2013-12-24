@@ -101,10 +101,10 @@ public class UserAndEventTest {
 		s.setName("Draft");
 		event.setEventStatus(s);
 		
-		VisiblityCategory v = new VisiblityCategory();
+		VisibilityCategory v = new VisibilityCategory();
 		v.setId("1");
 		v.setName("public");
-		event.setVisiblityCategory(v);
+		event.setVisibilityCategory(v);
 		
 		event = eventService.create(event);
 		event.setDescription("Hi Man");
