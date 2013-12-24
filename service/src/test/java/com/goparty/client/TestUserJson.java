@@ -33,7 +33,10 @@ public class TestUserJson {
 		    urlConnection.setRequestProperty("charset", "utf-8");
 
 		    //Create JSONObject here
-		    String jsonStr = "{\"user\": {\"nickName\": \"Bo\", \"password\": \"password\",\"userName\": \"chenb\" }}";
+//		    String jsonStr = "{\"user\": {\"nickName\": \"Bo\", \"password\": \"password\",\"userName\": \"chenb\" }}";
+		    String jsonStr = "{\"nickName\": \"Bo\", \"password\": \"password\",\"userName\": \"chenb\" }";
+		    
+		    
 		    
 		    urlConnection.setRequestProperty("Content-Length", "" + jsonStr.getBytes("UTF-8").length);
 		    
