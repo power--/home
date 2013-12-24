@@ -11,6 +11,8 @@ import java.net.URL;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import javax.ws.rs.core.MediaType;
+
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -110,9 +112,10 @@ public class TestUserJson {
 			if (HttpResult == HttpURLConnection.HTTP_OK) {
 				InputStream input = urlConnection.getInputStream();
 
-				if ("gzip".equals(urlConnection.getContentEncoding())) {
+				if ("gzip".equalsIgnoreCase(urlConnection.getContentEncoding())) {
 					input = new GZIPInputStream(input);
 				}
+				
 
 				BufferedReader br = new BufferedReader(new InputStreamReader(
 						urlConnection.getInputStream(), "utf-8"));
