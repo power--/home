@@ -1,74 +1,149 @@
 package com.goparty.client;
 
 import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TestUserJson {
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Test
-	public void testUser(){
-		String http = "http://goparty.cloudapp.net/cxf/rest/user";  
+	public void testJsonWithoutGZIP() throws Exception {
+		String http = "http://goparty.cloudapp.net/cxf/rest/user";
+
+		HttpURLConnection urlConnection = null;
+		try {
+			URL url = new URL(http);
+			urlConnection = (HttpURLConnection) url.openConnection();
+			urlConnection.setDoOutput(true);
+			urlConnection.setRequestMethod("POST");
+			urlConnection.setUseCaches(false);
+			urlConnection.setConnectTimeout(10000);
+			urlConnection.setReadTimeout(10000);
+			urlConnection
+					.setRequestProperty("Content-Type", "application/json");
+			urlConnection.setRequestProperty("Accept", "application/json");
+			urlConnection.setRequestProperty("charset", "utf-8");
+
+			String jsonStr = "{\"nickName\": \"Bo\", \"password\": \"password\",\"userName\": \"chenb\" }";
+
+			urlConnection.setRequestProperty("Content-Length",
+					"" + jsonStr.getBytes("UTF-8").length);
+
+			OutputStreamWriter out = new OutputStreamWriter(
+					urlConnection.getOutputStream());
+			out.write(jsonStr);
+			out.close();
+
+			int HttpResult = urlConnection.getResponseCode();
+			StringBuffer sb = new StringBuffer();
+			if (HttpResult == HttpURLConnection.HTTP_OK) {
+				InputStream input = urlConnection.getInputStream();
+
+				BufferedReader br = new BufferedReader(new InputStreamReader(
+						input, "utf-8"));
+				String line = null;
+				while ((line = br.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+				br.close();
+
+				System.out.println("" + sb.toString());
+
+			} else {
+				System.out.println(urlConnection.getResponseMessage());
+			}
+		}catch (Exception e) {
+			logger.error("error",e);
+		} finally {
+			if (urlConnection != null)
+				urlConnection.disconnect();
+		}
+	}
+
+	@Test
+	public void testUserWithGZIP() throws Exception {
+		String http = "http://goparty.cloudapp.net/cxf/rest/user";
+
+		HttpURLConnection urlConnection = null;
+		try {
+			URL url = new URL(http);
+			urlConnection = (HttpURLConnection) url.openConnection();
+			urlConnection.setDoOutput(true);
+			urlConnection.setRequestMethod("POST");
+			urlConnection.setUseCaches(false);
+			urlConnection.setConnectTimeout(10000);
+			urlConnection.setReadTimeout(10000);
+			urlConnection
+					.setRequestProperty("Content-Type", "application/json");
+			urlConnection.setRequestProperty("Accept", "application/json");
+			urlConnection.setRequestProperty("Accept-Encoding", "gzip");
+			urlConnection.setRequestProperty("Content-Encoding", "gzip");
+
+			urlConnection.setRequestProperty("charset", "utf-8");
 
 
-		HttpURLConnection urlConnection=null;  
-		try {  
-		    URL url = new URL(http);  
-		    urlConnection = (HttpURLConnection) url.openConnection();
-		    urlConnection.setDoOutput(true);   
-		    urlConnection.setRequestMethod("POST");  
-		    urlConnection.setUseCaches(false);  
-		    urlConnection.setConnectTimeout(10000);  
-		    urlConnection.setReadTimeout(10000);  
-		    urlConnection.setRequestProperty("Content-Type","application/json"); 
-		    urlConnection.setRequestProperty("Accept", "application/json");
+			String jsonStr = "{\"nickName\": \"Bo\", \"password\": \"password\",\"userName\": \"chenb\" }";
+
+			byte[] outBytes = toGzip(jsonStr);
+			urlConnection.setRequestProperty("Content-Length", ""
+					+ outBytes.length);
 
 
-		    urlConnection.setRequestProperty("charset", "utf-8");
+			OutputStream out = urlConnection.getOutputStream();
+			out.write(outBytes);
+			out.close();
 
-		    //Create JSONObject here
-//		    String jsonStr = "{\"user\": {\"nickName\": \"Bo\", \"password\": \"password\",\"userName\": \"chenb\" }}";
-		    String jsonStr = "{\"nickName\": \"Bo\", \"password\": \"password\",\"userName\": \"chenb\" }";
-		    
-		    
-		    
-		    urlConnection.setRequestProperty("Content-Length", "" + jsonStr.getBytes("UTF-8").length);
-		    
-		    OutputStreamWriter out = new   OutputStreamWriter(urlConnection.getOutputStream());
-		    out.write(jsonStr);
-		    out.close();  
+			int HttpResult = urlConnection.getResponseCode();
+			StringBuffer sb = new StringBuffer();
+			if (HttpResult == HttpURLConnection.HTTP_OK) {
+				InputStream input = urlConnection.getInputStream();
 
-		    int HttpResult =urlConnection.getResponseCode(); 
-		    StringBuffer sb = new StringBuffer();
-		    if(HttpResult ==HttpURLConnection.HTTP_OK){  
-		        BufferedReader br = new BufferedReader(new InputStreamReader(  
-		            urlConnection.getInputStream(),"utf-8"));  
-		        String line = null;  
-		        while ((line = br.readLine()) != null) {  
-		            sb.append(line + "\n");  
-		        }  
-		        br.close();  
+				if ("gzip".equals(urlConnection.getContentEncoding())) {
+					input = new GZIPInputStream(input);
+				}
 
-		        System.out.println(""+sb.toString());  
+				BufferedReader br = new BufferedReader(new InputStreamReader(
+						urlConnection.getInputStream(), "utf-8"));
+				String line = null;
+				while ((line = br.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+				br.close();
 
-		    }else{  
-		            System.out.println(urlConnection.getResponseMessage());  
-		    }  
-		} catch (MalformedURLException e) {  
+				System.out.println("" + sb.toString());
 
-		         e.printStackTrace();  
-		}  
-		catch (IOException e) {  
-		    e.printStackTrace();
-		}finally{  
-		    if(urlConnection!=null)  
-		    urlConnection.disconnect();  
-		}  
+			} else {
+				System.out.println(urlConnection.getResponseMessage());
+			}
+		} catch (Exception e) {
+			logger.error("error",e);
+		} finally {
+			if (urlConnection != null)
+				urlConnection.disconnect();
+		}
+	}
+
+	private byte[] toGzip(String text) throws Exception {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		try {
+			OutputStream out = new GZIPOutputStream(baos);
+			out.write(text.getBytes("UTF-8"));
+			out.close();
+			return baos.toByteArray();
+		} finally {
+			baos.close();
+		}
 	}
 }
