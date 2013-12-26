@@ -78,7 +78,6 @@ public class EventDataService {
 			logger.error("error happended to add a user",ex);
 			throw ex;
 		}
-		
 		return event;
 	}
 	
