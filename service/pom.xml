@@ -26,11 +26,6 @@
     	<artifactId>mongo-service</artifactId>
     	<version>0.0.1</version>
     </dependency>
-    <dependency>
-    	<groupId>com.goparty</groupId>
-    	<artifactId>biz-model</artifactId>
-    	<version>0.0.1</version>
-    </dependency>
   </dependencies>
   <build>
     <finalName>goparty</finalName>
