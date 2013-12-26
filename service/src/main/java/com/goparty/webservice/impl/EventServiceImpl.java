@@ -31,7 +31,7 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public Event update(Event event) {
 		eventDataService.update(event);
-		return event;
+		return event; 
 	}
 
 	@Override
