@@ -33,18 +33,14 @@ public class TestUserJson {
 			urlConnection.setUseCaches(false);
 			urlConnection.setConnectTimeout(10000);
 			urlConnection.setReadTimeout(10000);
-			urlConnection
-					.setRequestProperty("Content-Type", "application/json");
+			urlConnection.setRequestProperty("Content-Type", "application/json");
 			urlConnection.setRequestProperty("Accept", "application/json");
 			urlConnection.setRequestProperty("charset", "utf-8");
 
-			String jsonStr = "{\"nickName\": \"Bo\", \"password\": \"password\",\"userName\": \"chenb\" }";
+			String jsonStr = "{\"nickName\": \"Bo\", \"password\": \"password\",\"userName\": \"chenb\",\"QQ\": \"1343243\" }";
+			urlConnection.setRequestProperty("Content-Length","" + jsonStr.getBytes("UTF-8").length);
 
-			urlConnection.setRequestProperty("Content-Length",
-					"" + jsonStr.getBytes("UTF-8").length);
-
-			OutputStreamWriter out = new OutputStreamWriter(
-					urlConnection.getOutputStream());
+			OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
 			out.write(jsonStr);
 			out.close();
 
@@ -52,9 +48,7 @@ public class TestUserJson {
 			StringBuffer sb = new StringBuffer();
 			if (HttpResult == HttpURLConnection.HTTP_OK) {
 				InputStream input = urlConnection.getInputStream();
-
-				BufferedReader br = new BufferedReader(new InputStreamReader(
-						input, "utf-8"));
+				BufferedReader br = new BufferedReader(new InputStreamReader(input, "utf-8"));
 				String line = null;
 				while ((line = br.readLine()) != null) {
 					sb.append(line + "\n");
@@ -87,8 +81,7 @@ public class TestUserJson {
 			urlConnection.setUseCaches(false);
 			urlConnection.setConnectTimeout(10000);
 			urlConnection.setReadTimeout(10000);
-			urlConnection
-					.setRequestProperty("Content-Type", "application/json");
+			urlConnection.setRequestProperty("Content-Type", "application/json");
 			urlConnection.setRequestProperty("Accept", "application/json");
 			urlConnection.setRequestProperty("Accept-Encoding", "gzip");
 			urlConnection.setRequestProperty("Content-Encoding", "gzip");
@@ -99,8 +92,7 @@ public class TestUserJson {
 			String jsonStr = "{\"nickName\": \"Bo\", \"password\": \"password\",\"userName\": \"chenb\" }";
 
 			byte[] outBytes = toGzip(jsonStr);
-			urlConnection.setRequestProperty("Content-Length", ""
-					+ outBytes.length);
+			urlConnection.setRequestProperty("Content-Length", "" + outBytes.length);
 
 
 			OutputStream out = urlConnection.getOutputStream();
@@ -114,11 +106,9 @@ public class TestUserJson {
 
 				if ("gzip".equalsIgnoreCase(urlConnection.getContentEncoding())) {
 					input = new GZIPInputStream(input);
-				}
-				
+				}			
 
-				BufferedReader br = new BufferedReader(new InputStreamReader(
-						urlConnection.getInputStream(), "utf-8"));
+				BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "utf-8"));
 				String line = null;
 				while ((line = br.readLine()) != null) {
 					sb.append(line + "\n");

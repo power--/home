@@ -1,14 +1,25 @@
 package com.goparty.client;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.ws.rs.core.MediaType;
 
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.jaxrs.client.ClientConfiguration;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
 import org.apache.cxf.jaxrs.client.WebClient;
+import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.apache.cxf.jaxrs.provider.json.JSONProvider;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,8 +64,7 @@ public class UserAndEventTest {
         return providers; 
     } 
 
-	
-	@Test
+	//@Test 
 	public void test(){
 		User owner = new User();
 		owner.setNickName("Bo");
@@ -117,5 +127,19 @@ public class UserAndEventTest {
 		userService.delete(att1.getId());
 		userService.delete(att2.getId());
 		userService.delete(owner.getId());
+	}
+	
+	@Test
+	public void testUploadImage() throws IOException{
+		//URL url = new URL("http://www.baidu.com/img/bdlogo.gif");
+		URL url = new URL("http://www.solutionoferror.com/images/soe_logo.jpg");
+		URLConnection conn = url.openConnection();
+		
+		BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
+		Attachment attachment = new Attachment("image",conn.getContentType(),bis);
+		String userId = "dd9538ef-5755-4280-8cdf-5ff3b179e858";
+		String fileName = userService.uploadImage(attachment,userId);
+		logger.info("fileName : " + fileName) ; 
+		bis.close();
 	}
 }

@@ -1,5 +1,13 @@
 package com.goparty.webservice.impl;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.activation.DataHandler;
+import javax.ws.rs.core.MediaType;
+
+import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +21,8 @@ import com.goparty.webservice.UserService;
 @Service("userService")
 public class UserServiceImpl implements UserService {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	String rootDir =  "D:/";
 	
 	@Autowired
 	private UserDataService userDataService;
@@ -58,5 +68,53 @@ public class UserServiceImpl implements UserService {
 
 	public void setUserDataService(UserDataService userDataService) {
 		this.userDataService = userDataService;
+	}
+
+	@Override
+	public String uploadImage(Attachment image,String userId) {		
+		MediaType contentType = image.getContentType();
+		logger.info("content-type : " + contentType.getType());
+		String extensionName = getExtensionName(contentType.toString());
+		if(extensionName == null){
+			return "Don't support this type of image.";
+		}
+		String fileName = String.valueOf(System.currentTimeMillis()) + extensionName;		
+		DataHandler handler = image.getDataHandler();
+		try {
+			InputStream is =handler.getInputStream();
+			FileOutputStream fos = new FileOutputStream( rootDir + fileName);
+			byte[] buffer = new byte[1024];
+			int size = 0;
+			while((size = is.read(buffer))!=-1){
+				fos.write(buffer,0,size);
+			}
+			is.close();
+			fos.close();
+			
+		} catch (IOException e) {
+			logger.error("upload image error!"); 
+			e.printStackTrace();
+		}
+	
+		User user = new User();
+		user.setId(userId);
+		user.setPhoto(fileName);
+		userDataService.update(user);
+		logger.info("upload image successfully,filename:" + fileName); 
+		return fileName;
+	}
+	
+	
+	private String getExtensionName(String contentType){ 
+		if(contentType.indexOf("image/gif")!=-1){
+			return ".gif";
+		}else if(contentType.indexOf("image/png")!=-1){
+			return ".png";
+		}else if(contentType.indexOf("image/jpeg")!=-1){
+			return ".jpeg";
+		}else if(contentType.indexOf("image/x-icon")!=-1){
+			return ".ico";
+		}
+		return null;
 	}
 }
