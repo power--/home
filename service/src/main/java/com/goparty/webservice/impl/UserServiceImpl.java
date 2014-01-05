@@ -3,11 +3,13 @@ package com.goparty.webservice.impl;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import javax.activation.DataHandler;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
+import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,15 +73,15 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public String uploadImage(Attachment image,String userId) {		
-		MediaType contentType = image.getContentType();
+	public String uploadImage(MultipartBody image,String userId) {		
+		MediaType contentType = image.getAllAttachments().get(0).getContentType();
 		logger.info("content-type : " + contentType.getType());
 		String extensionName = getExtensionName(contentType.toString());
 		if(extensionName == null){
 			return "Don't support this type of image.";
 		}
 		String fileName = String.valueOf(System.currentTimeMillis()) + extensionName;		
-		DataHandler handler = image.getDataHandler();
+		DataHandler handler = image.getAllAttachments().get(0).getDataHandler();
 		try {
 			InputStream is =handler.getInputStream();
 			FileOutputStream fos = new FileOutputStream( rootDir + fileName);

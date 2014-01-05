@@ -20,6 +20,7 @@ import org.apache.cxf.jaxrs.client.ClientConfiguration;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
+import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.apache.cxf.jaxrs.provider.json.JSONProvider;
 import org.junit.Before;
 import org.junit.Test;
@@ -136,9 +137,15 @@ public class UserAndEventTest {
 		URLConnection conn = url.openConnection();
 		
 		BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
-		Attachment attachment = new Attachment("image",conn.getContentType(),bis);
+		Attachment attachment = new Attachment(null,conn.getContentType(),bis);
 		String userId = "dd9538ef-5755-4280-8cdf-5ff3b179e858";
-		String fileName = userService.uploadImage(attachment,userId);
+		//List<Attachment> image = new ArrayList<Attachment>();
+		//image.add(attachment);
+		 
+		List<Attachment> atts = new LinkedList<Attachment>();
+	    atts.add(new Attachment("image", conn.getContentType(), bis)); 
+	      
+		String fileName = userService.uploadImage(new MultipartBody(atts, true),userId);
 		logger.info("fileName : " + fileName) ; 
 		bis.close();
 	}

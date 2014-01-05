@@ -1,5 +1,7 @@
 package com.goparty.webservice;
 
+import java.util.List;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.ws.rs.Consumes;
@@ -16,6 +18,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.cxf.annotations.GZIP;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.apache.cxf.jaxrs.ext.multipart.Multipart;
+import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.apache.cxf.jaxrs.model.wadl.Description;
 import org.apache.cxf.jaxrs.model.wadl.Descriptions;
 import org.apache.cxf.jaxrs.model.wadl.DocTarget;
@@ -67,5 +70,5 @@ public interface UserService {
 	@Path("{id}/image")
 	//@Consumes("multipart/mixed")
 	@Consumes("multipart/form-data")
-	String uploadImage(@Multipart(value = "image" , type = "image/*") Attachment image, @PathParam("id") String userId) ;
+	String uploadImage(MultipartBody image, @PathParam("id") String userId) ;
 }
