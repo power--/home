@@ -7,6 +7,7 @@ import javax.jws.WebService;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -25,7 +26,7 @@ import org.apache.cxf.jaxrs.model.wadl.DocTarget;
 
 import com.goparty.biz.model.*;
 
-@Path("/user/")
+@Path("/users/")
 @WebService
 @GZIP
 public interface UserService {
@@ -71,4 +72,21 @@ public interface UserService {
 	//@Consumes("multipart/mixed")
 	@Consumes("multipart/form-data")
 	String uploadImage(MultipartBody image, @PathParam("id") String userId) ;
+	
+	@WebMethod
+	@GET
+	@Path("{userId}/events")
+	@Descriptions({
+		@Description(value = "read events of an user", target = DocTarget.METHOD),
+		@Description(value = "events of an user", target = DocTarget.RETURN)
+	})
+	
+	public List<Event> events(@Description(value = "the userId of the events") @PathParam("userId") String userId, 
+			@Description(value = "the offset") @QueryParam("offset") int offset,
+			@Description(value = "the limit")  @QueryParam("limit") int limit,
+			@Description(value = "the range")  @HeaderParam("Range") String range,
+			@Description(value = "the filter") @QueryParam("filter") String filter,
+			@Description(value = "the sorter") @QueryParam("sort") String sort
+			
+	);
 }

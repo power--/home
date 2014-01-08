@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.goparty.biz.model.Event;
 import com.goparty.biz.model.User;
 import com.goparty.data.service.UserDataService;
 import com.goparty.webservice.UserService;
@@ -119,4 +120,23 @@ public class UserServiceImpl implements UserService {
 		}
 		return null;
 	}
+
+	@Override
+	public List<Event> events(String userId, int offset, int limit, String range,
+			String filter, String sort) {
+		
+		if(offset==0&&limit==0){
+			if(range!=null){
+				String[] r = range.split("=")[1].split("-");
+				offset = new Integer(r[0]);
+				limit = new Integer(r[1])-offset;
+			}
+		}
+		
+		
+		
+		return null;
+	}
+	
+	
 }
