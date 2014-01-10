@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.goparty.biz.model.Event;
+import com.goparty.biz.model.StringResponse;
 import com.goparty.biz.model.User;
 import com.goparty.data.service.UserDataService;
 import com.goparty.webservice.UserService;
@@ -74,12 +75,14 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public String uploadImage(MultipartBody image,String userId) {		
+	public StringResponse uploadImage(MultipartBody image,String userId) {	
+		StringResponse response = new StringResponse();	
 		MediaType contentType = image.getAllAttachments().get(0).getContentType();
 		logger.info("content-type : " + contentType.getType());
 		String extensionName = getExtensionName(contentType.toString());
 		if(extensionName == null){
-			return "Don't support this type of image.";
+			response.setMessage("Don't support this type of image.");
+			return response;
 		}
 		String fileName = String.valueOf(System.currentTimeMillis()) + extensionName;		
 		DataHandler handler = image.getAllAttachments().get(0).getDataHandler();
@@ -103,8 +106,9 @@ public class UserServiceImpl implements UserService {
 		user.setId(userId);
 		user.setPhoto(fileName);
 		userDataService.update(user);
-		logger.info("upload image successfully,filename:" + fileName); 
-		return fileName;
+		logger.info("upload image successfully,filename:" + fileName); 		 
+		response.setMessage(fileName);
+		return response;
 	}
 	
 	

@@ -26,7 +26,7 @@ import org.apache.cxf.jaxrs.model.wadl.DocTarget;
 
 import com.goparty.biz.model.*;
 
-@Path("/users/")
+@Path("/user/")
 @WebService
 @GZIP
 public interface UserService {
@@ -71,7 +71,7 @@ public interface UserService {
 	@Path("{id}/image")
 	//@Consumes("multipart/mixed")
 	@Consumes("multipart/form-data")
-	String uploadImage(MultipartBody image, @PathParam("id") String userId) ;
+	StringResponse uploadImage(MultipartBody image, @PathParam("id") String userId) ;
 	
 	@WebMethod
 	@GET

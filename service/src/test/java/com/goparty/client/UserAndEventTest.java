@@ -65,7 +65,7 @@ public class UserAndEventTest {
         return providers; 
     } 
 
-	//@Test 
+	@Test 
 	public void test(){
 		User owner = new User();
 		owner.setNickName("Bo");
@@ -145,8 +145,8 @@ public class UserAndEventTest {
 		List<Attachment> atts = new LinkedList<Attachment>();
 	    atts.add(new Attachment("image", conn.getContentType(), bis)); 
 	      
-		String fileName = userService.uploadImage(new MultipartBody(atts, true),userId);
-		logger.info("fileName : " + fileName) ; 
+	    StringResponse resp = userService.uploadImage(new MultipartBody(atts, true),userId);
+		logger.info("fileName : " + resp.getMessage()) ; 
 		bis.close();
 	}
 }
