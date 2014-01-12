@@ -31,3 +31,13 @@ MAVEN_OPTS=
 
 	EclipseLink/Examples/JPA/NoSQL
 	http://wiki.eclipse.org/EclipseLink/Examples/JPA/NoSQL
+	
+	
+ 5)openfire 
+server admin page
+http://127.0.0.1:9090/index.jsp
+admin/123456
+
+client page:
+http://localhost:8080/sparkweb/SparkWeb.html
+test/123456	
