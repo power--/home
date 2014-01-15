@@ -89,4 +89,12 @@ public interface UserService {
 			@Description(value = "the sorter") @QueryParam("sort") String sort
 			
 	);
+	
+	@GET
+	@Path("{userId}/friend/{friendId}")
+	public boolean addFriends(@PathParam("userId")String userId, @PathParam("friendId")String friendId);
+	
+	@GET
+	@Path("{userId}/friends")
+	public List<User> getFriends(@PathParam("userId")String userId);
 }

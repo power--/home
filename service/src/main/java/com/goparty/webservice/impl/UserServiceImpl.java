@@ -18,7 +18,9 @@ import org.springframework.stereotype.Service;
 import com.goparty.biz.model.Event;
 import com.goparty.biz.model.StringResponse;
 import com.goparty.biz.model.User;
+import com.goparty.biz.model.UserFriend;
 import com.goparty.data.service.UserDataService;
+import com.goparty.data.service.UserFriendDataService;
 import com.goparty.webservice.UserService;
 
 
@@ -30,6 +32,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private UserDataService userDataService;
+	
+	@Autowired
+	private UserFriendDataService userFriendDataService;
 
 	@Override
 	public User read(String id) {
@@ -140,6 +145,21 @@ public class UserServiceImpl implements UserService {
 		
 		
 		return null;
+	}
+
+	@Override
+	public List<User> getFriends(String userId) {
+		
+		return null;
+	}
+
+	@Override
+	public boolean addFriends(String userId, String friendId) {
+		UserFriend uf = new UserFriend();
+		uf.setUserId(userId);
+		uf.setFriendId(friendId);
+		userFriendDataService.create(uf);
+		return true;
 	}
 	
 	

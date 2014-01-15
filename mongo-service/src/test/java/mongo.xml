@@ -9,6 +9,7 @@
     		http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd">
 	
   	<mongo:repositories base-package="com.goparty.repository" />
+  	<mongo:repositories base-package="com.goparty.data.service" />
   
 	<!-- Default bean name is 'mongo' -->
 	<mongo:mongo host="localhost" port="27017"/>
@@ -18,4 +19,5 @@
         <constructor-arg ref="mongo" />
         <constructor-arg value="eventdb" />
     </bean>
+     
 </beans>
