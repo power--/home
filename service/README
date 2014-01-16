@@ -34,10 +34,17 @@ MAVEN_OPTS=
 	
 	
  5)openfire 
-server admin page
-http://127.0.0.1:9090/index.jsp
-admin/123456
+	server admin page
+	http://127.0.0.1:9090/index.jsp
+	admin/123456
+	
+	client page:
+	http://localhost:8080/sparkweb/SparkWeb.html
+	test/123456	
 
-client page:
-http://localhost:8080/sparkweb/SparkWeb.html
-test/123456	
+	For smackx.jar, smack.jar,you should include below dependency manually.
+		<dependency>
+			<groupId>jivesoftware</groupId>
+			<artifactId>smackx</artifactId>
+			<version>3.3.1</version>
+		</dependency>
