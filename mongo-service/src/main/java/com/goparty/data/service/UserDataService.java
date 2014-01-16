@@ -1,5 +1,6 @@
 package com.goparty.data.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -19,6 +20,10 @@ public class UserDataService {
 	
 	@Autowired
 	private IUserDataRepository userDataRepository;
+	
+	public List<UserData> getUserDataByNickName(String nickName){
+		return userDataRepository.getUserDataByNickName(nickName);
+	}
 	
 	public User create(User user){
 		try{

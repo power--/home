@@ -1,28 +1,31 @@
 package com.goparty.data.mongodb;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+ 
 
-import com.goparty.biz.model.UserFriend;
-import com.goparty.data.service.UserFriendDataService;
+import com.goparty.data.model.UserData;
+import com.goparty.data.service.UserDataService; 
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/test.xml")
-public class UserFriendServiceTest {
+public class UserServiceTest {
 	
 	@Autowired
-	UserFriendDataService userFriendDataService;
+	UserDataService userDataService;
 	
 	@Test
 	public void test(){
-		UserFriend uf = new UserFriend(); 
-		uf.setUserId("1");
-		uf.setFriendId("2");		
-		userFriendDataService.create(uf);
 		 
+		List<UserData> list = userDataService.getUserDataByNickName("Bo");
+		for(UserData user : list){
+			System.out.println(user.getId());
+		}
 	}
 
 }
