@@ -91,8 +91,8 @@ public interface UserService {
 	);
 	
 	@GET
-	@Path("{userId}/friend/{friendId}")
-	public boolean addFriends(@PathParam("userId")String userId, @PathParam("friendId")String friendId);
+	@Path("{userId}/friends/{friendId}")
+	public boolean addFriend(@PathParam("userId")String userId, @PathParam("friendId")String friendId);
 	
 	@GET
 	@Path("{userId}/friends")

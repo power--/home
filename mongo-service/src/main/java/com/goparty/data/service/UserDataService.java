@@ -6,6 +6,8 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,9 +23,12 @@ public class UserDataService {
 	@Autowired
 	private IUserDataRepository userDataRepository;
 	
-	public List<UserData> getUserDataByNickName(String nickName){
-		return userDataRepository.getUserDataByNickName(nickName);
+	public List<UserData> findByNickNameLike(String nickName,int page,int size){		
+		PageRequest pageable = new PageRequest(page, size);		 
+		Page<UserData> users = userDataRepository.findByNickNameLike(nickName, pageable);
+		return users.getContent();
 	}
+	
 	
 	public User create(User user){
 		try{

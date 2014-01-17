@@ -154,7 +154,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean addFriends(String userId, String friendId) {
+	public boolean addFriend(String userId, String friendId) {
 		UserFriend uf = new UserFriend();
 		uf.setUserId(userId);
 		uf.setFriendId(friendId);

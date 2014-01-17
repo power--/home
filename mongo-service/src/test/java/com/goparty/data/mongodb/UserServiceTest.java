@@ -28,7 +28,7 @@ public class UserServiceTest {
 	@SuppressWarnings("static-access")
 	@Test
 	public void test(){		 
-		List<UserData> list = userDataService.getUserDataByNickName("Bo");
+		List<UserData> list = userDataService.findByNickNameLike("Bo",0,3);
 		for(UserData user : list){
 			System.out.println(user.getId());
 		} 
