@@ -240,7 +240,7 @@ public class SmackXMPPTest {
 
 	/**
 	 * 
-	 * <b>function:</b> 消息监听器，用户监听对方发送的消息，也可以想对方发送消息
+	 * <b>function:</b>消息监听器，用户监听对方发送的消息，也可以想对方发送消息                                              
 	 * 
 	 */
 
