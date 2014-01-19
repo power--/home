@@ -1,20 +1,49 @@
 package com.goparty.data.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 
 
-import org.springframework.data.annotation.Id;
+
+
+
+
+
+
+
+
+
+import javax.persistence.Basic;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.eclipse.persistence.nosql.annotations.DataFormatType;
+import org.eclipse.persistence.nosql.annotations.Field;
+import org.eclipse.persistence.nosql.annotations.NoSql; 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+
+@Entity
+@NoSql(dataType="users", dataFormat=DataFormatType.MAPPED)
+//@Table(name = "users")
 @Document(collection = "users")
-public class UserData {
-	 private String id;
+public class UserData implements Serializable{
+     @Id
+     @GeneratedValue
+     @Field(name="_id")
+	 private String id; 
 	 private String userName;
+
 	 private String password; 
+	 @Field(name="nickName")
 	 private String nickName;
 	 private String phone;
-	 
+	 @Temporal(TemporalType.TIMESTAMP)
 	 private Date birthdate;
 	 
 	 private String gender;
@@ -25,7 +54,9 @@ public class UserData {
 	 private String QQ;
 	 private String weibo;
 	 
-	@Id 
+	  @Id
+	     @GeneratedValue
+	     @Field(name="_id")
 	public String getId() {
 		return id;
 	}
