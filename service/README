@@ -31,7 +31,11 @@ MAVEN_OPTS=
 
 	EclipseLink/Examples/JPA/NoSQL
 	http://wiki.eclipse.org/EclipseLink/Examples/JPA/NoSQL
+	使用 Spring Data JPA 简化 JPA 开发
+	http://www.ibm.com/developerworks/cn/opensource/os-cn-spring-jpa/
 	
+	spring-data-jpa + hibernate
+	http://mybar.iteye.com/blog/1863390
 	
  5)openfire 
 	server admin page
