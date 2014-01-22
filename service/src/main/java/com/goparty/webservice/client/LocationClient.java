@@ -12,7 +12,7 @@ import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import com.goparty.exception.DuplicateLocationException;
 import com.goparty.exception.LocationNotFoundException;
 import com.goparty.exception.meta.LocationResponseExceptionMapper;
-import com.goparty.biz.model.Location;
+import com.goparty.data.model.Location;
 import com.goparty.webservice.LocationService;
 
 

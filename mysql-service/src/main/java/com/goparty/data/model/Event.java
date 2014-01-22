@@ -3,21 +3,36 @@ package com.goparty.data.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @XmlRootElement(name = "event")
+@Entity
 public class Event {
+	 @Id 
 	 private String id;
 	 private String title;
+	 @Transient
 	 private Location location;
 	 private Date startTime;
 	 private Date endTime;
+	 @Transient
 	 private List<User> attendees;
+	 @Transient
 	 private User owner;
+	 
 	 private String description;
+	 @Transient
 	 private EventCategory eventCategory;
+	 @Transient
 	 private EventStatus eventStatus;
+	 @Transient
 	 private VisibilityCategory visibilityCategory;
 	public String getId() {
 		return id;

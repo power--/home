@@ -14,11 +14,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+ 
 
-import com.goparty.biz.model.Event;
-import com.goparty.biz.model.StringResponse;
-import com.goparty.biz.model.User;
-import com.goparty.biz.model.UserFriend;
+
+
+import com.goparty.data.model.Event;
+import com.goparty.data.model.StringResponse;
+import com.goparty.data.model.User;
+import com.goparty.data.model.UserFriend;
 import com.goparty.data.service.UserDataService;
 import com.goparty.data.service.UserFriendDataService;
 import com.goparty.webservice.UserService;

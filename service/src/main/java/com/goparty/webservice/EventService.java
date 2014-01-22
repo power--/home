@@ -14,7 +14,7 @@ import org.apache.cxf.jaxrs.model.wadl.Description;
 import org.apache.cxf.jaxrs.model.wadl.Descriptions;
 import org.apache.cxf.jaxrs.model.wadl.DocTarget;
 
-import com.goparty.biz.model.*;
+import com.goparty.data.model.*;
 
 @Path("/event/")
 @WebService

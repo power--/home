@@ -27,7 +27,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.goparty.biz.model.*;
+import com.goparty.data.model.*;
 import com.goparty.webservice.EventService;
 import com.goparty.webservice.LocationService;
 import com.goparty.webservice.UserService;
@@ -66,37 +66,8 @@ public class UserAndEventTest {
     } 
 
 	@Test 
-	public void test(){
-		User owner = new User();
-		owner.setNickName("Bo");
-		owner.setUserName("chenb");
-		owner.setPassword("password");
-		
-		User att1 = new User();
-		owner.setNickName("att1");
-		owner.setUserName("att1");
-		owner.setPassword("password");
-		
-		User att2 = new User();
-		owner.setNickName("att2");
-		owner.setUserName("att2");
-		owner.setPassword("password");
-		
-		owner  = userService.create(owner);
-		
-		logger.error("*******************************");
-		owner  = userService.read(owner.getId());
-		logger.error("*******************************");
-		owner.setNickName("Chen, Bo");
-		userService.update(owner);
-		
-		att1 = userService.create(att1);
-		att2 = userService.create(att2);
-		
-		
-		
-		Event event = new Event();
-		event.setOwner(owner);
+	public void test(){  
+		Event event = new Event(); 
 		List<User> attendees = new ArrayList<User>();
 		event.setAttendees(attendees);
 		event.setDescription("Hello World");
@@ -123,11 +94,8 @@ public class UserAndEventTest {
 		
 		logger.error("*******************************");
 		event = eventService.read(event.getId());
-		logger.error("*******************************");
-		eventService.delete(event.getId());
-		userService.delete(att1.getId());
-		userService.delete(att2.getId());
-		userService.delete(owner.getId());
+		logger.info("*******************************");
+		eventService.delete(event.getId()); 
 	}
 	
 	@Test

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 
 
-import com.goparty.biz.model.*;
+import com.goparty.data.model.*;
 import com.goparty.data.service.EventDataService;
 import com.goparty.webservice.EventService;
 

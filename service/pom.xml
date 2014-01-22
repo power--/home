@@ -23,7 +23,7 @@
   <dependencies>
     <dependency>
     	<groupId>com.goparty</groupId>
-    	<artifactId>mongo-service</artifactId>
+    	<artifactId>mysql-service</artifactId>
     	<version>0.0.1</version>
     </dependency>
     

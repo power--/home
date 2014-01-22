@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.goparty.biz.model.Event;
+import com.goparty.data.model.Event;
 import com.goparty.webservice.EventService;
 
 public class EventTest {
