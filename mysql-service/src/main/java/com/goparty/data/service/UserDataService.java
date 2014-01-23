@@ -30,29 +30,12 @@ public class UserDataService {
 	}
 	
 	
-	public User create(User user){
-		try{
-			String id = UUID.randomUUID().toString();
-			user.setId(id);
-		 
-			userDataRepository.save(user);
-		}catch(Exception ex){
-			logger.error("error happended to add a user",ex);
-			throw ex;
-		}
-		
-		return user;
+	public User create(User user){	 
+		return userDataRepository.save(user); 
 	}
 	
-	public User update(User user){
-		try{ 
-			userDataRepository.save(user);
-		}catch(Exception ex){
-			logger.error("error happended to add a user",ex);
-			throw ex;
-		}
-		
-		return user;
+	public User update(User user){ 
+		return userDataRepository.save(user);
 	}
 	
 	public User read(String id){

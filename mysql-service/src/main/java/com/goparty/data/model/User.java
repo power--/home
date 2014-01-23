@@ -3,15 +3,20 @@ package com.goparty.data.model;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 @XmlRootElement(name = "user")
 @Entity
+@Table(name="gp_user")
 public class User {
 	 @Id
+	 @GeneratedValue(strategy=GenerationType.AUTO)// //can't create table automatically after add this
 	 private String id;
 	 private String phone;
 	 private String userName;

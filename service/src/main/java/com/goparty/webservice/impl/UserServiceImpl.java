@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 
 import com.goparty.data.model.Event;
 import com.goparty.data.model.StringResponse;
-import com.goparty.data.model.User;
+import com.goparty.data.model.User; 
 import com.goparty.data.model.UserFriend;
 import com.goparty.data.service.UserDataService;
 import com.goparty.data.service.UserFriendDataService;
@@ -49,15 +49,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User create(User user) {
-		userDataService.create(user);
-		return user;
+	public User create(User user) {		
+		return userDataService.create(user);
 	}
 
 	@Override
-	public User update(User user) {
-		userDataService.update(user);
-		return user;
+	public User update(User user) {		
+		return userDataService.update(user);
 	}
 
 	@Override

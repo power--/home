@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.ws.rs.core.MediaType;
+ 
 
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
@@ -27,9 +27,9 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.goparty.data.constant.EventStatus;
 import com.goparty.data.model.*;
-import com.goparty.webservice.EventService;
-import com.goparty.webservice.LocationService;
+import com.goparty.webservice.EventService; 
 import com.goparty.webservice.UserService;
 
 public class UserAndEventTest {
@@ -66,8 +66,36 @@ public class UserAndEventTest {
     } 
 
 	@Test 
-	public void test(){  
-		Event event = new Event(); 
+	public void test(){
+		User owner = new User();
+		owner.setNickName("Bo");
+		owner.setUserName("chenb");
+		owner.setPassword("password");
+		
+		User att1 = new User();
+		att1.setNickName("att1");
+		att1.setUserName("att1");
+		att1.setPassword("password");
+		
+		User att2 = new User();
+		att2.setNickName("att2");
+		att2.setUserName("att2");
+		att2.setPassword("password");
+		
+		owner  = userService.create(owner);		
+		logger.error("*******************************");
+		owner  = userService.read(owner.getId());
+		logger.error("*******************************");
+		owner.setNickName("Chen, Bo");
+		userService.update(owner);
+		
+		att1 = userService.create(att1);
+		att2 = userService.create(att2);
+		
+		
+		
+		Event event = new Event();
+		event.setOwner(owner);
 		List<User> attendees = new ArrayList<User>();
 		event.setAttendees(attendees);
 		event.setDescription("Hello World");
@@ -77,11 +105,7 @@ public class UserAndEventTest {
 		c.setId("1");
 		c.setName("Company");
 		event.setEventCategory(c);
-		
-		EventStatus s = new EventStatus();
-		s.setId("1");
-		s.setName("Draft");
-		event.setEventStatus(s);
+		 
 		
 		VisibilityCategory v = new VisibilityCategory();
 		v.setId("1");
@@ -94,8 +118,11 @@ public class UserAndEventTest {
 		
 		logger.error("*******************************");
 		event = eventService.read(event.getId());
-		logger.info("*******************************");
-		eventService.delete(event.getId()); 
+		logger.error("*******************************");
+		eventService.delete(event.getId());
+		userService.delete(att1.getId());
+		userService.delete(att2.getId());
+		userService.delete(owner.getId());
 	}
 	
 	@Test
@@ -106,7 +133,7 @@ public class UserAndEventTest {
 		
 		BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
 		Attachment attachment = new Attachment(null,conn.getContentType(),bis);
-		String userId = "dd9538ef-5755-4280-8cdf-5ff3b179e858";
+		String userId = "6";
 		//List<Attachment> image = new ArrayList<Attachment>();
 		//image.add(attachment);
 		 

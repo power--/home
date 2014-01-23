@@ -28,12 +28,11 @@ public class UserDataServiceTest extends AbstractRepositoryTest {
 		user.setPassword("password");
 		userDataService.create(user);
 		
-		List<User> list = userDataService.findByNickNameLike("ahu", 0, 1);
+		List<User> list = userDataService.findByNickNameLike("a%", 0, 8);
 		for(User o : list){
-			System.out.println(o.getPassword());
+			System.out.println(o.getNickName() + " -- " + o.getPassword());
 		} 
-	}
- 
+	} 
 	
 	
 }

@@ -3,35 +3,47 @@ package com.goparty.data.model;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Entity;
+import javax.persistence.Entity; 
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.hibernate.annotations.GenericGenerator;
+ 
 
 @XmlRootElement(name = "event")
 @Entity
+@Table(name="gp_event")
 public class Event {
 	 @Id 
+	 @GeneratedValue(strategy=GenerationType.AUTO)
 	 private String id;
+	 
 	 private String title;
 	 @Transient
 	 private Location location;
+	 
 	 private Date startTime;
 	 private Date endTime;
+	 
 	 @Transient
 	 private List<User> attendees;
-	 @Transient
+	 
+	 @OneToOne
+	 @JoinColumn(name="ownerId")
 	 private User owner;
 	 
 	 private String description;
-	 @Transient
+	 
+	 @OneToOne
+	 @JoinColumn(name="cateId")
 	 private EventCategory eventCategory;
-	 @Transient
-	 private EventStatus eventStatus;
+	 
+	 private String status;
 	 @Transient
 	 private VisibilityCategory visibilityCategory;
 	public String getId() {
@@ -90,11 +102,12 @@ public class Event {
 	public void setEventCategory(EventCategory eventCategory) {
 		this.eventCategory = eventCategory;
 	}
-	public EventStatus getEventStatus() {
-		return eventStatus;
+ 
+	public String getStatus() {
+		return status;
 	}
-	public void setEventStatus(EventStatus eventStatus) {
-		this.eventStatus = eventStatus;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	public VisibilityCategory getVisibilityCategory() {
 		return visibilityCategory;
@@ -102,13 +115,5 @@ public class Event {
 	public void setVisibilityCategory(VisibilityCategory visibilityCategory) {
 		this.visibilityCategory = visibilityCategory;
 	}
-	@Override
-	public String toString() {
-		return "Event [id=" + id + ", title=" + title + ", location="
-				+ location + ", startTime=" + startTime + ", endTime="
-				+ endTime + ", attendees=" + attendees + ", owner=" + owner
-				+ ", description=" + description + ", eventCategory="
-				+ eventCategory + ", eventStatus=" + eventStatus
-				+ ", visiblityCategory=" + visibilityCategory + "]";
-	}
+ 
 }
