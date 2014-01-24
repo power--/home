@@ -54,7 +54,7 @@ public class EventDataService {
 	
 	public List<Event> findByEventCategoryId(String cateId,int page,int size){		
 		PageRequest pageable = new PageRequest(page, size);		 
-		Page<Event> events = eventDataRepository.findByEventCategoryId(cateId, pageable);
+		Page<Event> events = eventDataRepository.findByEventCategoryIdOrderByStartTimeDesc(cateId, pageable);
 		return events.getContent();
 	}
 
