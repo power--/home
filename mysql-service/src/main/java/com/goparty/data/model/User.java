@@ -1,12 +1,20 @@
 package com.goparty.data.model;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -33,6 +41,34 @@ public class User {
 	 private String weChat;
 	 private String QQ;
 	 private String weibo;
+	 
+	 @Transient
+	 @OneToMany(cascade = { CascadeType.ALL  })    
+	 @JoinTable(name="gp_user_friend",joinColumns=@JoinColumn(name="userId"),
+	                    inverseJoinColumns=@JoinColumn(name="friendId"))
+	 private List<User> friends;
+	  
+	 
+	 
+	public List<User> getFriends() {
+		return friends;
+	}
+	public void setFriends(List<User> friends) {
+		this.friends = friends;
+	}
+	
+ 
+	 
+//	@ManyToMany(mappedBy="attendees")
+//	 private List<Event> events;
+//	 
+//	 
+//	public List<Event> getEvents() {
+//		return events;
+//	}
+//	public void setEvents(List<Event> events) {
+//		this.events = events;
+//	}
 	public String getId() {
 		return id;
 	}

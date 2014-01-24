@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:META-INF/goparty-data/applicationContext-test.xml")
-@Transactional
+//@Transactional
 abstract class AbstractRepositoryTest {
 
 }

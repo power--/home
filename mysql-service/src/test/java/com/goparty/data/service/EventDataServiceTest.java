@@ -28,8 +28,6 @@ public class EventDataServiceTest extends AbstractRepositoryTest {
 	@Test
 	public void test() {
 		Event event = new Event(); 
-		List<User> attendees = new ArrayList<User>();
-		event.setAttendees(attendees);
 		event.setDescription("Hello World");
 		event.setTitle("A Title");
 		event.setStatus(EventStatus.INIT.name());
@@ -37,6 +35,17 @@ public class EventDataServiceTest extends AbstractRepositoryTest {
 		User owner = new User();
 		owner.setId("21");
 		event.setOwner(owner);
+		
+		List<User> attendees = new ArrayList<User>();
+		User user1 = new User();
+		user1.setId("22");  
+		User user2 = new User();
+		user2.setId("244");  
+
+		attendees.add(owner);
+		attendees.add(user1);
+		attendees.add(user2);		
+		event.setAttendees(attendees); 
 		
 		EventCategory cate = new EventCategory();
 		cate.setId("1");
