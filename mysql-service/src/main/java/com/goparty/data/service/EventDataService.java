@@ -1,12 +1,17 @@
 package com.goparty.data.service;
 
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.goparty.data.model.Event;
+import com.goparty.data.model.User;
 import com.goparty.data.repository.IEventDataRepository; 
 
 
@@ -44,6 +49,13 @@ public class EventDataService {
 			throw ex;
 		}		
 		return ret;
+	}
+	
+	
+	public List<Event> findByEventCategoryId(String cateId,int page,int size){		
+		PageRequest pageable = new PageRequest(page, size);		 
+		Page<Event> events = eventDataRepository.findByEventCategoryId(cateId, pageable);
+		return events.getContent();
 	}
 
 }

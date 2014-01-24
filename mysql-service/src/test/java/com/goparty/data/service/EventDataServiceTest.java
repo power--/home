@@ -59,5 +59,12 @@ public class EventDataServiceTest extends AbstractRepositoryTest {
 		 
 	} 
 	
+	@Test
+	public void testPage(){
+		List<Event> list = eventDataService.findByEventCategoryId("2", 0, 5);
+		for(Event o : list){
+			System.out.println(o.getDescription() + "--" + o.getOwner().getId());
+		}
+	}
 	
 }
