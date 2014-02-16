@@ -57,7 +57,7 @@ public class UserDataServiceTest extends AbstractRepositoryTest {
 	 
 	@Test
 	public void testPage(){
-		List<Event> list = userDataService.findByEventCategoryId("1", 0, 5);
+		List<Event> list = userDataService.findByEventCategoryId("1", 1, 5);
 		for(Event o : list){			
 			System.out.println(o.getDescription() + "--" + o.getOwner().getId());
 			for(User u : o.getAttendees()){
