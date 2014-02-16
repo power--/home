@@ -10,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.goparty.data.model.Event;
 import com.goparty.data.model.User;
  
 
@@ -23,8 +24,9 @@ public class UserDataServiceTest extends AbstractRepositoryTest {
 
 	
 	@Test
-	public void testFindByNameAndPrice() {
+	public void test() {
 		User user = new User();
+		user.setUserName("ahu");
 		user.setNickName("ahuuu");
 		user.setPassword("password");
 		
@@ -38,16 +40,31 @@ public class UserDataServiceTest extends AbstractRepositoryTest {
 //		f2.setPassword("f2password");
 //		friends.add(f1);
 //		friends.add(f2);
-		friends.add(userDataService.read("12"));
+		User u33 = userDataService.read("33");
+		for(User friend : u33.getFriends()){
+			System.out.println(friend.getId() + " , Name = " + friend.getUserName());
+		}
+		friends.add(u33);
 		user.setFriends(friends);
 		
 		userDataService.create(user);
-		
-		List<User> list = userDataService.findByNickNameLike("ahu333", 0, 8);
-		for(User o : list){
-			System.out.println(o.getNickName() + " -- " + o.getPassword() );
-		} 
+//		
+//		List<User> list = userDataService.findByNickNameLike("ahu333", 0, 8);
+//		for(User o : list){
+//			System.out.println(o.getNickName() + " -- " + o.getPassword() );
+//		} 
 	} 
-	
+	 
+	@Test
+	public void testPage(){
+		List<Event> list = userDataService.findByEventCategoryId("1", 0, 5);
+		for(Event o : list){			
+			System.out.println(o.getDescription() + "--" + o.getOwner().getId());
+			for(User u : o.getAttendees()){
+				System.out.println("user name:" + u.getUserName());
+			}
+			
+		}
+	}
 	
 }

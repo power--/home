@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.goparty.data.model.*;
+import com.goparty.data.repository.IEventDataRepository;
 import com.goparty.data.repository.IUserDataRepository;
  
 
@@ -22,6 +23,9 @@ public class UserDataService {
 	
 	@Autowired
 	private IUserDataRepository userDataRepository;
+	
+	@Autowired
+	private IEventDataRepository eventDataRepository;
 	
 	public List<User> findByNickNameLike(String nickName,int page,int size){		
 		PageRequest pageable = new PageRequest(page, size);		 
@@ -55,5 +59,11 @@ public class UserDataService {
 		}
 		
 		return ret;
+	}
+	
+	public List<Event> findByEventCategoryId(String cateId,int page,int size){		
+		PageRequest pageable = new PageRequest(page+1, size);		 
+		Page<Event> events = eventDataRepository.findByEventCategoryIdOrderByStartTimeDesc(cateId, pageable);
+		return events.getContent();
 	}
 }

@@ -42,8 +42,8 @@ public class User {
 	 private String QQ;
 	 private String weibo;
 	 
-	 @Transient
-	 @OneToMany(cascade = { CascadeType.ALL  })    
+	 //@Transient
+	 @ManyToMany(fetch = FetchType.EAGER)    
 	 @JoinTable(name="gp_user_friend",joinColumns=@JoinColumn(name="userId"),
 	                    inverseJoinColumns=@JoinColumn(name="friendId"))
 	 private List<User> friends;
@@ -59,7 +59,7 @@ public class User {
 	
  
 	 
-//	@ManyToMany(mappedBy="attendees")
+//	@ManyToMany(fetch = FetchType.LAZY,mappedBy="attendees",cascade=CascadeType.ALL)
 //	 private List<Event> events;
 //	 
 //	 

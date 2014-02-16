@@ -90,6 +90,13 @@ public interface UserService {
 			
 	);
 	
+ 
+	@GET
+	@Path("{userId}/category/{cateId}")
+	public List<Event> getEventList(@PathParam("cateId") String cateId, 
+							   @QueryParam("page") int page, 
+							   @QueryParam("size") int size);
+	
 	@GET
 	@Path("{userId}/friends/{friendId}")
 	public boolean addFriend(@PathParam("userId")String userId, @PathParam("friendId")String friendId);

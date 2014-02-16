@@ -3,6 +3,7 @@ package com.goparty.data.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity; 
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -37,7 +38,8 @@ public class Event {
 	 private Date startTime;
 	 private Date endTime;
 	  
-	 @ManyToMany
+     //can't change to LAZY and add cascade=CascadeType.ALL 
+	 @ManyToMany(fetch = FetchType.EAGER)
 	 @JoinTable(name="gp_event_attendee",joinColumns=@JoinColumn(name="eventId"),
 	                    inverseJoinColumns=@JoinColumn(name="userId"))
 	 private List<User> attendees;

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 
 
+
 import com.goparty.data.model.Event;
 import com.goparty.data.model.StringResponse;
 import com.goparty.data.model.User; 
@@ -134,14 +135,17 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<Event> events(String userId, int offset, int limit, String range,
 			String filter, String sort) {
-		
-		if(offset==0&&limit==0){
+		if(offset==0 && limit==0){
 			if(range!=null){
-				String[] r = range.split("=")[1].split("-");
-				offset = new Integer(r[0]);
-				limit = new Integer(r[1])-offset;
+				String val = range.split("=")[1];
+				offset = new Integer(val.substring(0,val.indexOf("-")));
+				limit  = new Integer(val.substring(val.indexOf("-"),val.length()));
 			}
 		}
+		
+		
+		
+		
 		
 		
 		
@@ -163,5 +167,10 @@ public class UserServiceImpl implements UserService {
 		return true;
 	}
 	
+	@Override
+	public List<Event> getEventList(String cateId, int page, int size) {
+		List<Event> list = userDataService.findByEventCategoryId(cateId, page, size);
+		return list;
+	}
 	
 }

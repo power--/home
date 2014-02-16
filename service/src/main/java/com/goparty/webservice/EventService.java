@@ -1,5 +1,7 @@
 package com.goparty.webservice;
 
+import java.util.List;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.ws.rs.DELETE;
@@ -8,6 +10,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 
 import org.apache.cxf.annotations.GZIP;
 import org.apache.cxf.jaxrs.model.wadl.Description;
@@ -55,4 +58,7 @@ public interface EventService {
 		@Description(value = "the result of delete user action", target = DocTarget.RETURN)
 	})
 	public boolean delete(@Description(value = "the id of the event") @PathParam("id")String id);
+	
+	
+	
 }

@@ -52,19 +52,20 @@ public class EventDataServiceTest extends AbstractRepositoryTest {
 		event.setEventCategory(cate);		
 		event = eventDataService.create(event);
 		
-		Event e = eventDataService.read(event.getId());		 
-		System.out.println(e.getTitle());
+		Event e = eventDataService.read(event.getId()); 
 		assertEquals("Hello World",e.getDescription());
 		assertNotNull(e.getOwner().getNickName());
 		 
 	} 
 	
 	@Test
-	public void testPage(){
-		List<Event> list = eventDataService.findByEventCategoryId("2", 0, 5);
-		for(Event o : list){
-			System.out.println(o.getDescription() + "--" + o.getOwner().getId());
+	public void testMany2ManyRead(){
+		Event e = eventDataService.read("33");	
+		for(User u : e.getAttendees()){
+			System.out.println(e.getTitle() + " -- User:" + u.getId());
 		}
 	}
+	
+
 	
 }

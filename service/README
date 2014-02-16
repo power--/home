@@ -21,8 +21,10 @@ MAVEN_OPTS=
    mvn jetty:run then open http://localhost:8080
    mvn tomcat:run then open http://localhost:9999/cxfexample/
    
-   mvn -Djetty.port=80 jetty:run change port to 80
-   
+   mvn -Djetty.port=80 jetty:run    
+    -Dmaven.test.skip=true
+    
+    
    LocationClientTest can be run.
    You can also test in IE
    
@@ -31,7 +33,7 @@ MAVEN_OPTS=
 
 	EclipseLink/Examples/JPA/NoSQL
 	http://wiki.eclipse.org/EclipseLink/Examples/JPA/NoSQL
-	使用 Spring Data JPA 简化 JPA 开发
+	ä½¿ç”¨ Spring Data JPA ç®€åŒ– JPA å¼€å�‘
 	http://www.ibm.com/developerworks/cn/opensource/os-cn-spring-jpa/
 	
 	spring-data-jpa + hibernate

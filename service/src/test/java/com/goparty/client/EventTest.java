@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.goparty.data.model.Event;
+import com.goparty.data.model.EventCategory;
 import com.goparty.webservice.EventService;
 
 public class EventTest {
@@ -35,7 +36,9 @@ public class EventTest {
 	public void test(){
 		Event evt = new Event();
 		evt.setDescription("test");
-		
+		EventCategory cate = new EventCategory();
+		cate.setId("1");
+		evt.setEventCategory(cate);		
 		evt = eventService.create(evt);
 		
 		evt = eventService.read(evt.getId());
