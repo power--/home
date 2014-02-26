@@ -1,5 +1,11 @@
 package com.goparty.client;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -45,8 +51,56 @@ public class EventTest {
 		
 		evt = eventService.update(evt);
 		
-		eventService.delete(evt.getId());
-		
-		
+		eventService.delete(evt.getId()); 
+	}
+	
+	@Test
+	public void testAddEvent() throws Exception {
+		String http = "http://goparty.cloudapp.net/cxf/rest/event";
+
+		HttpURLConnection urlConnection = null;
+		try {
+			URL url = new URL(http);
+			urlConnection = (HttpURLConnection) url.openConnection();
+			urlConnection.setDoOutput(true);
+			urlConnection.setRequestMethod("POST");
+			urlConnection.setUseCaches(false);
+			urlConnection.setConnectTimeout(10000);
+			urlConnection.setReadTimeout(10000);
+			urlConnection.setRequestProperty("Content-Type", "application/json");
+			urlConnection.setRequestProperty("Accept", "application/json");
+			urlConnection.setRequestProperty("charset", "utf-8");
+
+			String jsonStr = "{\"attendees\":{\"attendees\":[{\"id\":21,\"userName\":\"user21\"},{\"id\":88,\"userName\":\"user21\"}]},\"description\":\"Hello World\",\"endTime\":\"2014-02-19\",\"eventCategory\":{\"id\":1,\"name\":\"KTV \"},\"owner\":{\"id\":21,\"userName\":\"user21\"},\"startTime\":\"2014-02-16T10:23:10Z\",\"status\":\"INIT\",\"title\":\"A Title\"}";
+
+			System.out.println("" + jsonStr.toString());
+			urlConnection.setRequestProperty("Content-Length","" + jsonStr.getBytes("UTF-8").length);
+
+			OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
+			out.write(jsonStr);
+			out.close();
+
+			int HttpResult = urlConnection.getResponseCode();
+			StringBuffer sb = new StringBuffer();
+			if (HttpResult == HttpURLConnection.HTTP_OK) {
+				InputStream input = urlConnection.getInputStream();
+				BufferedReader br = new BufferedReader(new InputStreamReader(input, "utf-8"));
+				String line = null;
+				while ((line = br.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+				br.close();
+
+				System.out.println("" + sb.toString());
+
+			} else {
+				System.out.println(urlConnection.getResponseMessage());
+			}
+		}catch (Exception e) {
+			logger.error("error",e);
+		} finally {
+			if (urlConnection != null)
+				urlConnection.disconnect();
+		}
 	}
 }
