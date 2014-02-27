@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,14 @@ public class UserDataServiceTest extends AbstractRepositoryTest {
 	@PersistenceContext
 	private EntityManager em;
 
+	@Test
+	public void testEm(){
+		TypedQuery<User> query = em.createQuery("select u from User u where userName='ahu'", User.class);
+		List<User> list = query.getResultList();
+		for(User u : list){
+			System.out.println(u.getNickName() + " -- " + u.getPassword() );
+		}
+	}
 	
 	@Test
 	public void test() {

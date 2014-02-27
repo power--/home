@@ -1,7 +1,9 @@
 package com.goparty.xmpp;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.net.SocketFactory;
 
@@ -19,6 +21,10 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.Session;
 import org.jivesoftware.smack.packet.Message.Type;
+import org.jivesoftware.smackx.Form;
+import org.jivesoftware.smackx.FormField;
+import org.jivesoftware.smackx.muc.HostedRoom;
+import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -276,6 +282,34 @@ public class SmackXMPPTest {
 
 			fail("body: ", message.getBody());
 		}
+	}
+	
+	@Test
+	public void testCreateRoom() throws XMPPException{
+		 // Create a MultiUserChat using a Connection for a room
+	      MultiUserChat muc = new MultiUserChat(connection, "myroom@conference.party");
+
+	      // Create the room
+	      muc.create("testbot");
+
+	      // Get the the room's configuration form
+	      Form form = muc.getConfigurationForm();
+	      // Create a new form to submit based on the original form
+	      Form submitForm = form.createAnswerForm();
+	      // Add default answers to the form to submit
+	      for (Iterator fields = form.getFields(); fields.hasNext();) {
+	          FormField field = (FormField) fields.next();
+	          if (!FormField.TYPE_HIDDEN.equals(field.getType()) && field.getVariable() != null) {
+	              // Sets the default value as the answer
+	              submitForm.setDefaultAnswer(field.getVariable());
+	          }
+	      }
+	      // Sets the new owner of the room
+	      List owners = new ArrayList();
+	      owners.add("test@goparty");
+	      submitForm.setAnswer("muc#roomconfig_roomowners", owners);
+	      // Send the completed form (with default values) to the server to configure the room
+	      muc.sendConfigurationForm(submitForm);
 	}
 
 }
