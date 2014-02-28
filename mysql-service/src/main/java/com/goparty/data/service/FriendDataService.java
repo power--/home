@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.goparty.data.model.UserFriend;
-import com.goparty.data.model.UserFriend;
+import com.goparty.data.model.UserFriendPK;
 import com.goparty.data.repository.IFriendDataRepository;
 @Repository("friendDataService")
 @Transactional
@@ -25,7 +25,7 @@ public class FriendDataService {
 	private IFriendDataRepository friendDataRepository;
 	
 	
-	public UserFriend read(String id) {
+	public UserFriend read(UserFriendPK id) {
 		UserFriend friend = friendDataRepository.findOne(id);
 		return friend;
 	}
@@ -39,9 +39,8 @@ public class FriendDataService {
 		
 	}
 
-	public boolean delete(String id) {
-		boolean ret = false;
-		
+	public boolean delete(UserFriendPK id) {
+		boolean ret = false;		
 		try{
 			friendDataRepository.delete(id);
 			ret = true;

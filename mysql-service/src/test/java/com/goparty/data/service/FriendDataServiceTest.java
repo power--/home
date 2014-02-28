@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.goparty.data.model.Event;
 import com.goparty.data.model.User;
 import com.goparty.data.model.UserFriend;
+import com.goparty.data.model.UserFriendPK;
  
 
 public class FriendDataServiceTest extends AbstractRepositoryTest {
@@ -37,6 +38,14 @@ public class FriendDataServiceTest extends AbstractRepositoryTest {
 		friendDataService.update(uf);
 	}
  
+	@Test
+	public void testDelete(){
+		UserFriendPK pk = new UserFriendPK();
+		pk.setUserId("22");
+		pk.setFriendId("92");
+		friendDataService.delete(pk);
+		
+	}
 	 
  
 	
