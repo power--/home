@@ -27,7 +27,7 @@ public class User {
 	 @GeneratedValue(strategy=GenerationType.AUTO)// //can't create table automatically after add this
 	 private String id;
 	 private String phone;
-	 private String userName;
+	 private String loginId;
 	 private String password; 
 	 private String nickName;
 	 
@@ -39,7 +39,7 @@ public class User {
 	 private String signature;
 	 private String photo;
 	 private String weChat;
-	 private String QQ;
+	 private String qq;
 	 private String weibo;
 	 
 	 //@Transient
@@ -81,12 +81,13 @@ public class User {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public String getUserName() {
-		return userName;
+	public String getLoginId() {
+		return loginId;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setLoginId(String loginId) {
+		this.loginId = loginId;
 	}
+ 
 	public String getPassword() {
 		return password;
 	}
@@ -135,11 +136,12 @@ public class User {
 	public void setWeChat(String weChat) {
 		this.weChat = weChat;
 	}
-	public String getQQ() {
-		return QQ;
+ 
+	public String getQq() {
+		return qq;
 	}
-	public void setQQ(String qQ) {
-		QQ = qQ;
+	public void setQq(String qq) {
+		this.qq = qq;
 	}
 	public String getWeibo() {
 		return weibo;
@@ -149,11 +151,11 @@ public class User {
 	}
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", phone=" + phone + ", userName=" + userName
+		return "User [id=" + id + ", phone=" + phone + ", loginId=" + loginId
 				+ ", password=" + password + ", nickName=" + nickName
 				+ ", birthdate=" + birthdate + ", gender=" + gender
 				+ ", location=" + location + ", signature=" + signature
-				+ ", photo=" + photo + ", weChat=" + weChat + ", QQ=" + QQ
+				+ ", photo=" + photo + ", weChat=" + weChat + ", qq=" + qq
 				+ ", weibo=" + weibo + "]";
 	}
 	

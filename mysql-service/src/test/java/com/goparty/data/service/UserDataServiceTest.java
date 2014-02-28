@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.junit.Test;
@@ -24,8 +25,15 @@ public class UserDataServiceTest extends AbstractRepositoryTest {
 	private EntityManager em;
 
 	@Test
+	public void testSearch(){
+		List<User> list = userDataService.search("%ahu%", 0, 10);
+		System.out.println(list.size());
+	}
+	
+	@Test
 	public void testEm(){
-		TypedQuery<User> query = em.createQuery("select u from User u where userName='ahu'", User.class);
+//		TypedQuery<User> query = em.createQuery("select u from User u where userName='ahu'", User.class);
+		 Query query = em.createNativeQuery("select * from gp_user where userName='ahu'", User.class);
 		List<User> list = query.getResultList();
 		for(User u : list){
 			System.out.println(u.getNickName() + " -- " + u.getPassword() );
@@ -33,9 +41,9 @@ public class UserDataServiceTest extends AbstractRepositoryTest {
 	}
 	
 	@Test
-	public void test() {
+	public void testCreate() {
 		User user = new User();
-		user.setUserName("ahu");
+		user.setLoginId("ahu");
 		user.setNickName("ahuuu");
 		user.setPassword("password");
 		
@@ -50,9 +58,9 @@ public class UserDataServiceTest extends AbstractRepositoryTest {
 //		friends.add(f1);
 //		friends.add(f2);
 		User u33 = userDataService.read("33");
-		for(User friend : u33.getFriends()){
-			System.out.println(friend.getId() + " , Name = " + friend.getUserName());
-		}
+//		for(User friend : u33.getFriends()){
+//			System.out.println(friend.getId() + " , Name = " + friend.getUserName());
+//		}
 		friends.add(u33);
 		user.setFriends(friends);
 		
@@ -70,7 +78,7 @@ public class UserDataServiceTest extends AbstractRepositoryTest {
 		for(Event o : list){			
 			System.out.println(o.getDescription() + "--" + o.getOwner().getId());
 			for(User u : o.getAttendees()){
-				System.out.println("user name:" + u.getUserName());
+				System.out.println("user name:" + u.getLoginId());
 			}
 			
 		}

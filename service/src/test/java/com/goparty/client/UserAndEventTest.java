@@ -63,23 +63,22 @@ public class UserAndEventTest {
 		JSONProvider jsonProvider = new JSONProvider();
 		providers.add(jsonProvider); 
         return providers; 
-    } 
-
+    }  
 	@Test 
 	public void test(){
 		User owner = new User();
 		owner.setNickName("Bo");
-		owner.setUserName("chenb");
+		owner.setLoginId("chenb");
 		owner.setPassword("password");
 		
 		User att1 = new User();
 		att1.setNickName("att1");
-		att1.setUserName("att1");
+		att1.setLoginId("att1");
 		att1.setPassword("password");
 		
 		User att2 = new User();
 		att2.setNickName("att2");
-		att2.setUserName("att2");
+		att2.setLoginId("att2");
 		att2.setPassword("password");
 		
 		owner  = userService.create(owner);		

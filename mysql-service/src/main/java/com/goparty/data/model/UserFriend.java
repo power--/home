@@ -2,19 +2,30 @@ package com.goparty.data.model;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "userFriend")
+@Entity
+@IdClass(UserFriendPK.class)
+@Table(name="gp_user_friend")
 public class UserFriend {
-
+ 
+	@Id
 	private String userId;
 	
+	@Id 
 	private String friendId;
 
 	private String status;
 	
 	private Date updateTime;
 
+	private String remarkName;
+	
 	public String getUserId() {
 		return userId;
 	}
@@ -46,6 +57,16 @@ public class UserFriend {
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
+
+	public String getRemarkName() {
+		return remarkName;
+	}
+
+	public void setRemarkName(String remarkName) {
+		this.remarkName = remarkName;
+	}
+	
+	
 	
 	
 }

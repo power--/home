@@ -6,5 +6,6 @@
 		<class>com.goparty.data.model.User</class>
 		<class>com.goparty.data.model.Event</class>
 		<class>com.goparty.data.model.EventCategory</class>
+		<class>com.goparty.data.model.UserFriend</class>
 	</persistence-unit>
 </persistence> 

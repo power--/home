@@ -24,7 +24,7 @@ import com.goparty.data.model.StringResponse;
 import com.goparty.data.model.User; 
 import com.goparty.data.model.UserFriend;
 import com.goparty.data.service.UserDataService;
-import com.goparty.data.service.UserFriendDataService;
+import com.goparty.data.service.FriendDataService;
 import com.goparty.webservice.UserService;
 
 
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
 	private UserDataService userDataService;
 	
 	@Autowired
-	private UserFriendDataService userFriendDataService;
+	private FriendDataService userFriendDataService;
 
 	@Override
 	public User read(String id) {
