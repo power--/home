@@ -7,5 +7,6 @@
 		<class>com.goparty.data.model.Event</class>
 		<class>com.goparty.data.model.EventCategory</class>
 		<class>com.goparty.data.model.UserFriend</class>
+		<class>com.goparty.data.model.UserToken</class>
 	</persistence-unit>
 </persistence> 

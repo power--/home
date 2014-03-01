@@ -1,6 +1,8 @@
 package com.goparty.data.service;
  
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.goparty.data.model.Event;
 import com.goparty.data.model.User;
+import com.goparty.data.model.UserToken;
  
 
 public class UserDataServiceTest extends AbstractRepositoryTest {
@@ -24,6 +27,13 @@ public class UserDataServiceTest extends AbstractRepositoryTest {
 	@PersistenceContext
 	private EntityManager em;
 
+	
+	@Test
+	public void testToken(){
+		UserToken token = userDataService.getToken("33");
+		assertTrue(token.getToken()!=null);
+	}
+	
 	@Test
 	public void testSearch(){
 		List<User> list = userDataService.search("%ahu%", 0, 10);

@@ -1,5 +1,7 @@
 package com.goparty.data.service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.goparty.data.model.*;
 import com.goparty.data.repository.IEventDataRepository;
+import com.goparty.data.repository.ITokenDataRepository;
 import com.goparty.data.repository.IUserDataRepository;
  
 
@@ -33,6 +36,9 @@ public class UserDataService {
 	
 	@Autowired
 	private IEventDataRepository eventDataRepository;
+	
+	@Autowired
+	private ITokenDataRepository tokenDataRepository;
 	
 	public List<User> search(String keyword,int page,int size){
 		String sql = "select * from gp_user where loginId like '%keyword%' "
@@ -75,5 +81,23 @@ public class UserDataService {
 		PageRequest pageable = new PageRequest(page-1, size);		 
 		Page<Event> events = eventDataRepository.findByEventCategoryIdOrderByStartTimeDesc(cateId, pageable);
 		return events.getContent();
+	}
+	
+	public UserToken getToken(String userId){
+		UserToken ut = tokenDataRepository.findOne(userId);
+		if(ut == null){
+			UserToken token = new UserToken();
+			token.setUserId(userId);
+			token.setToken(UUID.randomUUID().toString());
+			token.setApplyTime(new Date());
+			
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(new Date());
+			cal.add(Calendar.DAY_OF_YEAR, 30);//one month
+			token.setExpireTime(cal.getTime());
+			ut = tokenDataRepository.save(token);	
+		}
+		
+		return 	ut;
 	}
 }
