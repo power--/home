@@ -26,6 +26,7 @@ public class User {
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.AUTO)// //can't create table automatically after add this
 	 private String id;
+	 
 	 private String phone;
 	 private String loginId;
 	 private String password; 

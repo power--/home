@@ -14,6 +14,7 @@ import java.util.List;
 
  
 
+
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.jaxrs.client.ClientConfiguration;
@@ -28,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.goparty.data.constant.EventStatus;
+import com.goparty.data.constant.EventVisibility;
 import com.goparty.data.model.*;
 import com.goparty.webservice.EventService; 
 import com.goparty.webservice.UserService;
@@ -67,6 +69,7 @@ public class UserAndEventTest {
 	@Test 
 	public void test(){
 		User owner = new User();
+		owner.setId("33");
 		owner.setNickName("Bo");
 		owner.setLoginId("chenb");
 		owner.setPassword("password");
@@ -81,16 +84,16 @@ public class UserAndEventTest {
 		att2.setLoginId("att2");
 		att2.setPassword("password");
 		
-		owner  = userService.create(owner);		
+//		owner  = userService.create(owner);		
 		logger.error("*******************************");
-		owner  = userService.read(owner.getId());
+		//owner  = userService.getUserInfo(owner.getId());
 		logger.error("*******************************");
 		owner.setNickName("Chen, Bo");
-		userService.update(owner);
-		
-		att1 = userService.create(att1);
-		att2 = userService.create(att2);
-		
+		userService.updateProfile(owner);
+//		
+//		att1 = userService.create(att1);
+//		att2 = userService.create(att2);
+//		
 		
 		
 		Event event = new Event();
@@ -109,7 +112,7 @@ public class UserAndEventTest {
 		VisibilityCategory v = new VisibilityCategory();
 		v.setId("1");
 		v.setName("public");
-		event.setVisibilityCategory(v);
+		event.setVisibility(EventVisibility.V_PUBLIC);
 		
 		event = eventService.create(event);
 		event.setDescription("Hi Man");
@@ -118,10 +121,10 @@ public class UserAndEventTest {
 		logger.error("*******************************");
 		event = eventService.read(event.getId());
 		logger.error("*******************************");
-		eventService.delete(event.getId());
-		userService.delete(att1.getId());
-		userService.delete(att2.getId());
-		userService.delete(owner.getId());
+//		eventService.delete(event.getId());
+//		userService.delete(att1.getId());
+//		userService.delete(att2.getId());
+//		userService.delete(owner.getId());
 	}
 	
 	@Test

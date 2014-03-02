@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 
 
+
 import com.goparty.data.model.Event;
 import com.goparty.data.model.StringResponse;
 import com.goparty.data.model.User; 
@@ -41,37 +42,30 @@ public class UserServiceImpl implements UserService {
 	private FriendDataService userFriendDataService;
 
 	@Override
-	public User read(String id) {
+	public User getUserInfo(String id) {
 		User ret = userDataService.read(id);
 		if(ret==null){
-			logger.error("NULLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
+			logger.error("NULL");
 		}
 		return ret;
 	}
 
-	@Override
-	public User create(User user) {		
-		return userDataService.create(user);
-	}
 
 	@Override
-	public User update(User user) {		
+	public User getProfile(String token) {
+		User ret = userDataService.read("33");
+		if(ret==null){
+			logger.error("NULL");
+		}
+		return ret;
+	} 
+
+	@Override
+	public User updateProfile(User user) {		
 		return userDataService.update(user);
 	}
 
-	@Override
-	public boolean delete(String id) {
-		boolean ret = false;
-		try{
-			userDataService.delete(id);
-			ret = true;
-		}catch(Exception ex){
-			logger.error("del user error",ex);
-			throw ex;
-		}
-		
-		return ret;
-	}
+ 
 
 	public UserDataService getUserDataService() {
 		return userDataService;
@@ -172,5 +166,8 @@ public class UserServiceImpl implements UserService {
 		List<Event> list = userDataService.findByEventCategoryId(cateId, page, size);
 		return list;
 	}
+
+
+
 	
 }

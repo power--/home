@@ -96,8 +96,7 @@ public class UserDataService {
 			cal.add(Calendar.DAY_OF_YEAR, 30);//one month
 			token.setExpireTime(cal.getTime());
 			ut = tokenDataRepository.save(token);	
-		}
-		
+		}		
 		return 	ut;
 	}
 }

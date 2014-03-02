@@ -53,7 +53,7 @@ public class UserDataServiceTest extends AbstractRepositoryTest {
 	@Test
 	public void testCreate() {
 		User user = new User();
-		user.setLoginId("ahu");
+		user.setLoginId("ahub");
 		user.setNickName("ahuuu");
 		user.setPassword("password");
 		
@@ -75,6 +75,9 @@ public class UserDataServiceTest extends AbstractRepositoryTest {
 		user.setFriends(friends);
 		
 		userDataService.create(user);
+		user.setNickName("ahu-new");
+		userDataService.update(user);
+		
 //		
 //		List<User> list = userDataService.findByNickNameLike("ahu333", 0, 8);
 //		for(User o : list){

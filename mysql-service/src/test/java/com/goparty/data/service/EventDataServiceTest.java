@@ -30,7 +30,7 @@ public class EventDataServiceTest extends AbstractRepositoryTest {
 		Event event = new Event(); 
 		event.setDescription("Hello World");
 		event.setTitle("A Title");
-		event.setStatus(EventStatus.INIT.name());
+		event.setStatus(EventStatus.INIT);
 		
 		User owner = new User();
 		owner.setId("21");
@@ -60,10 +60,10 @@ public class EventDataServiceTest extends AbstractRepositoryTest {
 	
 	@Test
 	public void testMany2ManyRead(){
-		Event e = eventDataService.read("33");	
-		for(User u : e.getAttendees()){
-			System.out.println(e.getTitle() + " -- User:" + u.getId());
-		}
+//		Event e = eventDataService.read("33");	
+//		for(User u : e.getAttendees()){
+//			System.out.println(e.getTitle() + " -- User:" + u.getId());
+//		}
 	}
 	
 

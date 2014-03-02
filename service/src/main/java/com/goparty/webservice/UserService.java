@@ -26,7 +26,7 @@ import org.apache.cxf.jaxrs.model.wadl.DocTarget;
 
 import com.goparty.data.model.*;
 
-@Path("/user/")
+@Path("/")
 @WebService
 @GZIP
 public interface UserService {
@@ -34,37 +34,33 @@ public interface UserService {
 	
 	@WebMethod
 	@GET
-	@Path("{id}")
+	@Path("{profile}")
 	@Descriptions({
-		@Description(value = "returns a user by id", target = DocTarget.METHOD),
+		@Description(value = "returns the info of the request user", target = DocTarget.METHOD),
 		@Description(value = "user of the id", target = DocTarget.RETURN)
 	})
-	public User read(@Description(value = "the id of the user") @PathParam("id") String id);
+	public User getProfile(@Description(value = "the id of the user") @HeaderParam("token") String token);
 	
-	@WebMethod
-	@POST
-	@Descriptions({
-		@Description(value = "stores a new user data", target = DocTarget.METHOD),
-		@Description(value = "the newly created user data", target = DocTarget.RETURN)
-	})
-	public User create(User user);
 	
 	@WebMethod
 	@PUT
+	@Path("{profile}")
 	@Descriptions({
 		@Description(value = "updates or creates a new user data", target = DocTarget.METHOD),
 		@Description(value = "the newly created or updated user data", target = DocTarget.RETURN)
 	})
-	public User update(User user);
+	public User updateProfile(User user);
 	
+
 	@WebMethod
-	@DELETE
-	@Path("{id}")
+	@GET
+	@Path("users/{userId}")
 	@Descriptions({
-		@Description(value = "deletes a user data", target = DocTarget.METHOD),
-		@Description(value = "the result of delete user action", target = DocTarget.RETURN)
+		@Description(value = "returns a user by id", target = DocTarget.METHOD),
+		@Description(value = "user of the id", target = DocTarget.RETURN)
 	})
-	public boolean delete(@Description(value = "the id of the user") @PathParam("id")String id);
+	public User getUserInfo(@Description(value = "the id of the user") @PathParam("userId") String userId);
+	
 	
 	@WebMethod
 	@POST
