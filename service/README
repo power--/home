@@ -21,8 +21,8 @@ MAVEN_OPTS=
    mvn jetty:run then open http://localhost:8080
    mvn tomcat:run then open http://localhost:9999/cxfexample/
    
-   mvn -Djetty.port=80 jetty:run    
-    -Dmaven.test.skip=true
+   build:  mvn install  -Dmaven.test.skip=true   
+   locate to service folder and run jetty: mvn -Djetty.port=80 jetty:run      
     
     
    LocationClientTest can be run.
