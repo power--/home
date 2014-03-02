@@ -38,7 +38,7 @@ public class UserAndEventTest {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	private EventService eventService;
 	private UserService userService;
-	private static final String applicationURI ="http://goparty.cloudapp.net";
+	private static final String applicationURI ="http://localhost";
 	
 	
 	@Before
@@ -68,6 +68,12 @@ public class UserAndEventTest {
     }  
 	@Test 
 	public void test(){
+		CientRequest request = new CientRequest(); 
+		request.setOpenId("openId");
+		User u = userService.login("816ba2dd-aa15-4305-ba33-d2eaf3755e63",request);
+		
+		
+		
 		User owner = new User();
 		owner.setId("33");
 		owner.setNickName("Bo");
@@ -83,48 +89,41 @@ public class UserAndEventTest {
 		att2.setNickName("att2");
 		att2.setLoginId("att2");
 		att2.setPassword("password");
-		
-//		owner  = userService.create(owner);		
+		 
 		logger.error("*******************************");
-		//owner  = userService.getUserInfo(owner.getId());
+		owner  = userService.getProfile("343dsfdsf");
+		owner  = userService.getUserInfo(owner.getId());
 		logger.error("*******************************");
 		owner.setNickName("Chen, Bo");
 		userService.updateProfile(owner);
+ 
+		
+		
+//		Event event = new Event();
+//		event.setOwner(owner);
+//		List<User> attendees = new ArrayList<User>();
+//		event.setAttendees(attendees);
+//		event.setDescription("Hello World");
+//		event.setTitle("A Title");
 //		
-//		att1 = userService.create(att1);
-//		att2 = userService.create(att2);
+//		EventCategory c = new EventCategory();
+//		c.setId("1");
+//		c.setName("Company");
+//		event.setEventCategory(c);
+//		 
 //		
-		
-		
-		Event event = new Event();
-		event.setOwner(owner);
-		List<User> attendees = new ArrayList<User>();
-		event.setAttendees(attendees);
-		event.setDescription("Hello World");
-		event.setTitle("A Title");
-		
-		EventCategory c = new EventCategory();
-		c.setId("1");
-		c.setName("Company");
-		event.setEventCategory(c);
-		 
-		
-		VisibilityCategory v = new VisibilityCategory();
-		v.setId("1");
-		v.setName("public");
-		event.setVisibility(EventVisibility.V_PUBLIC);
-		
-		event = eventService.create(event);
-		event.setDescription("Hi Man");
-		eventService.update(event);
-		
-		logger.error("*******************************");
-		event = eventService.read(event.getId());
-		logger.error("*******************************");
-//		eventService.delete(event.getId());
-//		userService.delete(att1.getId());
-//		userService.delete(att2.getId());
-//		userService.delete(owner.getId());
+//		VisibilityCategory v = new VisibilityCategory();
+//		v.setId("1");
+//		v.setName("public");
+//		event.setVisibility(EventVisibility.V_PUBLIC);
+//		
+//		event = eventService.create(event);
+//		event.setDescription("Hi Man");
+//		eventService.update(event);
+//		
+//		logger.error("*******************************");
+//		event = eventService.read(event.getId());
+//		logger.error("*******************************"); 
 	}
 	
 	@Test

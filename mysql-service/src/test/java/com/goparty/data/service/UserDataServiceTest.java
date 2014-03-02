@@ -30,8 +30,9 @@ public class UserDataServiceTest extends AbstractRepositoryTest {
 	
 	@Test
 	public void testToken(){
-		UserToken token = userDataService.getToken("33");
-		assertTrue(token.getToken()!=null);
+		UserToken token = userDataService.generateToken("33");
+		User u = userDataService.getUserByToken(token.getToken());
+		assertTrue(u!=null);
 	}
 	
 	@Test
@@ -43,7 +44,7 @@ public class UserDataServiceTest extends AbstractRepositoryTest {
 	@Test
 	public void testEm(){
 //		TypedQuery<User> query = em.createQuery("select u from User u where userName='ahu'", User.class);
-		 Query query = em.createNativeQuery("select * from gp_user where userName='ahu'", User.class);
+		 Query query = em.createNativeQuery("select * from gp_user where loginId='ahu'", User.class);
 		List<User> list = query.getResultList();
 		for(User u : list){
 			System.out.println(u.getNickName() + " -- " + u.getPassword() );
@@ -68,9 +69,9 @@ public class UserDataServiceTest extends AbstractRepositoryTest {
 //		friends.add(f1);
 //		friends.add(f2);
 		User u33 = userDataService.read("33");
-//		for(User friend : u33.getFriends()){
-//			System.out.println(friend.getId() + " , Name = " + friend.getUserName());
-//		}
+		for(User friend : u33.getFriends()){
+			System.out.println(friend.getId() + " , Name = " + friend.getLoginId());
+		}
 		friends.add(u33);
 		user.setFriends(friends);
 		

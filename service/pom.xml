@@ -27,11 +27,7 @@
     	<version>0.0.1</version>
     </dependency>
     
-    <dependency>
-		<groupId>jivesoftware</groupId>
-		<artifactId>smackx</artifactId>
-		<version>3.3.1</version>
-	</dependency>
+ 
             
             
   </dependencies>

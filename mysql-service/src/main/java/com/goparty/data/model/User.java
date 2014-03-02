@@ -42,13 +42,15 @@ public class User {
 	 private String weChat;
 	 private String qq;
 	 private String weibo;
-	 
+	
 	 //@Transient
 	 @ManyToMany(fetch = FetchType.EAGER)    
 	 @JoinTable(name="gp_user_friend",joinColumns=@JoinColumn(name="userId"),
 	                    inverseJoinColumns=@JoinColumn(name="friendId"))
 	 private List<User> friends;
 	  
+	 @Transient
+	 private String token;
 	 
 	 
 	public List<User> getFriends() {
@@ -149,6 +151,14 @@ public class User {
 	}
 	public void setWeibo(String weibo) {
 		this.weibo = weibo;
+	}
+	
+	
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
 	}
 	@Override
 	public String toString() {

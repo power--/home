@@ -29,30 +29,29 @@ import com.goparty.data.model.*;
 @Path("/")
 @WebService
 @GZIP
-public interface UserService {
+public interface UserService { 
+	
+	@POST
+	@Path("login") 
+	public User login(@HeaderParam("token") String token, CientRequest request);
 	
 	
-	@WebMethod
+	@POST
+	@Path("logout")
+	public boolean logout( @HeaderParam("token") String token);	
+	
+	
 	@GET
-	@Path("{profile}")
-	@Descriptions({
-		@Description(value = "returns the info of the request user", target = DocTarget.METHOD),
-		@Description(value = "user of the id", target = DocTarget.RETURN)
-	})
+	@Path("profile")
 	public User getProfile(@Description(value = "the id of the user") @HeaderParam("token") String token);
+		
 	
-	
-	@WebMethod
 	@PUT
-	@Path("{profile}")
-	@Descriptions({
-		@Description(value = "updates or creates a new user data", target = DocTarget.METHOD),
-		@Description(value = "the newly created or updated user data", target = DocTarget.RETURN)
-	})
+	@Path("profile")
 	public User updateProfile(User user);
 	
 
-	@WebMethod
+	
 	@GET
 	@Path("users/{userId}")
 	@Descriptions({
@@ -62,14 +61,14 @@ public interface UserService {
 	public User getUserInfo(@Description(value = "the id of the user") @PathParam("userId") String userId);
 	
 	
-	@WebMethod
+	
 	@POST
 	@Path("{id}/image")
 	//@Consumes("multipart/mixed")
 	@Consumes("multipart/form-data")
 	StringResponse uploadImage(MultipartBody image, @PathParam("id") String userId) ;
 	
-	@WebMethod
+	
 	@GET
 	@Path("{userId}/events")
 	@Descriptions({

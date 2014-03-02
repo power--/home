@@ -8,4 +8,5 @@ import com.goparty.data.model.UserToken;
 
 @Transactional
 public interface ITokenDataRepository extends JpaRepository<UserToken, String>{ 
+	public UserToken findByToken(String token); 
 }

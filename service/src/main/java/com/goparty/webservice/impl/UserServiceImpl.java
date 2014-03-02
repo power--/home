@@ -8,6 +8,7 @@ import java.util.List;
 import javax.activation.DataHandler;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.cxf.common.util.StringUtils;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.slf4j.Logger;
@@ -20,10 +21,15 @@ import org.springframework.stereotype.Service;
 
 
 
+
+
+
+import com.goparty.data.model.CientRequest;
 import com.goparty.data.model.Event;
 import com.goparty.data.model.StringResponse;
 import com.goparty.data.model.User; 
 import com.goparty.data.model.UserFriend;
+import com.goparty.data.model.UserToken;
 import com.goparty.data.service.UserDataService;
 import com.goparty.data.service.FriendDataService;
 import com.goparty.webservice.UserService;
@@ -43,20 +49,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getUserInfo(String id) {
-		User ret = userDataService.read(id);
-		if(ret==null){
-			logger.error("NULL");
-		}
+		User ret = userDataService.read(id); 
 		return ret;
 	}
 
 
 	@Override
 	public User getProfile(String token) {
-		User ret = userDataService.read("33");
-		if(ret==null){
-			logger.error("NULL");
-		}
+		User ret = userDataService.read("33"); 
 		return ret;
 	} 
 
@@ -126,25 +126,7 @@ public class UserServiceImpl implements UserService {
 		return null;
 	}
 
-	@Override
-	public List<Event> events(String userId, int offset, int limit, String range,
-			String filter, String sort) {
-		if(offset==0 && limit==0){
-			if(range!=null){
-				String val = range.split("=")[1];
-				offset = new Integer(val.substring(0,val.indexOf("-")));
-				limit  = new Integer(val.substring(val.indexOf("-"),val.length()));
-			}
-		}
-		
-		
-		
-		
-		
-		
-		
-		return null;
-	}
+	 
 
 	@Override
 	public List<User> getFriends(String userId) {
@@ -165,6 +147,27 @@ public class UserServiceImpl implements UserService {
 	public List<Event> getEventList(String cateId, int page, int size) {
 		List<Event> list = userDataService.findByEventCategoryId(cateId, page, size);
 		return list;
+	}
+
+
+	@Override
+	public User login(String token, CientRequest request){
+		logger.info(request.getOpenId());
+		return userDataService.getUserByToken(token);
+	}
+
+
+	@Override
+	public boolean logout(String token) {
+		return true;
+	}
+
+
+	@Override
+	public List<Event> events(String userId, int offset, int limit,
+			String range, String filter, String sort) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

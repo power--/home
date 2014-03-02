@@ -22,15 +22,15 @@ public class UserTest {
 	
 	
 	@Test
-	public void testGetEventList() throws Exception {
-		String http = "http://goparty.cloudapp.net/cxf/rest/user/88/category/1?page=1&size=5";
+	public void testGetProfile() throws Exception {
+		String http = "http://localhost/cxf/rest/login";
 
 		HttpURLConnection urlConnection = null;
 		try {
 			URL url = new URL(http);
 			urlConnection = (HttpURLConnection) url.openConnection();
 			urlConnection.setDoOutput(true);
-			urlConnection.setRequestMethod("GET");
+			urlConnection.setRequestMethod("POST");
 			urlConnection.setUseCaches(false);
 			urlConnection.setConnectTimeout(10000);
 			urlConnection.setReadTimeout(10000);
@@ -67,7 +67,7 @@ public class UserTest {
 	
 	@Test
 	public void testJsonWithoutGZIP() throws Exception {
-		String http = "http://goparty.cloudapp.net/cxf/rest/user";
+		String http = "http://localhost/cxf/rest/login";
 
 		HttpURLConnection urlConnection = null;
 		try {
@@ -82,7 +82,7 @@ public class UserTest {
 			urlConnection.setRequestProperty("Accept", "application/json");
 			urlConnection.setRequestProperty("charset", "utf-8");
 
-			String jsonStr = "{\"nickName\": \"Bo\", \"password\": \"password\",\"userName\": \"chenb\",\"QQ\": \"1343243\" }";
+			String jsonStr = "{\"openId\": \"Bo\"}";
 			urlConnection.setRequestProperty("Content-Length","" + jsonStr.getBytes("UTF-8").length);
 
 			OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());

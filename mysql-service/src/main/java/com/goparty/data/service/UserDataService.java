@@ -83,20 +83,32 @@ public class UserDataService {
 		return events.getContent();
 	}
 	
-	public UserToken getToken(String userId){
-		UserToken ut = tokenDataRepository.findOne(userId);
-		if(ut == null){
-			UserToken token = new UserToken();
-			token.setUserId(userId);
-			token.setToken(UUID.randomUUID().toString());
-			token.setApplyTime(new Date());
-			
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(new Date());
-			cal.add(Calendar.DAY_OF_YEAR, 30);//one month
-			token.setExpireTime(cal.getTime());
-			ut = tokenDataRepository.save(token);	
-		}		
-		return 	ut;
+	public User getUserByToken(String token){
+		User user = null;
+		UserToken ut = tokenDataRepository.findByToken(token);
+		if(ut!=null){
+			user = userDataRepository.findOne(ut.getUserId());	
+			user.setToken(ut.getToken());
+		}
+		return 	user;
+	}
+	
+	
+	public UserToken getUserToken(String token){
+		return tokenDataRepository.findByToken(token);
+	}
+	
+	public UserToken generateToken(String userId){
+		UserToken token = new UserToken();
+		token.setUserId(userId);
+		token.setToken(UUID.randomUUID().toString());
+		token.setApplyTime(new Date());
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.add(Calendar.DAY_OF_YEAR, 30);//one month
+		token.setExpireTime(cal.getTime());
+		UserToken ut = tokenDataRepository.save(token);	
+		return ut;
 	}
 }
