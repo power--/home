@@ -2,8 +2,13 @@ package com.goparty.webservice.impl;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+
 
 
 
@@ -26,7 +31,15 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public Event create(Event event) {
+		System.out.println(event.getId());
+		System.out.println(event.getId());
 		eventDataService.create(event);
+		
+		User user = new User();
+		user.setId("18");
+		List<User> refusedAttendees = new ArrayList<User>();
+		refusedAttendees.add(user);
+		event.setRefusedAttendees(refusedAttendees);
 		return event;
 	}
 

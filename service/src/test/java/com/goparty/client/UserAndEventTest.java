@@ -86,7 +86,7 @@ public class UserAndEventTest {
 		
 //		owner  = userService.create(owner);		
 		logger.error("*******************************");
-		//owner  = userService.getUserInfo(owner.getId());
+		owner  = userService.getUserInfo(owner.getId());
 		logger.error("*******************************");
 		owner.setNickName("Chen, Bo");
 		userService.updateProfile(owner);

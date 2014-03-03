@@ -19,7 +19,7 @@ import org.apache.cxf.jaxrs.model.wadl.DocTarget;
 
 import com.goparty.data.model.*;
 
-@Path("/event/")
+@Path("/events/")
 @WebService
 @GZIP
 public interface EventService {

@@ -16,56 +16,58 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.goparty.data.constant.EventStatus;
 import com.goparty.data.constant.EventVisibility;
- 
 
 @XmlRootElement(name = "event")
 @Entity
-@Table(name="gp_event")
+@Table(name = "gp_event")
 public class Event {
-	 @Id 
-	 @GeneratedValue(strategy=GenerationType.AUTO)
-	 private String id;
-	 
-	 private String title;
-	 
-	 @Column(name="start_time")
-	 private Date startTime;
-	 
-	 @Column(name="end_time")
-	 private Date endTime;
-	 
-	 private String location;
-	 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private String id;
 
-	 private String description;
-	  
-     //can't change to LAZY and add cascade=CascadeType.ALL 
-	 @ManyToMany(fetch = FetchType.EAGER)
-	 @JoinTable(name="gp_event_attendee",joinColumns=@JoinColumn(name="eventId"),
-	                    inverseJoinColumns=@JoinColumn(name="userId"))
-	 private List<User> attendees;
-	 
-	 @OneToOne
-	 @JoinColumn(name="ownerId")
-	 private User owner;
-	 
-	 
-	 @OneToOne
-	 @JoinColumn(name="cateId")
-	 private EventCategory eventCategory;
-	 
-	 @Enumerated(EnumType.ORDINAL)
-	 private EventStatus status;
-	 
-	 @Enumerated(EnumType.ORDINAL)
-	 private EventVisibility visibility;
-	 
-	 @Column(name="location_shareable")
-	 private boolean locationShareable;
+	private String title;
+
+	@Column(name = "start_time")
+	private Date startTime;
+
+	@Column(name = "end_time")
+	private Date endTime;
+
+	private String location;
+
+	private String description;
+
+	// can't change to LAZY and add cascade=CascadeType.ALL
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "gp_event_attendee", joinColumns = @JoinColumn(name = "eventId"), inverseJoinColumns = @JoinColumn(name = "userId"))
+	private List<User> attendees;
+
+	@OneToOne
+	@JoinColumn(name = "ownerId")
+	private User owner;
+
+	@OneToOne
+	@JoinColumn(name = "cateId")
+	private EventCategory eventCategory;
+
+	@Enumerated(EnumType.ORDINAL)
+	private EventStatus status;
+
+	@Enumerated(EnumType.ORDINAL)
+	private EventVisibility visibility;
+
+	@Column(name = "location_shareable")
+	private boolean locationShareable;
+
+	@Transient
+	private List<User> refusedAttendees;
 
 	public String getId() {
 		return id;
@@ -115,6 +117,8 @@ public class Event {
 		this.description = description;
 	}
 
+//	@XmlElementWrapper(name = "attendees")
+//	@XmlElement(name = "attendee")
 	public List<User> getAttendees() {
 		return attendees;
 	}
@@ -161,5 +165,15 @@ public class Event {
 
 	public void setLocationShareable(boolean locationShareable) {
 		this.locationShareable = locationShareable;
+	}
+
+//	@XmlElementWrapper(name = "refusedAttendees")
+//	@XmlElement(name = "attendee")
+	public List<User> getRefusedAttendees() {
+		return refusedAttendees;
+	}
+
+	public void setRefusedAttendees(List<User> refusedAttendees) {
+		this.refusedAttendees = refusedAttendees;
 	}
 }

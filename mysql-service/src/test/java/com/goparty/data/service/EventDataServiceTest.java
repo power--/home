@@ -4,6 +4,7 @@ package com.goparty.data.service;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -13,6 +14,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.goparty.data.constant.EventStatus;
+import com.goparty.data.constant.EventVisibility;
 import com.goparty.data.model.Event;
 import com.goparty.data.model.EventCategory;
 import com.goparty.data.model.User;
@@ -25,7 +27,7 @@ public class EventDataServiceTest extends AbstractRepositoryTest {
 	 
 
 	
-	@Test
+//	@Test
 	public void test() {
 		Event event = new Event(); 
 		event.setDescription("Hello World");
@@ -38,9 +40,9 @@ public class EventDataServiceTest extends AbstractRepositoryTest {
 		
 		List<User> attendees = new ArrayList<User>();
 		User user1 = new User();
-		user1.setId("22");  
+		user1.setId("18");  
 		User user2 = new User();
-		user2.setId("244");  
+		user2.setId("19");  
 
 		attendees.add(owner);
 		attendees.add(user1);
@@ -59,6 +61,39 @@ public class EventDataServiceTest extends AbstractRepositoryTest {
 	} 
 	
 	@Test
+	public void test2(){
+		Event evt = new Event();
+		evt.setTitle("hello");
+		evt.setStartTime(new Date());
+		evt.setEndTime(new Date());
+		evt.setLocation("Shenzhen");
+		evt.setDescription("test");
+		EventCategory cate = new EventCategory();
+		cate.setId("1");
+		evt.setEventCategory(cate);
+		
+		List<User> attendees = new ArrayList<User>();
+		
+		User u1 = new User();
+		u1.setId("18");
+		attendees.add(u1);
+		
+		
+		User u2 = new User();
+		u2.setId("19");
+		attendees.add(u2);
+		evt.setAttendees(attendees);
+		
+		User owner = new User();
+		owner.setId("21");
+		evt.setOwner(owner);
+		
+		evt.setStatus(EventStatus.INIT);
+		evt.setVisibility(EventVisibility.V_PUBLIC);
+		evt = eventDataService.create(evt);
+	}
+	
+//	@Test
 	public void testMany2ManyRead(){
 //		Event e = eventDataService.read("33");	
 //		for(User u : e.getAttendees()){
