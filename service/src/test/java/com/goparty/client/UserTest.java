@@ -23,22 +23,22 @@ public class UserTest {
 	
 	@Test
 	public void testGetProfile() throws Exception {
-		String http = "http://localhost/cxf/rest/login";
+		String http = "http://localhost/cxf/rest/profile";
 
 		HttpURLConnection urlConnection = null;
 		try {
 			URL url = new URL(http);
 			urlConnection = (HttpURLConnection) url.openConnection();
 			urlConnection.setDoOutput(true);
-			urlConnection.setRequestMethod("POST");
+			urlConnection.setRequestMethod("GET");
 			urlConnection.setUseCaches(false);
 			urlConnection.setConnectTimeout(10000);
 			urlConnection.setReadTimeout(10000);
-			//urlConnection.setRequestProperty("Content-Type", "application/json");
-			urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			urlConnection.setRequestProperty("Content-Type", "application/json");
+			//urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 			urlConnection.setRequestProperty("Accept", "application/json");
 			urlConnection.setRequestProperty("charset", "utf-8");
- 
+			urlConnection.setRequestProperty("token", "4e8bb1e4-4fab-4c4e-9a9f-cf5ece4cc2aa");
 
 			int HttpResult = urlConnection.getResponseCode();
 			StringBuffer sb = new StringBuffer();
@@ -66,7 +66,7 @@ public class UserTest {
 	
 	
 	@Test
-	public void testJsonWithoutGZIP() throws Exception {
+	public void testloginJsonWithoutGZIP() throws Exception {
 		String http = "http://localhost/cxf/rest/login";
 
 		HttpURLConnection urlConnection = null;
@@ -81,8 +81,9 @@ public class UserTest {
 			urlConnection.setRequestProperty("Content-Type", "application/json");
 			urlConnection.setRequestProperty("Accept", "application/json");
 			urlConnection.setRequestProperty("charset", "utf-8");
-
-			String jsonStr = "{\"openId\": \"Bo\"}";
+			urlConnection.setRequestProperty("token", "4e8bb1e4-4fab-4c4e-9a9f-cf5ece4cc2aa");
+			
+			String jsonStr = "{\"openId\": \"openId--\",\"tokenId\": \"tokenId--\"}";
 			urlConnection.setRequestProperty("Content-Length","" + jsonStr.getBytes("UTF-8").length);
 
 			OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());

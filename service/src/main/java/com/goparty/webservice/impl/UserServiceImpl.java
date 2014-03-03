@@ -3,7 +3,10 @@ package com.goparty.webservice.impl;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.activation.DataHandler;
 import javax.ws.rs.core.MediaType;
@@ -24,6 +27,10 @@ import org.springframework.stereotype.Service;
 
 
 
+
+
+
+
 import com.goparty.data.model.CientRequest;
 import com.goparty.data.model.Event;
 import com.goparty.data.model.StringResponse;
@@ -32,6 +39,7 @@ import com.goparty.data.model.UserFriend;
 import com.goparty.data.model.UserToken;
 import com.goparty.data.service.UserDataService;
 import com.goparty.data.service.FriendDataService;
+import com.goparty.exception.ValidationException;
 import com.goparty.webservice.UserService;
 
 
@@ -56,7 +64,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getProfile(String token) {
-		User ret = userDataService.read("33"); 
+		User ret = userDataService.getUserByToken(token);
 		return ret;
 	} 
 
@@ -152,7 +160,36 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User login(String token, CientRequest request){
-		logger.info(request.getOpenId());
+		if(StringUtils.isEmpty(token)){
+			String openId = request.getOpenId();
+			String tokenId = request.getTokenId();
+			//validation using openId and tokenId, then get the user info by API
+			//validation...
+			String loginId = openId;
+			String nickName = tokenId;  //get by API  
+			
+			User user = userDataService.getUserByLoginId(loginId);
+			if(user == null){
+				User newGuy = new User();
+				newGuy.setLoginId(loginId);	
+				newGuy.setNickName(nickName);
+				user = userDataService.create(newGuy);				
+			}else{
+				//existed this user in our system				
+			} 
+			UserToken ut = userDataService.generateToken(user.getId());
+			token = ut.getToken();
+		}else{
+			//validate token
+			UserToken ut = userDataService.getUserToken(token);
+			Date curDate = new Date();
+			if(curDate.after(ut.getExpireTime())){
+				Map<String, String> data = new HashMap();
+				data.put("1", "Token has expired");
+				throw new ValidationException(data);
+			}
+		}
+		
 		return userDataService.getUserByToken(token);
 	}
 

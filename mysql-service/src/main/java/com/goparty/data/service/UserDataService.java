@@ -83,6 +83,10 @@ public class UserDataService {
 		return events.getContent();
 	}
 	
+	public User getUserByLoginId(String loginId){
+		return userDataRepository.findByLoginId(loginId);
+	}
+	
 	public User getUserByToken(String token){
 		User user = null;
 		UserToken ut = tokenDataRepository.findByToken(token);
