@@ -2,9 +2,12 @@ package com.goparty.data.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -22,8 +25,10 @@ public class UserFriend {
 
 	private String status;
 	
+	
 	private Date updateTime;
 
+	@Column(name = "remarkName", nullable = true)
 	private String remarkName;
 	
 	public String getUserId() {
@@ -66,7 +71,13 @@ public class UserFriend {
 		this.remarkName = remarkName;
 	}
 	
+	@PreUpdate
+    public void preUpdate() {
+		updateTime = new Date();
+    }
 	
-	
-	
+	@PrePersist
+    public void prePersist() {
+		updateTime = new Date();
+	}
 }

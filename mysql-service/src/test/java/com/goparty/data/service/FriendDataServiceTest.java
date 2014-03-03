@@ -1,6 +1,8 @@
 package com.goparty.data.service;
  
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +26,12 @@ public class FriendDataServiceTest extends AbstractRepositoryTest {
 	@Autowired
 	private FriendDataService friendDataService;
 	 
+	
+	@Test
+	public void testInvitation(){
+		List<UserFriend> list = friendDataService.getFriendInvitationList("33");
+		assertTrue(list.size()>0);
+	}
 
 	@Test
 	public void testCreate(){
@@ -31,10 +39,11 @@ public class FriendDataServiceTest extends AbstractRepositoryTest {
 		uf.setUserId("22");
 		uf.setFriendId("92");
 		uf.setStatus("INIT");
-		uf.setUpdateTime(new Date());
-		friendDataService.create(uf);
+//		uf.setUpdateTime(new Date());
+		//friendDataService.create(uf);
 		
 		uf.setStatus("AGREE");
+		//uf.setRemarkName("Jim");
 		friendDataService.update(uf);
 	}
  

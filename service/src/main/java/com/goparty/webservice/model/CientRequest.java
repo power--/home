@@ -1,4 +1,4 @@
-package com.goparty.data.model;
+package com.goparty.webservice.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -8,8 +8,11 @@ public class CientRequest {
 	
 	private String tokenId;
 	
+	private String sessionId;
+	
 	private String mobile;
 
+	
 	public String getOpenId() {
 		return openId;
 	}
@@ -32,6 +35,14 @@ public class CientRequest {
 
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
+	}
+
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
 	}
 	
 	

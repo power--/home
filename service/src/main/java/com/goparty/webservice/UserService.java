@@ -25,6 +25,7 @@ import org.apache.cxf.jaxrs.model.wadl.Descriptions;
 import org.apache.cxf.jaxrs.model.wadl.DocTarget;
 
 import com.goparty.data.model.*;
+import com.goparty.webservice.model.CientRequest;
 
 @Path("/")
 @WebService
@@ -61,6 +62,7 @@ public interface UserService {
 	public User getUserInfo(@Description(value = "the id of the user") @PathParam("userId") String userId);
 	
 	
+	 
 	
 	@POST
 	@Path("{id}/image")
@@ -68,35 +70,4 @@ public interface UserService {
 	@Consumes("multipart/form-data")
 	StringResponse uploadImage(MultipartBody image, @PathParam("id") String userId) ;
 	
-	
-	@GET
-	@Path("{userId}/events")
-	@Descriptions({
-		@Description(value = "read events of an user", target = DocTarget.METHOD),
-		@Description(value = "events of an user", target = DocTarget.RETURN)
-	})
-	
-	public List<Event> events(@Description(value = "the userId of the events") @PathParam("userId") String userId, 
-			@Description(value = "the offset") @QueryParam("offset") int offset,
-			@Description(value = "the limit")  @QueryParam("limit") int limit,
-			@Description(value = "the range")  @HeaderParam("Range") String range,
-			@Description(value = "the filter") @QueryParam("filter") String filter,
-			@Description(value = "the sorter") @QueryParam("sort") String sort
-			
-	);
-	
- 
-	@GET
-	@Path("{userId}/category/{cateId}")
-	public List<Event> getEventList(@PathParam("cateId") String cateId, 
-							   @QueryParam("page") int page, 
-							   @QueryParam("size") int size);
-	
-	@GET
-	@Path("{userId}/friends/{friendId}")
-	public boolean addFriend(@PathParam("userId")String userId, @PathParam("friendId")String friendId);
-	
-	@GET
-	@Path("{userId}/friends")
-	public List<User> getFriends(@PathParam("userId")String userId);
 }

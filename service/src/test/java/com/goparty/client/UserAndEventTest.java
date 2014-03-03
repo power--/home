@@ -1,5 +1,7 @@
 package com.goparty.client;
 
+import static org.junit.Assert.*;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,6 +15,8 @@ import java.util.LinkedList;
 import java.util.List;
 
  
+
+
 
 
 import org.apache.cxf.interceptor.LoggingInInterceptor;
@@ -33,6 +37,7 @@ import com.goparty.data.constant.EventVisibility;
 import com.goparty.data.model.*;
 import com.goparty.webservice.EventService; 
 import com.goparty.webservice.UserService;
+import com.goparty.webservice.model.CientRequest;
 
 public class UserAndEventTest {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -57,8 +62,6 @@ public class UserAndEventTest {
 		cfgProxy.getOutInterceptors().add(new LoggingOutInterceptor());
 		cfgProxy.getInInterceptors().add(new LoggingInInterceptor());
 	} 
-	
-	
 
 	private static List<Object> getJsonProvider(){ 
 		List<Object> providers = new LinkedList<Object>(); 
@@ -66,14 +69,10 @@ public class UserAndEventTest {
 		providers.add(jsonProvider); 
         return providers; 
     }  
+	
 	@Test 
-	public void test(){
-		CientRequest request = new CientRequest(); 
-		request.setOpenId("openId");
-		User u = userService.login("0ed53380-8592-472c-b782-fec731082057",request);
-		
-		
-		
+	public void testProfile() {
+		String token = "68257019-8aaf-4e57-9c3c-3eb7c577438d";
 		User owner = new User();
 		owner.setId("33");
 		owner.setNickName("Bo");
@@ -91,14 +90,24 @@ public class UserAndEventTest {
 		att2.setPassword("password");
 		 
 		logger.error("*******************************");
-		owner  = userService.getProfile("0ed53380-8592-472c-b782-fec731082057");
+		owner  = userService.getProfile(token);
 		owner  = userService.getUserInfo(owner.getId());
 		logger.error("*******************************");
 		owner.setNickName("Chen, Bo");
 		userService.updateProfile(owner);
- 
-		
-		
+	}
+	
+	@Test 
+	public void testLogin(){
+		String token = "68257019-8aaf-4e57-9c3c-3eb7c577438d";
+		CientRequest request = new CientRequest(); 
+		request.setOpenId("openId");
+		User u = userService.login(token,request);
+		assertNotNull(u);
+		userService.logout(token);
+		User u2 = userService.login(token,request);
+		assertNull(u2);
+		  
 //		Event event = new Event();
 //		event.setOwner(owner);
 //		List<User> attendees = new ArrayList<User>();
@@ -125,6 +134,9 @@ public class UserAndEventTest {
 //		event = eventService.read(event.getId());
 //		logger.error("*******************************"); 
 	}
+
+
+	
 	
 	@Test
 	public void testUploadImage() throws IOException{

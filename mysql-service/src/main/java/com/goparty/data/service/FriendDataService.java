@@ -1,5 +1,7 @@
 package com.goparty.data.service;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -34,8 +36,20 @@ public class FriendDataService {
 		return friendDataRepository.save(friend);
 	}
 
-	public UserFriend update(UserFriend friend) {
-		return friendDataRepository.save(friend);
+	public UserFriend update(UserFriend userFriend) {
+		UserFriendPK pk = new UserFriendPK();
+		pk.setUserId(userFriend.getUserId());
+		pk.setFriendId(userFriend.getFriendId());
+		UserFriend uf = friendDataRepository.findOne(pk);
+		
+		if(userFriend.getStatus()!=null){
+			uf.setStatus(userFriend.getStatus());	
+		}
+		if(userFriend.getRemarkName()!=null){
+			uf.setRemarkName(userFriend.getRemarkName());
+		}
+		
+		return friendDataRepository.save(uf);
 		
 	}
 
@@ -51,5 +65,8 @@ public class FriendDataService {
 		return ret;
 	}
 	
+	public List<UserFriend> getFriendInvitationList(String userId) {
+		return friendDataRepository.findByUserIdAndStatus(userId, "INIT");
+	}
 
 }

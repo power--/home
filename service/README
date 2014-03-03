@@ -38,6 +38,8 @@ SET MAVEN_OPTS=-Xmx1024m -Xms256m -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjd
 	spring-data-jpa + hibernate
 	http://mybar.iteye.com/blog/1863390
 	
+	exception
+	 http://www.luckyryan.com/2013/06/15/apache-cxf-exception-handler-for-jaxrs-rest/
  5)openfire 
 	server admin page
 	http://127.0.0.1:9090/index.jsp

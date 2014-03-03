@@ -102,7 +102,7 @@ public class UserDataService {
 		return tokenDataRepository.findByToken(token);
 	}
 	
-	public UserToken generateToken(String userId){
+	public UserToken generateToken(String userId, int offsetDays){
 		UserToken token = new UserToken();
 		token.setUserId(userId);
 		token.setToken(UUID.randomUUID().toString());
@@ -110,7 +110,7 @@ public class UserDataService {
 		
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
-		cal.add(Calendar.DAY_OF_YEAR, 30);//one month
+		cal.add(Calendar.DAY_OF_YEAR, offsetDays);//one month
 		token.setExpireTime(cal.getTime());
 		UserToken ut = tokenDataRepository.save(token);	
 		return ut;

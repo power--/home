@@ -30,7 +30,7 @@ public class UserDataServiceTest extends AbstractRepositoryTest {
 	
 	@Test
 	public void testToken(){
-		UserToken token = userDataService.generateToken("33");
+		UserToken token = userDataService.generateToken("33",30);
 		User u = userDataService.getUserByToken(token.getToken());
 		assertTrue(u!=null);
 	}

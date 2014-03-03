@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
 
 
 
-import com.goparty.data.model.CientRequest;
+
 import com.goparty.data.model.Event;
 import com.goparty.data.model.StringResponse;
 import com.goparty.data.model.User; 
@@ -41,6 +41,7 @@ import com.goparty.data.service.UserDataService;
 import com.goparty.data.service.FriendDataService;
 import com.goparty.exception.ValidationException;
 import com.goparty.webservice.UserService;
+import com.goparty.webservice.model.CientRequest;
 
 
 @Service("userService")
@@ -135,27 +136,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	 
-
-	@Override
-	public List<User> getFriends(String userId) {
-		
-		return null;
-	}
-
-	@Override
-	public boolean addFriend(String userId, String friendId) {
-		UserFriend uf = new UserFriend();
-		uf.setUserId(userId);
-		uf.setFriendId(friendId);
-		userFriendDataService.create(uf);
-		return true;
-	}
-	
-	@Override
-	public List<Event> getEventList(String cateId, int page, int size) {
-		List<Event> list = userDataService.findByEventCategoryId(cateId, page, size);
-		return list;
-	}
+  
 
 
 	@Override
@@ -177,37 +158,33 @@ public class UserServiceImpl implements UserService {
 			}else{
 				//existed this user in our system				
 			} 
-			UserToken ut = userDataService.generateToken(user.getId());
+			UserToken ut = userDataService.generateToken(user.getId(),30);//expired the token after one month
 			token = ut.getToken();
 		}else{
 			//validate token
 			UserToken ut = userDataService.getUserToken(token);
 			Date curDate = new Date();
-			if(curDate.after(ut.getExpireTime())){
+			if(ut != null && curDate.after(ut.getExpireTime())){
 				Map<String, String> data = new HashMap();
 				data.put("1", "Token has expired");
 				throw new ValidationException(data);
 			}
 		}
-		
-		return userDataService.getUserByToken(token);
+		User u = userDataService.getUserByToken(token);
+		logger.info("Login successfully. token=" + token + ", userId=" + u.getId());
+		return u;
 	}
 
 
 	@Override
 	public boolean logout(String token) {
+		UserToken ut = userDataService.getUserToken(token);
+		if(ut != null){
+			userDataService.generateToken(ut.getUserId(),-1);
+		}
 		return true;
 	}
 
-
-	@Override
-	public List<Event> events(String userId, int offset, int limit,
-			String range, String filter, String sort) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
+ 
 	
 }
