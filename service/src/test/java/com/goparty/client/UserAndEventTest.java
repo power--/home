@@ -70,7 +70,7 @@ public class UserAndEventTest {
 	public void test(){
 		CientRequest request = new CientRequest(); 
 		request.setOpenId("openId");
-		User u = userService.login("816ba2dd-aa15-4305-ba33-d2eaf3755e63",request);
+		User u = userService.login("0ed53380-8592-472c-b782-fec731082057",request);
 		
 		
 		
@@ -91,7 +91,7 @@ public class UserAndEventTest {
 		att2.setPassword("password");
 		 
 		logger.error("*******************************");
-		owner  = userService.getProfile("343dsfdsf");
+		owner  = userService.getProfile("0ed53380-8592-472c-b782-fec731082057");
 		owner  = userService.getUserInfo(owner.getId());
 		logger.error("*******************************");
 		owner.setNickName("Chen, Bo");
