@@ -5,6 +5,8 @@ package com.goparty.webservice.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.ws.rs.core.Response.Status;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +16,11 @@ import org.springframework.stereotype.Service;
 
 
 
+
+
 import com.goparty.data.model.*;
 import com.goparty.data.service.EventDataService;
+import com.goparty.ex.BaseException;
 import com.goparty.webservice.EventService;
 
 @Service("eventService")
@@ -30,7 +35,11 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public Event create(Event event) {
+	public Event create(Event event) throws BaseException{
+		if(event.getTitle()==null){
+			throw new BaseException(Status.INTERNAL_SERVER_ERROR,"E10010","The event title should be null");
+		}
+		
 		System.out.println(event.getId());
 		System.out.println(event.getId());
 		eventDataService.create(event);

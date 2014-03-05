@@ -9,6 +9,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -90,7 +91,7 @@ public class EventTest {
 	@Test
 	public void testJson() throws Exception {
 		Event evt = new Event();
-		evt.setTitle("hello");
+//		evt.setTitle("hello");
 		evt.setStartTime(new Date());
 		evt.setEndTime(new Date());
 		evt.setLocation("Shenzhen");
@@ -261,6 +262,9 @@ public class EventTest {
 			out.close();
 
 			int HttpResult = urlConnection.getResponseCode();
+			
+			System.out.println(urlConnection.getResponseMessage());
+			
 			StringBuffer sb = new StringBuffer();
 			if (HttpResult == HttpURLConnection.HTTP_OK) {
 				InputStream input = urlConnection.getInputStream();
@@ -274,6 +278,19 @@ public class EventTest {
 				ret = sb.toString();
 			} else {
 				System.out.println(urlConnection.getResponseMessage());
+				
+				
+				System.out.println(urlConnection.getHeaderField("code"));
+				
+				InputStream input = urlConnection.getErrorStream();
+				BufferedReader br = new BufferedReader(new InputStreamReader(
+						input, "utf-8"));
+				String line = null;
+				while ((line = br.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+				br.close();
+				ret = sb.toString();
 			}
 		} catch (Exception e) {
 			logger.error("error", e);

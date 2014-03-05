@@ -18,6 +18,7 @@ import org.apache.cxf.jaxrs.model.wadl.Descriptions;
 import org.apache.cxf.jaxrs.model.wadl.DocTarget;
 
 import com.goparty.data.model.*;
+import com.goparty.ex.BaseException;
 
 @Path("/events/")
 @WebService
@@ -40,7 +41,7 @@ public interface EventService {
 		@Description(value = "stores a new event data", target = DocTarget.METHOD),
 		@Description(value = "the newly created event data", target = DocTarget.RETURN)
 	})
-	public Event create(Event event);
+	public Event create(Event event) throws BaseException;
 	
 	@WebMethod
 	@PUT
