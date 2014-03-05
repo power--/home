@@ -27,6 +27,7 @@
     <context:component-scan base-package="com.goparty"/>
 
 	<!-- PROVIDERS -->
+	<bean id="exceptionHandler" class="com.goparty.ex.BaseExceptionMapper"/>
 
 	<bean id="wadlProvider" class="org.apache.cxf.jaxrs.model.wadl.WadlGenerator">
 		<property name="applicationTitle" value="CXF Test sample application" />
@@ -61,7 +62,7 @@
 			<ref bean="jaxbProvider" />
 			<ref bean="jsonProvider" />
 			<ref bean="wadlProvider" />
-			<ref bean="genericExceptionMapper"/>
+			<ref bean="exceptionHandler"/>
   		</jaxrs:providers>
         <jaxrs:serviceBeans>
             <ref bean="locationService"/>
