@@ -8,5 +8,6 @@
 		<class>com.goparty.data.model.EventCategory</class>
 		<class>com.goparty.data.model.UserFriend</class>
 		<class>com.goparty.data.model.UserToken</class>
+		<class>com.goparty.data.model.Group</class>
 	</persistence-unit>
 </persistence> 

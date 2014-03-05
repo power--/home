@@ -37,7 +37,7 @@ import com.goparty.data.constant.EventVisibility;
 import com.goparty.data.model.*;
 import com.goparty.webservice.EventService; 
 import com.goparty.webservice.UserService;
-import com.goparty.webservice.model.CientRequest;
+import com.goparty.webservice.model.LoginRequest;
 
 public class UserAndEventTest {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -100,7 +100,7 @@ public class UserAndEventTest {
 	@Test 
 	public void testLogin(){
 		String token = "68257019-8aaf-4e57-9c3c-3eb7c577438d";
-		CientRequest request = new CientRequest(); 
+		LoginRequest request = new LoginRequest(); 
 		request.setOpenId("openId");
 		User u = userService.login(token,request);
 		assertNotNull(u);

@@ -77,8 +77,8 @@ public class UserDataService {
 		return ret;
 	}
 	
-	public List<Event> findByEventCategoryId(String cateId,int page,int size){		
-		PageRequest pageable = new PageRequest(page-1, size);		 
+	public List<Event> findByEventCategoryId(String cateId,int offset,int limit){		
+		PageRequest pageable = new PageRequest(offset, limit);		 
 		Page<Event> events = eventDataRepository.findByEventCategoryIdOrderByStartTimeDesc(cateId, pageable);
 		return events.getContent();
 	}

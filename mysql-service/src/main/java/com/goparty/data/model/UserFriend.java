@@ -1,6 +1,7 @@
 package com.goparty.data.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.IdClass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "userFriend")
@@ -25,11 +27,12 @@ public class UserFriend {
 
 	private String status;
 	
-	
 	private Date updateTime;
-
-	@Column(name = "remarkName", nullable = true)
+	  
 	private String remarkName;
+	
+	@Transient
+	private List<Group> groups;
 	
 	public String getUserId() {
 		return userId;
@@ -70,14 +73,24 @@ public class UserFriend {
 	public void setRemarkName(String remarkName) {
 		this.remarkName = remarkName;
 	}
-	
-	@PreUpdate
-    public void preUpdate() {
-		updateTime = new Date();
-    }
-	
-	@PrePersist
-    public void prePersist() {
-		updateTime = new Date();
+
+	public List<Group> getGroups() {
+		return groups;
 	}
+
+	public void setGroups(List<Group> groups) {
+		this.groups = groups;
+	}
+ 
+	
+	
+//	@PreUpdate
+//    public void preUpdate() {
+//		updateTime = new Date();
+//    }
+//	
+//	@PrePersist
+//    public void prePersist() {
+//		updateTime = new Date();
+//	}
 }

@@ -3,7 +3,7 @@ package com.goparty.webservice.model;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "cientRequest")
-public class CientRequest {
+public class LoginRequest {
 	private String openId;
 	
 	private String tokenId;

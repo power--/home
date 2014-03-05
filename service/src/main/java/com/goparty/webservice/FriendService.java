@@ -25,6 +25,7 @@ import org.apache.cxf.jaxrs.model.wadl.Descriptions;
 import org.apache.cxf.jaxrs.model.wadl.DocTarget;
 
 import com.goparty.data.model.*;
+import com.goparty.webservice.model.FriendRequest;
 import com.goparty.webservice.model.InvitationRequest;
 
 @Path("/friends/")
@@ -34,12 +35,12 @@ public interface FriendService {
 	
 	@POST
 	@Path("{friendId}") 
-	public boolean add(@HeaderParam("token") String token,  @PathParam("friendId") String friendId);
+	public boolean add(@HeaderParam("token") String token,  @PathParam("friendId") String friendId, FriendRequest request);
 	
 	
 	@PUT
 	@Path("{friendId}") 
-	public UserFriend update(@HeaderParam("token") String token, UserFriend uf);	
+	public UserFriend update(@HeaderParam("token") String token, @PathParam("friendId") String friendId, FriendRequest request);	
 	
 	
 	@DELETE
@@ -51,7 +52,7 @@ public interface FriendService {
 	
 	@GET
 	@Path("invitations")
-	public List<UserFriend> getFriendInvitationList(@HeaderParam("token") String token);
+	public List<UserFriend> getFriendInvitationList(@HeaderParam("token") String token,@QueryParam("offset") int offset,@QueryParam("limit") int limit);
 		
 	
 	@PUT
@@ -59,5 +60,15 @@ public interface FriendService {
 	public boolean respondFriendInvitation(@HeaderParam("token") String token,  @PathParam("friendId") String friendId, InvitationRequest request);
 	
  
+	@POST
+	@Path("groups") 
+	public Group addGroup(@HeaderParam("token") String token,  FriendRequest request);
 	
+	@PUT
+	@Path("groups/{groupId}") 
+	public Group updateGroup(@HeaderParam("token") String token,  @PathParam("groupId") String groupId,  FriendRequest request);
+	
+	@DELETE
+	@Path("groups/{groupId}") 
+	public boolean deleteGroup(@HeaderParam("token") String token,@PathParam("groupId") String groupId);
 }

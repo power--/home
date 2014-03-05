@@ -25,7 +25,7 @@ import org.apache.cxf.jaxrs.model.wadl.Descriptions;
 import org.apache.cxf.jaxrs.model.wadl.DocTarget;
 
 import com.goparty.data.model.*;
-import com.goparty.webservice.model.CientRequest;
+import com.goparty.webservice.model.LoginRequest;
 
 @Path("/")
 @WebService
@@ -34,7 +34,7 @@ public interface UserService {
 	
 	@POST
 	@Path("login") 
-	public User login(@HeaderParam("token") String token, CientRequest request);
+	public User login(@HeaderParam("token") String token, LoginRequest request);
 	
 	
 	@POST
@@ -62,6 +62,9 @@ public interface UserService {
 	public User getUserInfo(@Description(value = "the id of the user") @PathParam("userId") String userId);
 	
 	
+	@GET
+	@Path("users") 
+	public List<User> search(@QueryParam("search") String search,@QueryParam("offset") int offset,@QueryParam("limit") int limit);
 	 
 	
 	@POST

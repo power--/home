@@ -32,6 +32,7 @@ import org.springframework.stereotype.Service;
 
 
 
+
 import com.goparty.data.model.Event;
 import com.goparty.data.model.StringResponse;
 import com.goparty.data.model.User; 
@@ -41,7 +42,7 @@ import com.goparty.data.service.UserDataService;
 import com.goparty.data.service.FriendDataService;
 import com.goparty.exception.ValidationException;
 import com.goparty.webservice.UserService;
-import com.goparty.webservice.model.CientRequest;
+import com.goparty.webservice.model.LoginRequest;
 
 
 @Service("userService")
@@ -140,7 +141,7 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
-	public User login(String token, CientRequest request){
+	public User login(String token, LoginRequest request){
 		if(StringUtils.isEmpty(token)){
 			String openId = request.getOpenId();
 			String tokenId = request.getTokenId();
@@ -183,6 +184,12 @@ public class UserServiceImpl implements UserService {
 			userDataService.generateToken(ut.getUserId(),-1);
 		}
 		return true;
+	}
+
+
+	@Override
+	public List<User> search(String keyword, int offset, int limit) {
+		return userDataService.search(keyword, offset, limit);
 	}
 
  

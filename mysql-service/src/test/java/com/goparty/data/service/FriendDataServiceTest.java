@@ -14,8 +14,10 @@ import javax.persistence.TypedQuery;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 
 import com.goparty.data.model.Event;
+import com.goparty.data.model.Group;
 import com.goparty.data.model.User;
 import com.goparty.data.model.UserFriend;
 import com.goparty.data.model.UserFriendPK;
@@ -27,23 +29,46 @@ public class FriendDataServiceTest extends AbstractRepositoryTest {
 	private FriendDataService friendDataService;
 	 
 	
+	@Test 
+	public void testGroup(){
+		Group g = new Group();
+		g.setName("Girls");
+		g.setOwnerId("33");
+		g = friendDataService.addGroup(g);
+		
+		g.setName("Boys");
+		friendDataService.updateGroup(g);
+		
+		friendDataService.deleteGroup(g.getId());
+	}
+	
 	@Test
 	public void testInvitation(){
-		List<UserFriend> list = friendDataService.getFriendInvitationList("33");
+		PageRequest pageable = new PageRequest(0, 5);	
+		List<UserFriend> list = friendDataService.getFriendInvitationList("33",pageable);
 		assertTrue(list.size()>0);
 	}
 
 	@Test
 	public void testCreate(){
 		UserFriend uf = new UserFriend();
-		uf.setUserId("22");
+		uf.setUserId("33");
 		uf.setFriendId("92");
 		uf.setStatus("INIT");
-//		uf.setUpdateTime(new Date());
-		//friendDataService.create(uf);
+		uf.setUpdateTime(new Date());		
+		List<Group> groups = new ArrayList<Group>();
+		Group g = new Group();
+		g.setId("2");
+		groups.add(g);
+		Group g2 = new Group();
+		g2.setId("3");
+		groups.add(g2);
+		uf.setGroups(groups);
+		
+		friendDataService.create(uf);
 		
 		uf.setStatus("AGREE");
-		//uf.setRemarkName("Jim");
+		uf.setRemarkName("Jim");
 		friendDataService.update(uf);
 	}
  
