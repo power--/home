@@ -281,6 +281,8 @@ public class EventTest {
 				
 				
 				System.out.println(urlConnection.getHeaderField("code"));
+				System.out.println(urlConnection.getHeaderField("message"));
+				System.out.println(urlConnection.getHeaderField("data"));
 				
 				InputStream input = urlConnection.getErrorStream();
 				BufferedReader br = new BufferedReader(new InputStreamReader(

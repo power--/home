@@ -37,7 +37,7 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public Event create(Event event) throws BaseException{
 		if(event.getTitle()==null){
-			throw new BaseException(Status.INTERNAL_SERVER_ERROR,"E10010","The event title should be null");
+			throw new BaseException(Status.INTERNAL_SERVER_ERROR,"E10010","The event title should not be null");
 		}
 		
 		System.out.println(event.getId());
