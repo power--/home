@@ -91,7 +91,7 @@ public class EventTest {
 	@Test
 	public void testJson() throws Exception {
 		Event evt = new Event();
-//		evt.setTitle("hello");
+		evt.setTitle("hello");
 		evt.setStartTime(new Date());
 		evt.setEndTime(new Date());
 		evt.setLocation("Shenzhen");

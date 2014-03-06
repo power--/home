@@ -27,17 +27,15 @@ import com.goparty.data.constant.EventVisibility;
 @XmlRootElement(name = "event")
 @Entity
 @Table(name = "gp_event")
-public class Event {
+public class Event extends BaseModel{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private String id;
 
 	private String title;
 
-	@Column(name = "start_time")
 	private Date startTime;
 
-	@Column(name = "end_time")
 	private Date endTime;
 
 	private String location;
@@ -63,7 +61,6 @@ public class Event {
 	@Enumerated(EnumType.ORDINAL)
 	private EventVisibility visibility;
 
-	@Column(name = "location_shareable")
 	private boolean locationShareable;
 
 	@Transient
