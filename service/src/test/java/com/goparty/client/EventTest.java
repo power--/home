@@ -42,7 +42,7 @@ public class EventTest {
 		evt.setAttendees(attendees);
 
 		User owner = new User();
-		owner.setId("12");
+		owner.setId("33");
 		evt.setOwner(owner);
 
 		evt.setEventStatus(EventStatus.INIT);
@@ -73,7 +73,7 @@ public class EventTest {
 		HttpClientUtils.delete(url);
 		
 		url = "http://goparty.cloudapp.net/cxf/rest/events/"
-				+ result.getId()+"/sponsors/72";
+				+ result.getId()+"/sponsors/33";
 		
 		HttpClientUtils.put(url, data);
 
