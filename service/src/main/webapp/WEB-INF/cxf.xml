@@ -69,6 +69,7 @@
             <ref bean="userService"/>
             <ref bean="eventService"/>
             <ref bean="friendService"/>
+            <ref bean="eventCategoryService"/>
         </jaxrs:serviceBeans>
         <jaxrs:extensionMappings>
             <entry key="xml" value="application/xml" />

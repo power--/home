@@ -56,7 +56,7 @@ public class Event extends BaseModel{
 	private EventCategory eventCategory;
 
 	@Enumerated(EnumType.ORDINAL)
-	private EventStatus status;
+	private EventStatus eventStatus;
 
 	@Enumerated(EnumType.ORDINAL)
 	private EventVisibility visibility;
@@ -139,13 +139,13 @@ public class Event extends BaseModel{
 	public void setEventCategory(EventCategory eventCategory) {
 		this.eventCategory = eventCategory;
 	}
-
-	public EventStatus getStatus() {
-		return status;
+	
+	public EventStatus getEventStatus() {
+		return eventStatus;
 	}
 
-	public void setStatus(EventStatus status) {
-		this.status = status;
+	public void setEventStatus(EventStatus eventStatus) {
+		this.eventStatus = eventStatus;
 	}
 
 	public EventVisibility getVisibility() {

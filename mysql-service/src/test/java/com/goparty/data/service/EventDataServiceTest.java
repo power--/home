@@ -32,7 +32,7 @@ public class EventDataServiceTest extends AbstractRepositoryTest {
 		Event event = new Event(); 
 		event.setDescription("Hello World");
 		event.setTitle("A Title");
-		event.setStatus(EventStatus.INIT);
+		event.setEventStatus(EventStatus.INIT);
 		
 		User owner = new User();
 		owner.setId("21");
@@ -88,7 +88,7 @@ public class EventDataServiceTest extends AbstractRepositoryTest {
 		owner.setId("21");
 		evt.setOwner(owner);
 		
-		evt.setStatus(EventStatus.INIT);
+		evt.setEventStatus(EventStatus.INIT);
 		evt.setVisibility(EventVisibility.V_PUBLIC);
 		evt = eventDataService.create(evt);
 	}

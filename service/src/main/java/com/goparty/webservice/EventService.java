@@ -61,5 +61,33 @@ public interface EventService {
 	public boolean delete(@Description(value = "the id of the event") @PathParam("id")String id);
 	
 	
+	@WebMethod
+	@PUT
+	@Path("{eventId}/invitees/{userId}")
+	@Descriptions({
+		@Description(value = "invite a user to join the event", target = DocTarget.METHOD),
+		@Description(value = "the result of invite user action", target = DocTarget.RETURN)
+	})
+	public BaseModel addInvitee(@PathParam("eventId") String eventId, @PathParam("userId")String userId);
+	
+	
+	@WebMethod
+	@DELETE
+	@Path("{eventId}/invitees/{userId}")
+	@Descriptions({
+		@Description(value = "invite a user to join the event", target = DocTarget.METHOD),
+		@Description(value = "the result of invite user action", target = DocTarget.RETURN)
+	})
+	public BaseModel delInvitee(@PathParam("eventId") String eventId, @PathParam("userId")String userId);
+	
+	
+	@WebMethod
+	@PUT
+	@Path("{eventId}/sponsors/{userId}")
+	@Descriptions({
+		@Description(value = "invite a user to join the event", target = DocTarget.METHOD),
+		@Description(value = "the result of invite user action", target = DocTarget.RETURN)
+	})
+	public BaseModel updateSponser(@PathParam("eventId") String eventId, @PathParam("userId")String userId);
 	
 }

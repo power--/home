@@ -3,7 +3,9 @@ package com.goparty.data.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement(name = "eventCategory")
 @Entity
 @Table(name="gp_event_category")
 public class EventCategory {
