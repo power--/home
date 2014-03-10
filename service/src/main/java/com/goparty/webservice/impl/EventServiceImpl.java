@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.goparty.data.exception.BaseException;
 import com.goparty.data.model.*;
 import com.goparty.data.service.EventDataService;
+import com.goparty.data.service.MessageDataService;
 import com.goparty.data.service.UserDataService;
 import com.goparty.webservice.EventService;
 
@@ -28,6 +29,9 @@ public class EventServiceImpl implements EventService {
 	@Autowired
 	private UserDataService userDataService;
 
+	@Autowired
+	private MessageDataService messageDataService;
+	
 	@Override
 	public Event read(String id) {
 		Event ret = eventDataService.read(id);
@@ -225,6 +229,18 @@ BaseModel ret = new BaseModel();
 		data.put("eventId", eventId);
 		
 		return ret;
+	}
+
+	@Override
+	public EventMessage publishMessage(String token, String eventId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<EventMessage> getMessageListByEventId(String eventId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

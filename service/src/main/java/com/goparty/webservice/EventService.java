@@ -6,6 +6,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -88,5 +89,18 @@ public interface EventService {
 		@Description(value = "the result of invite user action", target = DocTarget.RETURN)
 	})
 	public BaseModel updateSponser(@PathParam("eventId") String eventId, @PathParam("userId")String userId);
+	
+	
+	@WebMethod
+	@POST
+	@Path("{eventId}/messages")
+	public EventMessage publishMessage(@HeaderParam("token") String token,@PathParam("eventId") String eventId);
+	
+	@WebMethod
+	@GET
+	@Path("{eventId}/messages")
+	public List<EventMessage> getMessageListByEventId(@PathParam("eventId") String eventId);
+	
+	
 	
 }

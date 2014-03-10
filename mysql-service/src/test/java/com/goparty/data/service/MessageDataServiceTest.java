@@ -41,6 +41,11 @@ public class MessageDataServiceTest extends AbstractRepositoryTest {
 //		messageDataService.delete("2");
 	}
 	 
+	@Test
+	public void testList(){
+		List<EventMessage> list = messageDataService.findByEventId("12", 0, 5);
+		assertTrue(list.size()>0);
+	}
  
 	
 }

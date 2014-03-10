@@ -10,10 +10,13 @@ import javax.persistence.Query;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.goparty.data.exception.BaseException;
+import com.goparty.data.model.Event;
 import com.goparty.data.model.EventMessage; 
 import com.goparty.data.repository.IMessageDataRepository;
 import com.goparty.data.repository.IUserDataRepository;
@@ -69,5 +72,9 @@ public class MessageDataService {
 		return ret;
 	}
 	 
-	
+	public List<EventMessage> findByEventId(String eventId,int offset,int limit){		
+		PageRequest pageable = new PageRequest(offset, limit);		 
+		Page<EventMessage> msgList = messageDataRepository.findByEventId(eventId, pageable);
+		return msgList.getContent();
+	} 
 }
