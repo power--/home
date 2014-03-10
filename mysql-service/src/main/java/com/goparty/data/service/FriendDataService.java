@@ -14,7 +14,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import com.goparty.data.exception.BaseException;
 import com.goparty.data.model.Group;
 import com.goparty.data.model.UserFriend;
 import com.goparty.data.model.UserFriendPK;
@@ -66,6 +68,9 @@ public class FriendDataService {
 		pk.setUserId(userFriend.getUserId());
 		pk.setFriendId(userFriend.getFriendId());
 		UserFriend uf = friendDataRepository.findOne(pk);
+		if(uf == null){
+			throw new BaseException("Friend not exist");
+		}
 		
 		if(userFriend.getStatus()!=null){
 			uf.setStatus(userFriend.getStatus());	
@@ -95,6 +100,9 @@ public class FriendDataService {
 	}
 
 	public Group addGroup(Group group){
+		if(StringUtils.isEmpty(group.getName())){
+			throw new BaseException("group name should not be empty.");
+		}
 		return groupDataRepository.save(group);
 	}
 	

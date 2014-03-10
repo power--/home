@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "response")
 public class ExceptionResponse {	
 	private int code;
-	private String status;//success, fail, error
+	private String status;//success,  error
 	private String message;
 	private String data;
 	public int getCode() {

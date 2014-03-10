@@ -14,25 +14,10 @@ import static javax.ws.rs.core.Response.Status.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+import com.goparty.data.exception.BaseException;
 import com.goparty.data.model.*;
 import com.goparty.data.service.EventDataService;
 import com.goparty.data.service.UserDataService;
-import com.goparty.ex.BaseException;
 import com.goparty.webservice.EventService;
 
 @Service("eventService")
@@ -50,9 +35,9 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public Event create(Event event) throws BaseException{
+	public Event create(Event event){
 		if(event.getTitle()==null){
-			throw new BaseException(INTERNAL_SERVER_ERROR,"E10010","The event title should not be null");
+			throw new BaseException("The event title should not be null");
 		}
 		
 		System.out.println(event.getId());

@@ -90,18 +90,18 @@ public class FriendTest {
 	@Test
 	public void testAdd() throws Exception {
 		HttpUtils http = new HttpUtils(token);
-//		String url = "http://localhost/cxf/rest/friends/groups";
-//		String json = "{\"groupName\": \"private friend \" }";
-//		String response = http.postData(url, json);
-//		System.out.println(response);	 
+		String url = "http://localhost/cxf/rest/friends/groups";
+		String json = "{}";
+		String response = http.postData(url, json);
+		System.out.println(response);	 
 		
 //		String updateUrl =  "http://localhost/cxf/rest/friends/groups/6";
 //		String updateJson = "{\"groupName\": \"private girl friend \" }";
 //		String updateResp = http.putData(updateUrl, updateJson);
 //		System.out.println(updateResp);	
 		
-		String deleteResp = http.deleteData("http://localhost/cxf/rest/friends/groups/7");
-		System.out.println(deleteResp);
+//		String deleteResp = http.deleteData("http://localhost/cxf/rest/friends/groups/7");
+//		System.out.println(deleteResp);
 	}
 	
 	
