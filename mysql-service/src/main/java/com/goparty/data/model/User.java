@@ -17,11 +17,13 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.hibernate.search.annotations.Indexed;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @XmlRootElement(name = "user")
 @Entity
 @Table(name="gp_user")
+@Indexed
 public class User {
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.AUTO)// //can't create table automatically after add this

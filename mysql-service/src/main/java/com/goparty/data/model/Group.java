@@ -7,9 +7,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.hibernate.search.annotations.Indexed;
+
 @XmlRootElement(name = "group")
 @Entity
 @Table(name="gp_group")
+@Indexed
 public class Group {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

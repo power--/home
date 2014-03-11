@@ -1,5 +1,7 @@
 package com.goparty.data.model;
 
+import org.hibernate.search.annotations.Indexed;
+
 public class VisibilityCategory {
 	private String id;
 	private String name;

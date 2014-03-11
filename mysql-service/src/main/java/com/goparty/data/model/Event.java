@@ -3,7 +3,6 @@ package com.goparty.data.model;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -17,9 +16,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.hibernate.search.annotations.Indexed;
 
 import com.goparty.data.constant.EventStatus;
 import com.goparty.data.constant.EventVisibility;
@@ -27,6 +26,7 @@ import com.goparty.data.constant.EventVisibility;
 @XmlRootElement(name = "event")
 @Entity
 @Table(name = "gp_event")
+@Indexed
 public class Event extends BaseModel{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
