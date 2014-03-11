@@ -3,10 +3,12 @@ package com.goparty.webservice.impl;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import static javax.ws.rs.core.Response.Status.*;
@@ -14,12 +16,14 @@ import static javax.ws.rs.core.Response.Status.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.goparty.data.constant.MessageType;
 import com.goparty.data.exception.BaseException;
 import com.goparty.data.model.*;
 import com.goparty.data.service.EventDataService;
 import com.goparty.data.service.MessageDataService;
 import com.goparty.data.service.UserDataService;
 import com.goparty.webservice.EventService;
+import com.goparty.webservice.model.MessageRequest;
 
 @Service("eventService")
 public class EventServiceImpl implements EventService {
@@ -232,15 +236,21 @@ BaseModel ret = new BaseModel();
 	}
 
 	@Override
-	public EventMessage publishMessage(String token, String eventId) {
-		// TODO Auto-generated method stub
-		return null;
+	public EventMessage publishMessage(String token, String eventId, MessageRequest request) {
+		User user = userDataService.getUserByToken(token);
+		EventMessage msg = new EventMessage();
+		msg.setUserId(user.getId());
+		msg.setEventId(eventId);
+		msg.setContent(request.getContent());
+		msg.setPublishTime(new Date());
+		msg.setType(MessageType.USER_MESSAGE);
+		msg = messageDataService.create(msg );
+		return msg;
 	}
 
 	@Override
-	public List<EventMessage> getMessageListByEventId(String eventId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<EventMessage> getMessageListByEventId(String eventId,int offset,int limit) {		
+		return messageDataService.findByEventId(eventId, offset, limit);
 	}
 	
 	

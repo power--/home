@@ -19,6 +19,7 @@ import org.apache.cxf.jaxrs.model.wadl.Descriptions;
 import org.apache.cxf.jaxrs.model.wadl.DocTarget;
 
 import com.goparty.data.model.*; 
+import com.goparty.webservice.model.MessageRequest;
 
 @Path("/events/")
 @WebService
@@ -94,12 +95,12 @@ public interface EventService {
 	@WebMethod
 	@POST
 	@Path("{eventId}/messages")
-	public EventMessage publishMessage(@HeaderParam("token") String token,@PathParam("eventId") String eventId);
+	public EventMessage publishMessage(@HeaderParam("token") String token,@PathParam("eventId") String eventId, MessageRequest request);
 	
 	@WebMethod
 	@GET
 	@Path("{eventId}/messages")
-	public List<EventMessage> getMessageListByEventId(@PathParam("eventId") String eventId);
+	public List<EventMessage> getMessageListByEventId(@PathParam("eventId") String eventId,@QueryParam("offset") int offset,@QueryParam("limit") int limit);
 	
 	
 	

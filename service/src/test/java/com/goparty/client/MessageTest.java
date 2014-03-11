@@ -39,61 +39,26 @@ import com.goparty.webservice.FriendService;
 import com.goparty.webservice.model.FriendRequest;
 import com.goparty.webservice.model.InvitationRequest;
 
-public class FriendTest {
+public class MessageTest {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
-	private FriendService friendService; 
+	 
 	private static final String applicationURI ="http://localhost";
 
 	private String token = "5397efef-01ef-4d4b-aef8-260508af81bf";
 	
-	@Before
-	public void setUp(){
-		List<Object> providers = getJsonProvider();
-		
-		friendService = JAXRSClientFactory.create(applicationURI + "/cxf/rest/", FriendService.class, providers, true);
-		ClientConfiguration cfgProxy = WebClient.getConfig(friendService);
-		cfgProxy.getOutInterceptors().add(new LoggingOutInterceptor());
-		cfgProxy.getInInterceptors().add(new LoggingInInterceptor()); 
-	} 
- 
-	private static List<Object> getJsonProvider(){ 
-		List<Object> providers = new LinkedList<Object>(); 
-		JSONProvider jsonProvider = new JSONProvider();
-		providers.add(jsonProvider); 
-        return providers; 
-    }  
-	
-	@Test 
-	public void testAddFriend(){ 
-		String friendId = "95";
-//		friendService.add(token,friendId, "2");
-		 
-		FriendRequest ur = new FriendRequest();
-		ur.setRemarkName("new Remark");
-		friendService.update(token,friendId, ur);
-		
-	}
-	
-	@Test
-	public void testInvitation(){
-		List<UserFriend> list = friendService.getFriendInvitationList(token,0,5);
-		assertTrue(list.size()>0);
-		
-		InvitationRequest request = new InvitationRequest();
-		request.setResponse("AGREE");		
-		request.setMessage("Good Boy");
-		friendService.respondFriendInvitation(token, "35", request);
-		
-	}
+	 
 	
 	
 	@Test
 	public void testAdd() throws Exception {
 		HttpUtils http = new HttpUtils(token);
-		String url = "http://localhost/cxf/rest/friends/groups";
-		String json = "{\"groupName\": \"\" }";
+		String url = "http://localhost/cxf/rest/events/12/messages";
+		String json = "{\"content\": \"love you!\" }";
 		String response = http.postData(url, json);
 		System.out.println(response);	 
+		
+		response = http.getData("http://localhost/cxf/rest/events/12/messages?offset=0&limit=5");
+		System.out.println(response);
 		
 //		String updateUrl =  "http://localhost/cxf/rest/friends/groups/6";
 //		String updateJson = "{\"groupName\": \"private girl friend \" }";
