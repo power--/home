@@ -31,6 +31,9 @@ http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 		<property name="jpaProperties">
 			<props>
 				<prop key="hibernate.hbm2ddl.auto">create</prop>
+				<prop key="hibernate.search.default.directory_provider">filesystem</prop>
+				<prop key="hibernate.search.default.indexBase">c:/lucene/indexes</prop>
+				<prop key="hibernate.search.analyzer">org.wltea.analyzer.lucene.IKAnalyzer</prop>
 			</props>
 		</property>
 	</bean>

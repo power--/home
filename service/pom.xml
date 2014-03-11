@@ -26,6 +26,11 @@
     	<artifactId>mysql-service</artifactId>
     	<version>0.0.1</version>
     </dependency>
+    <dependency>
+    	<groupId>com.goparty</groupId>
+    	<artifactId>analyzer</artifactId>
+    	<version>0.0.1</version>
+    </dependency>
     
  
 	
