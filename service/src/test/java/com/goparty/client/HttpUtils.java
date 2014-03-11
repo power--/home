@@ -126,6 +126,9 @@ public class HttpUtils {
 			out.close();
 
 			int HttpResult = conn.getResponseCode();
+			System.out.println("\nSending '"+method+"' request to URL : " + siteUrl);
+			System.out.println("Response Code : " + HttpResult);
+			
 			StringBuffer sb = new StringBuffer();
 			if (HttpResult == HttpURLConnection.HTTP_OK) {
 				InputStream input = conn.getInputStream();
