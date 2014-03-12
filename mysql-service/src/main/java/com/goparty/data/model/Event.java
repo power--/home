@@ -18,7 +18,12 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.Store;
 
 import com.goparty.data.constant.EventStatus;
 import com.goparty.data.constant.EventVisibility;
@@ -27,32 +32,40 @@ import com.goparty.data.constant.EventVisibility;
 @Entity
 @Table(name = "gp_event")
 @Indexed
-public class Event extends BaseModel{
+public class Event{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private String id;
 
+	@Field(index=Index.YES, analyze=Analyze.YES, store=Store.YES )
 	private String title;
 
+	@Field(index=Index.YES, analyze=Analyze.NO, store=Store.YES )
 	private Date startTime;
 
+	@Field(index=Index.YES, analyze=Analyze.NO, store=Store.YES )
 	private Date endTime;
 
+	@Field(index=Index.YES, analyze=Analyze.YES, store=Store.YES )
 	private String location;
 
+	@Field(index=Index.YES, analyze=Analyze.YES, store=Store.YES )
 	private String description;
 
 	// can't change to LAZY and add cascade=CascadeType.ALL
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "gp_event_attendee", joinColumns = @JoinColumn(name = "eventId"), inverseJoinColumns = @JoinColumn(name = "userId"))
+	@IndexedEmbedded
 	private List<User> attendees;
 
 	@OneToOne
 	@JoinColumn(name = "ownerId")
+	@IndexedEmbedded
 	private User owner;
 
 	@OneToOne
 	@JoinColumn(name = "cateId")
+	@IndexedEmbedded
 	private EventCategory eventCategory;
 
 	@Enumerated(EnumType.ORDINAL)

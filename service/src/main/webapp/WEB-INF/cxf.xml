@@ -71,6 +71,7 @@
             <ref bean="friendService"/>
             <ref bean="eventCategoryService"/>
             <ref bean="myEventService" />
+            <ref bean="fullTextIndexService" />
         </jaxrs:serviceBeans>
         <jaxrs:extensionMappings>
             <entry key="xml" value="application/xml" />

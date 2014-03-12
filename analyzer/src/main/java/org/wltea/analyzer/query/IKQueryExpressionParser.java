@@ -36,7 +36,6 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TermRangeQuery;
 import org.apache.lucene.search.BooleanClause.Occur;
-import org.apache.lucene.util.BytesRef;
 
 /**
  * IK简易查询表达式解析 
@@ -649,7 +648,7 @@ public class IKQueryExpressionParser {
 			throw new IllegalStateException("表达式异常, RangeQuery格式错误");
 		}
 		
-		return new TermRangeQuery(fieldNameEle.toString() , new BytesRef(firstValue) , new BytesRef(lastValue) , includeFirst , includeLast);
+		return new TermRangeQuery(fieldNameEle.toString() , firstValue , lastValue , includeFirst , includeLast);
 	}	
 	
 	/**

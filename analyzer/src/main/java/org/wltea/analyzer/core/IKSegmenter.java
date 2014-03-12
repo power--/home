@@ -113,10 +113,11 @@ public final class IKSegmenter {
 	 */
 	public synchronized Lexeme next()throws IOException{
 		Lexeme l = null;
-		while((l = context.getNextLexeme()) == null ){
+		
+		while((l = context.getNextLexeme()) == null){
 			/*
 			 * 从reader中读取数据，填充buffer
-			 * 如果reader是分次读入buffer的，那么buffer要  进行移位处理
+			 * 如果reader是分次读入buffer的，那么buffer要进行移位处理
 			 * 移位处理上次读入的但未处理的数据
 			 */
 			int available = context.fillBuffer(this.input);
@@ -146,15 +147,15 @@ public final class IKSegmenter {
 			}
 			//对分词进行歧义处理
 			this.arbitrator.process(context, this.cfg.useSmart());			
-			//将分词结果输出到结果集，并处理未切分的单个CJK字符
+			//处理未切分CJK字符
 			context.outputToResult();
 			//记录本次分词的缓冲区位移
 			context.markBufferOffset();			
 		}
+		
 		return l;
-	}
-
-	/**
+	}	
+    /**
      * 重置分词器到初始状态
      * @param input
      */

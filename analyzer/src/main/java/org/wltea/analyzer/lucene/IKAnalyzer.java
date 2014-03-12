@@ -1,6 +1,6 @@
 /**
- * IK 中文分词  版本 5.0.1
- * IK Analyzer release 5.0.1
+ * IK 中文分词  版本 5.0
+ * IK Analyzer release 5.0
  * 
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -24,14 +24,16 @@
  */
 package org.wltea.analyzer.lucene;
 
+import java.io.IOException;
 import java.io.Reader;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
 
 /**
  * IK分词器，Lucene Analyzer接口实现
- * 兼容Lucene 4.0版本
+ * 兼容Lucene 3.1以上版本
  */
 public final class IKAnalyzer extends Analyzer{
 	
@@ -46,7 +48,7 @@ public final class IKAnalyzer extends Analyzer{
 	}
 
 	/**
-	 * IK分词器Lucene  Analyzer接口实现类
+	 * IK分词器Lucene 3.5 Analyzer接口实现类
 	 * 
 	 * 默认细粒度切分算法
 	 */
@@ -64,13 +66,20 @@ public final class IKAnalyzer extends Analyzer{
 		this.useSmart = useSmart;
 	}
 
-	/**
-	 * 重载Analyzer接口，构造分词组件
-	 */
 	@Override
-	protected TokenStreamComponents createComponents(String fieldName, final Reader in) {
-		Tokenizer _IKTokenizer = new IKTokenizer(in , this.useSmart());
-		return new TokenStreamComponents(_IKTokenizer);
+	public TokenStream tokenStream(String fieldName, Reader reader) {
+		return new IKTokenizer(reader , this.useSmart());
 	}
-
+	
+	@Override
+	public TokenStream reusableTokenStream(String fieldName, Reader reader) throws IOException {
+		Tokenizer _IKTokenizer = (Tokenizer)getPreviousTokenStream();
+		if (_IKTokenizer == null) {
+			_IKTokenizer = new IKTokenizer(reader , this.useSmart());
+			setPreviousTokenStream(_IKTokenizer);
+		} else {
+			_IKTokenizer.reset(reader);
+		}
+		return _IKTokenizer;
+	}
 }

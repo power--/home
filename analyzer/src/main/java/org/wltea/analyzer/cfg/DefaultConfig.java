@@ -38,7 +38,6 @@ import java.util.Properties;
  *
  */
 public class DefaultConfig implements Configuration{
-
 	/*
 	 * 分词器默认字典路径 
 	 */

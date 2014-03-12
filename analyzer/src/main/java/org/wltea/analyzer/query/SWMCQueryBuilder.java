@@ -30,8 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
 import org.wltea.analyzer.core.IKSegmenter;
@@ -124,7 +124,7 @@ public class SWMCQueryBuilder {
 		}
 
 		//借助lucene queryparser 生成SWMC Query
-		QueryParser qp = new QueryParser(Version.LUCENE_40, fieldName, new StandardAnalyzer(Version.LUCENE_40));
+		QueryParser qp = new QueryParser(Version.LUCENE_34, fieldName, new StandardAnalyzer(Version.LUCENE_34));
 		qp.setDefaultOperator(QueryParser.AND_OPERATOR);
 		qp.setAutoGeneratePhraseQueries(true);
 		

@@ -1,6 +1,6 @@
 /**
- * IK 中文分词  版本 5.0.1
- * IK Analyzer release 5.0.1
+ * IK 中文分词  版本 5.0
+ * IK Analyzer release 5.0
  * 
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -32,31 +32,27 @@ import java.io.Reader;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
-import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 
 import org.wltea.analyzer.core.IKSegmenter;
 import org.wltea.analyzer.core.Lexeme;
 
 /**
  * IK分词器 Lucene Tokenizer适配器类
- * 兼容Lucene 4.0版本
+ * 兼容Lucene 3.1以上版本
  */
 public final class IKTokenizer extends Tokenizer {
 	
 	//IK分词器实现
 	private IKSegmenter _IKImplement;
-	
 	//词元文本属性
-	private final CharTermAttribute termAtt;
+	private CharTermAttribute termAtt;
 	//词元位移属性
-	private final OffsetAttribute offsetAtt;
-	//词元分类属性（该属性分类参考org.wltea.analyzer.core.Lexeme中的分类常量）
-	private final TypeAttribute typeAtt;
+	private OffsetAttribute offsetAtt;
 	//记录最后一个词元的结束位置
-	private int endPosition;
+	private int finalOffset;
 	
 	/**
-	 * Lucene 4.0 Tokenizer适配器类构造函数
+	 * Lucene 3.5 Tokenizer适配器类构造函数
 	 * @param in
 	 * @param useSmart
 	 */
@@ -64,8 +60,7 @@ public final class IKTokenizer extends Tokenizer {
 	    super(in);
 	    offsetAtt = addAttribute(OffsetAttribute.class);
 	    termAtt = addAttribute(CharTermAttribute.class);
-	    typeAtt = addAttribute(TypeAttribute.class);
-		_IKImplement = new IKSegmenter(input , useSmart);
+		_IKImplement = new IKSegmenter(in , useSmart);
 	}
 
 	/* (non-Javadoc)
@@ -85,30 +80,27 @@ public final class IKTokenizer extends Tokenizer {
 			//设置词元位移
 			offsetAtt.setOffset(nextLexeme.getBeginPosition(), nextLexeme.getEndPosition());
 			//记录分词的最后位置
-			endPosition = nextLexeme.getEndPosition();
-			//记录词元分类
-			typeAtt.setType(nextLexeme.getLexemeTypeString());			
+			finalOffset = nextLexeme.getEndPosition();
 			//返会true告知还有下个词元
 			return true;
 		}
 		//返会false告知词元输出完毕
 		return false;
 	}
+
 	
 	/*
 	 * (non-Javadoc)
 	 * @see org.apache.lucene.analysis.Tokenizer#reset(java.io.Reader)
 	 */
-	@Override
-	public void reset() throws IOException {
-		super.reset();
+	public void reset(Reader input) throws IOException {
+		super.reset(input);
 		_IKImplement.reset(input);
 	}	
 	
 	@Override
 	public final void end() {
-	    // set final offset
-		int finalOffset = correctOffset(this.endPosition);
+	    // set final offset 
 		offsetAtt.setOffset(finalOffset, finalOffset);
 	}
 }

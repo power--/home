@@ -207,46 +207,6 @@ public class Lexeme implements Comparable<Lexeme>{
 	public int getLexemeType() {
 		return lexemeType;
 	}
-	
-	/**
-	 * 获取词元类型标示字符串
-	 * @return String
-	 */
-	public String getLexemeTypeString(){
-		switch(lexemeType) {
-
-		case TYPE_ENGLISH :
-			return "ENGLISH";
-			
-		case TYPE_ARABIC :
-			return "ARABIC";
-			
-		case TYPE_LETTER :
-			return "LETTER";
-			
-		case TYPE_CNWORD : 
-			return "CN_WORD";
-			
-		case TYPE_CNCHAR : 
-			return "CN_CHAR";
-			
-		case TYPE_OTHER_CJK :
-			return "OTHER_CJK";
-			
-		case TYPE_COUNT :
-			return "COUNT";
-			
-		case TYPE_CNUM :
-			return "TYPE_CNUM";
-			
-		case TYPE_CQUAN:	
-			return "TYPE_CQUAN";
-			
-		default :
-			return "UNKONW";
-		}
-	}
-		
 
 	public void setLexemeType(int lexemeType) {
 		this.lexemeType = lexemeType;
@@ -268,7 +228,6 @@ public class Lexeme implements Comparable<Lexeme>{
 		}
 	}
 	
-
 	/**
 	 * 
 	 */
@@ -276,7 +235,39 @@ public class Lexeme implements Comparable<Lexeme>{
 		StringBuffer strbuf = new StringBuffer();
 		strbuf.append(this.getBeginPosition()).append("-").append(this.getEndPosition());
 		strbuf.append(" : ").append(this.lexemeText).append(" : \t");
-		strbuf.append(this.getLexemeTypeString());
+		switch(lexemeType) {
+			case TYPE_UNKNOWN : 
+				strbuf.append("UNKONW");
+				break;
+			case TYPE_ENGLISH :
+				strbuf.append("ENGLISH");
+				break;
+			case TYPE_ARABIC :
+				strbuf.append("ARABIC");
+				break;
+			case TYPE_LETTER :
+				strbuf.append("LETTER");
+				break;
+			case TYPE_CNWORD : 
+				strbuf.append("CN_WORD");
+				break;
+			case TYPE_CNCHAR : 
+				strbuf.append("CN_CHAR");
+				break;
+			case TYPE_OTHER_CJK :
+				strbuf.append("OTHER_CJK");
+				break;
+			case TYPE_COUNT :
+				strbuf.append("COUNT");
+				break;
+			case TYPE_CNUM :
+				strbuf.append("CN_NUM");
+				break;
+			case TYPE_CQUAN:	
+				strbuf.append("CN_QUAN");
+				break;
+
+		}
 		return strbuf.toString();
 	}
 	
