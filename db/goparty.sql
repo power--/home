@@ -62,7 +62,8 @@ CREATE TABLE IF NOT EXISTS `gp_event_message` (
   `type` tinyint(4) DEFAULT NULL COMMENT '1-system message 2 - user message',
   `userId` int(11) DEFAULT NULL,
   `publishTime` datetime DEFAULT NULL,
-  `eventId` int(11) DEFAULT NULL
+  `eventId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Data exporting was unselected.
