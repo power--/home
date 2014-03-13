@@ -12,8 +12,6 @@
 	<module>service</module>
 	<module>analyzer</module>
   </modules>
- 
-
   <properties>
 	<spring.version>3.2.8.RELEASE</spring.version>
 	<slf4j.version>1.7.5</slf4j.version>
@@ -22,7 +20,6 @@
 	<server.port>8080</server.port>
 	<jetty.port>${server.port}</jetty.port>
   </properties>
-
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
