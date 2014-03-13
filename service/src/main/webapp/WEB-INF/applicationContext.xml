@@ -14,7 +14,7 @@ http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 	
 	<bean id="gopartyDataSource"	class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/openfire" />
+		<property name="url" value="jdbc:mysql://goparty.cloudapp.net:3306/openfire" />
 		<property name="username" value="root" />
 		<property name="password" value="123456" />
 	</bean>
