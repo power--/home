@@ -19,10 +19,12 @@ import org.springframework.stereotype.Service;
 import com.goparty.data.constant.MessageType;
 import com.goparty.data.exception.BaseException;
 import com.goparty.data.model.*;
+import com.goparty.data.service.CommentDataService;
 import com.goparty.data.service.EventDataService;
 import com.goparty.data.service.MessageDataService;
 import com.goparty.data.service.UserDataService;
 import com.goparty.webservice.EventService;
+import com.goparty.webservice.model.CommentRequest;
 import com.goparty.webservice.model.MessageRequest;
 
 @Service("eventService")
@@ -35,6 +37,10 @@ public class EventServiceImpl implements EventService {
 
 	@Autowired
 	private MessageDataService messageDataService;
+	
+	@Autowired
+	private CommentDataService commentDataService;
+	
 	
 	@Override
 	public Event read(String id) {
@@ -251,6 +257,25 @@ BaseModel ret = new BaseModel();
 	@Override
 	public List<EventMessage> getMessageListByEventId(String eventId,int offset,int limit) {		
 		return messageDataService.findByEventId(eventId, offset, limit);
+	}
+
+	@Override
+	public EventComment comment(String token, String eventId,
+			CommentRequest request) {
+		User user = userDataService.getUserByToken(token);
+		EventComment comment = new EventComment();
+		comment.setContent(request.getContent());
+		comment.setEventId(eventId); 
+		comment.setUserId(user.getId());
+		comment.setPublishTime(new Date());
+		return commentDataService.create(comment);
+	}
+
+	@Override
+	public List<EventComment> getCommentListByEventId(String eventId,
+			int offset, int limit) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

@@ -19,6 +19,7 @@ import org.apache.cxf.jaxrs.model.wadl.Descriptions;
 import org.apache.cxf.jaxrs.model.wadl.DocTarget;
 
 import com.goparty.data.model.*; 
+import com.goparty.webservice.model.CommentRequest;
 import com.goparty.webservice.model.MessageRequest;
 
 @Path("/events/")
@@ -102,6 +103,15 @@ public interface EventService {
 	@Path("{eventId}/messages")
 	public List<EventMessage> getMessageListByEventId(@PathParam("eventId") String eventId,@QueryParam("offset") int offset,@QueryParam("limit") int limit);
 	
+	@WebMethod
+	@POST
+	@Path("{eventId}/comments")
+	public EventComment comment(@HeaderParam("token") String token,@PathParam("eventId") String eventId, CommentRequest request);
+	
+	@WebMethod
+	@GET
+	@Path("{eventId}/comments")
+	public List<EventComment> getCommentListByEventId(@PathParam("eventId") String eventId,@QueryParam("offset") int offset,@QueryParam("limit") int limit);
 	
 	
 }
