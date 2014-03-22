@@ -111,6 +111,15 @@ public class UserTest {
 	
 	
 	@Test 
+	public void testUpdateProfile() throws Exception{
+		HttpUtils http = new HttpUtils(token);
+		String url = "http://localhost/cxf/rest/profile";
+		String content = "{\"location\": \"冈到了\",\"qq\": \"329985729\"}";
+		String response = http.putData(url, content);
+		System.out.println(response);	
+	}
+	
+	@Test 
 	public void testlogin() throws Exception{
 		HttpUtils http = new HttpUtils(token);
 		String url = "http://localhost/cxf/rest/login";

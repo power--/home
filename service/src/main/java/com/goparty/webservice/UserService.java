@@ -27,6 +27,7 @@ import org.apache.cxf.jaxrs.model.wadl.DocTarget;
 
 import com.goparty.data.model.*;
 import com.goparty.webservice.model.LoginRequest;
+import com.goparty.webservice.model.UserRequest;
 import com.goparty.webservice.model.UserResponse;
 
 @Path("/")
@@ -51,7 +52,7 @@ public interface UserService {
 	
 	@PUT
 	@Path("profile")
-	public UserResponse updateProfile(@HeaderParam("token") String token,User user);
+	public UserResponse updateProfile(@HeaderParam("token") String token,UserRequest request);
 	
 
 	

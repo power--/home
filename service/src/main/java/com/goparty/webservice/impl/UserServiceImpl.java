@@ -6,8 +6,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.activation.DataHandler;
 import javax.ws.rs.core.MediaType;
@@ -16,11 +18,19 @@ import javax.ws.rs.core.Response;
 import org.apache.cxf.common.util.StringUtils; 
 import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.LoggerFactory; 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
  
+
+
+
+
+
+
 import com.goparty.data.model.StringResponse;
 import com.goparty.data.model.User;  
 import com.goparty.data.model.UserToken;
@@ -29,6 +39,7 @@ import com.goparty.data.service.FriendDataService;
 import com.goparty.exception.ValidationException;
 import com.goparty.webservice.UserService;
 import com.goparty.webservice.model.LoginRequest; 
+import com.goparty.webservice.model.UserRequest;
 import com.goparty.webservice.model.UserResponse;
 
 
@@ -49,13 +60,26 @@ public class UserServiceImpl implements UserService {
 		User ret = userDataService.read(id);  
 		return getUserResponse(ret);
 	}
+	
 
+	//ignore null values
+	private String[] getNullPropertyNames (Object source) {
+	    final BeanWrapper src = new BeanWrapperImpl(source);
+	    java.beans.PropertyDescriptor[] pds = src.getPropertyDescriptors();
+
+	    Set<String> emptyNames = new HashSet<String>();
+	    for(java.beans.PropertyDescriptor pd : pds) {
+	        Object srcValue = src.getPropertyValue(pd.getName());
+	        if (srcValue == null) emptyNames.add(pd.getName());
+	    }
+	    String[] result = new String[emptyNames.size()];
+	    return emptyNames.toArray(result);
+	}
 	private UserResponse getUserResponse(User user){
 		UserResponse userResponse = new UserResponse();
 		BeanUtils.copyProperties(user, userResponse);
 		return userResponse;
 	}
-
 	@Override
 	public UserResponse getProfile(String token) {
 		User ret = userDataService.getUserByToken(token);
@@ -63,10 +87,10 @@ public class UserServiceImpl implements UserService {
 	} 
 
 	@Override
-	public UserResponse updateProfile(String token,User user) {
-		User currentUser = userDataService.getUserByToken(token);
-		BeanUtils.copyProperties(user, currentUser);
-		return getUserResponse(userDataService.update(user));
+	public UserResponse updateProfile(String token,UserRequest request) {
+		User currentUser = userDataService.getUserByToken(token); 
+		BeanUtils.copyProperties(request, currentUser,getNullPropertyNames(request));
+		return getUserResponse(userDataService.update(currentUser));
 	} 
 
 	public UserDataService getUserDataService() {
