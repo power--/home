@@ -91,7 +91,7 @@ public class FriendTest {
 	public void testAdd() throws Exception {
 		HttpUtils http = new HttpUtils(token);
 		String url = "http://localhost/cxf/rest/friends/groups";
-		String json = "{\"groupName\": \"\" }";
+		String json = "{\"groupName\": \"bb\" }";
 		String response = http.postData(url, json);
 		System.out.println(response);	 
 		

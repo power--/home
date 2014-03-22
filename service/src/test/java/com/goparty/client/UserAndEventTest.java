@@ -20,6 +20,10 @@ import java.util.List;
 
 
 
+
+
+import javax.ws.rs.core.Response;
+
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.jaxrs.client.ClientConfiguration;
@@ -39,6 +43,7 @@ import com.goparty.data.model.*;
 import com.goparty.webservice.EventService; 
 import com.goparty.webservice.UserService;
 import com.goparty.webservice.model.LoginRequest;
+import com.goparty.webservice.model.UserResponse;
 
 public class UserAndEventTest {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -74,6 +79,8 @@ public class UserAndEventTest {
 	@Test 
 	public void testProfile() {
 		String token = "68257019-8aaf-4e57-9c3c-3eb7c577438d";
+		UserResponse ur  = userService.getProfile(token);
+		
 		User owner = new User();
 		owner.setId("33");
 		owner.setNickName("Bo");
@@ -91,11 +98,10 @@ public class UserAndEventTest {
 		att2.setPassword("password");
 		 
 		logger.error("*******************************");
-		owner  = userService.getProfile(token);
-		owner  = userService.getUserInfo(owner.getId());
+		ur  = userService.getUserInfo("33");
 		logger.error("*******************************");
 		owner.setNickName("Chen, Bo");
-		userService.updateProfile(owner);
+		userService.updateProfile(token,owner);
 	}
 	
 	@Test 
@@ -103,10 +109,10 @@ public class UserAndEventTest {
 		String token = "68257019-8aaf-4e57-9c3c-3eb7c577438d";
 		LoginRequest request = new LoginRequest(); 
 		request.setOpenId("openId");
-		User u = userService.login(token,request);
+		Response u = userService.login(token,request);
 		assertNotNull(u);
 		userService.logout(token);
-		User u2 = userService.login(token,request);
+		Response u2 = userService.login(token,request);
 		assertNull(u2);
 		  
 //		Event event = new Event();

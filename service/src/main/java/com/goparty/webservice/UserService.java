@@ -15,6 +15,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.apache.cxf.annotations.GZIP;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
@@ -26,6 +27,7 @@ import org.apache.cxf.jaxrs.model.wadl.DocTarget;
 
 import com.goparty.data.model.*;
 import com.goparty.webservice.model.LoginRequest;
+import com.goparty.webservice.model.UserResponse;
 
 @Path("/")
 @WebService
@@ -34,7 +36,7 @@ public interface UserService {
 	
 	@POST
 	@Path("login") 
-	public User login(@HeaderParam("token") String token, LoginRequest request);
+	public Response login(@HeaderParam("token") String token, LoginRequest request);
 	
 	
 	@POST
@@ -44,12 +46,12 @@ public interface UserService {
 	
 	@GET
 	@Path("profile")
-	public User getProfile(@Description(value = "the id of the user") @HeaderParam("token") String token);
+	public UserResponse getProfile(@Description(value = "the id of the user") @HeaderParam("token") String token);
 		
 	
 	@PUT
 	@Path("profile")
-	public User updateProfile(User user);
+	public UserResponse updateProfile(@HeaderParam("token") String token,User user);
 	
 
 	
@@ -59,12 +61,12 @@ public interface UserService {
 		@Description(value = "returns a user by id", target = DocTarget.METHOD),
 		@Description(value = "user of the id", target = DocTarget.RETURN)
 	})
-	public User getUserInfo(@Description(value = "the id of the user") @PathParam("userId") String userId);
+	public UserResponse getUserInfo(@Description(value = "the id of the user") @PathParam("userId") String userId);
 	
 	
 	@GET
 	@Path("users") 
-	public List<User> search(@QueryParam("search") String search,@QueryParam("offset") int offset,@QueryParam("limit") int limit);
+	public List<UserResponse> search(@QueryParam("search") String search,@QueryParam("offset") int offset,@QueryParam("limit") int limit);
 	 
 	
 	@POST

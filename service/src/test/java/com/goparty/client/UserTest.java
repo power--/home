@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 public class UserTest {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
+	private String token = "4e8bb1e4-4fab-4c4e-9a9f-cf5ece4cc2aa";
 	
 	@Test
 	public void testSearch() throws Exception {
@@ -82,7 +83,7 @@ public class UserTest {
 			//urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 			urlConnection.setRequestProperty("Accept", "application/json");
 			urlConnection.setRequestProperty("charset", "utf-8");
-			urlConnection.setRequestProperty("token", "4e8bb1e4-4fab-4c4e-9a9f-cf5ece4cc2aa");
+			urlConnection.setRequestProperty("token", "5397efef-01ef-4d4b-aef8-260508af81bf");
 
 			int HttpResult = urlConnection.getResponseCode();
 			StringBuffer sb = new StringBuffer();
@@ -106,6 +107,16 @@ public class UserTest {
 			if (urlConnection != null)
 				urlConnection.disconnect();
 		}
+	}
+	
+	
+	@Test 
+	public void testlogin() throws Exception{
+		HttpUtils http = new HttpUtils(token);
+		String url = "http://localhost/cxf/rest/login";
+		String content = "{\"openId\": \"openId--\",\"tokenId\": \"tokenId--\"}";
+		String response = http.postData(url, content);
+		System.out.println(response);	
 	}
 	
 	

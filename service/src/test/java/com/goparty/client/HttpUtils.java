@@ -131,6 +131,11 @@ public class HttpUtils {
 			
 			StringBuffer sb = new StringBuffer();
 			if (HttpResult == HttpURLConnection.HTTP_OK) {
+				String responseToken = conn.getHeaderField("token");
+				if(responseToken!=null){
+					System.out.println("Got token from server. toke="+token);
+				}
+				
 				InputStream input = conn.getInputStream();
 				BufferedReader br = new BufferedReader(new InputStreamReader(input, "utf-8"));
 				String line = null;

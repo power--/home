@@ -3,6 +3,7 @@ package com.goparty.webservice.impl;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -10,39 +11,25 @@ import java.util.Map;
 
 import javax.activation.DataHandler;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-import org.apache.cxf.common.util.StringUtils;
-import org.apache.cxf.jaxrs.ext.multipart.Attachment;
+import org.apache.cxf.common.util.StringUtils; 
 import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import com.goparty.data.model.Event;
 import com.goparty.data.model.StringResponse;
-import com.goparty.data.model.User; 
-import com.goparty.data.model.UserFriend;
+import com.goparty.data.model.User;  
 import com.goparty.data.model.UserToken;
 import com.goparty.data.service.UserDataService;
 import com.goparty.data.service.FriendDataService;
 import com.goparty.exception.ValidationException;
 import com.goparty.webservice.UserService;
-import com.goparty.webservice.model.LoginRequest;
+import com.goparty.webservice.model.LoginRequest; 
+import com.goparty.webservice.model.UserResponse;
 
 
 @Service("userService")
@@ -58,24 +45,29 @@ public class UserServiceImpl implements UserService {
 	private FriendDataService userFriendDataService;
 
 	@Override
-	public User getUserInfo(String id) {
-		User ret = userDataService.read(id); 
-		return ret;
+	public UserResponse getUserInfo(String id) {		
+		User ret = userDataService.read(id);  
+		return getUserResponse(ret);
 	}
 
+	private UserResponse getUserResponse(User user){
+		UserResponse userResponse = new UserResponse();
+		BeanUtils.copyProperties(user, userResponse);
+		return userResponse;
+	}
 
 	@Override
-	public User getProfile(String token) {
+	public UserResponse getProfile(String token) {
 		User ret = userDataService.getUserByToken(token);
-		return ret;
+		return getUserResponse(ret);
 	} 
 
 	@Override
-	public User updateProfile(User user) {		
-		return userDataService.update(user);
-	}
-
- 
+	public UserResponse updateProfile(String token,User user) {
+		User currentUser = userDataService.getUserByToken(token);
+		BeanUtils.copyProperties(user, currentUser);
+		return getUserResponse(userDataService.update(user));
+	} 
 
 	public UserDataService getUserDataService() {
 		return userDataService;
@@ -141,7 +133,7 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
-	public User login(String token, LoginRequest request){
+	public Response login(String token, LoginRequest request){
 		if(StringUtils.isEmpty(token)){
 			String openId = request.getOpenId();
 			String tokenId = request.getTokenId();
@@ -173,7 +165,8 @@ public class UserServiceImpl implements UserService {
 		}
 		User u = userDataService.getUserByToken(token);
 		logger.info("Login successfully. token=" + token + ", userId=" + u.getId());
-		return u;
+		UserResponse response = getUserResponse(u);		
+		return Response.ok(response).header("token", u.getToken()).build();
 	}
 
 
@@ -188,8 +181,12 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
-	public List<User> search(String keyword, int offset, int limit) {
-		return userDataService.search(keyword, offset, limit);
+	public List<UserResponse> search(String keyword, int offset, int limit) {
+		List<UserResponse> urList = new ArrayList<UserResponse>();
+		for(User user : userDataService.search(keyword, offset, limit)){ 
+			urList.add(this.getUserResponse(user));
+		}
+		return urList;
 	}
 
  

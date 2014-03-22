@@ -53,7 +53,7 @@ public class MessageTest {
 	public void testAdd() throws Exception {
 		HttpUtils http = new HttpUtils(token);
 		String url = "http://localhost/cxf/rest/events/12/messages";
-		String json = "{\"content\": \"love you!\" }";
+		String json = "{\"content\": \"love you too!\" }";
 		String response = http.postData(url, json);
 		System.out.println(response);	 
 		

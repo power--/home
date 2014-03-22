@@ -1,6 +1,5 @@
 package com.goparty.ex;
-
-import java.io.PrintStream;
+ 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -21,11 +20,7 @@ public class BaseExceptionMapper implements ExceptionMapper<BaseException>{
 		if(code == 0){
 			resp.setCode(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode());
 		}
-		if(code == Response.Status.OK.getStatusCode()){
-			resp.setStatus("success");
-		}else{
-			resp.setStatus("error");
-		}
+ 
 		resp.setMessage(exception.getMessage());
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw);
