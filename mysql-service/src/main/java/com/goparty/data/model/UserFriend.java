@@ -19,6 +19,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name="gp_user_friend")
 public class UserFriend {
  
+
+	public final static String STATUS_INIT = "INIT";
+	public final static String STATUS_AGREE = "AGREE";
+	public final static String STATUS_RJECT = "RJECT";
+	
 	@Id
 	private String userId;
 	

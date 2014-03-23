@@ -25,7 +25,9 @@ import org.apache.cxf.jaxrs.model.wadl.Descriptions;
 import org.apache.cxf.jaxrs.model.wadl.DocTarget;
 
 import com.goparty.data.model.*;
+import com.goparty.data.vo.FriendInvitatinVo;
 import com.goparty.webservice.model.FriendRequest;
+import com.goparty.webservice.model.FriendResponse;
 import com.goparty.webservice.model.InvitationRequest;
 
 @Path("/friends/")
@@ -35,7 +37,7 @@ public interface FriendService {
 	
 	@POST
 	@Path("{friendId}") 
-	public boolean add(@HeaderParam("token") String token,  @PathParam("friendId") String friendId, FriendRequest request);
+	public boolean invite(@HeaderParam("token") String token,  @PathParam("friendId") String friendId, FriendRequest request);
 	
 	
 	@PUT
@@ -47,17 +49,23 @@ public interface FriendService {
 	@Path("{friendId}") 
 	public boolean delete(@HeaderParam("token") String token,  @PathParam("friendId") String friendId);	
 	
+	@GET 
+	public List<FriendResponse> getFriends(@HeaderParam("token") String token,@QueryParam("offset") int offset,@QueryParam("limit") int limit);	 
 	
 	
 	
 	@GET
-	@Path("invitations")
-	public List<UserFriend> getFriendInvitationList(@HeaderParam("token") String token,@QueryParam("offset") int offset,@QueryParam("limit") int limit);
+	@Path("unrespondedInvitations")
+	public List<FriendInvitatinVo> getUnRespInvitations(@HeaderParam("token") String token,@QueryParam("offset") int offset,@QueryParam("limit") int limit);
 		
 	
 	@PUT
-	@Path("invitations/{friendId}")
-	public boolean respondFriendInvitation(@HeaderParam("token") String token,  @PathParam("friendId") String friendId, InvitationRequest request);
+	@Path("unrespondedInvitations/{invitationId}")
+	public boolean respondInvitation(@HeaderParam("token") String token,  @PathParam("invitationId") String invitationId, InvitationRequest request);
+	
+	@GET
+	@Path("respondedInvitations")
+	public List<FriendInvitatinVo> getRespInvitations(@HeaderParam("token") String token,@QueryParam("offset") int offset,@QueryParam("limit") int limit);
 	
  
 	@POST

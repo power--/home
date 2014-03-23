@@ -42,9 +42,10 @@ import com.goparty.webservice.model.InvitationRequest;
 public class FriendTest {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	private FriendService friendService; 
-	private static final String applicationURI ="http://localhost";
+	private String applicationURI = "http://localhost/cxf/rest";
 
-	private String token = "5397efef-01ef-4d4b-aef8-260508af81bf";
+	private String token = "4e8bb1e4-4fab-4c4e-9a9f-cf5ece4cc2aa";
+	private HttpUtils http = new HttpUtils(token);
 	
 	@Before
 	public void setUp(){
@@ -63,26 +64,41 @@ public class FriendTest {
         return providers; 
     }  
 	
-	@Test 
-	public void testAddFriend(){ 
-		String friendId = "95";
-//		friendService.add(token,friendId, "2");
-		 
-		FriendRequest ur = new FriendRequest();
-		ur.setRemarkName("new Remark");
-		friendService.update(token,friendId, ur);
-		
+	
+	
+	@Test
+	public void testAddFriend() throws Exception {  
+		String url = applicationURI + "/friends/97"; 
+		String content = "{\"message\": \"我是蔡虎\"}";
+		String response = http.postData(url, content);
+		System.out.println(response);
 	}
 	
 	@Test
-	public void testInvitation(){
-		List<UserFriend> list = friendService.getFriendInvitationList(token,0,5);
-		assertTrue(list.size()>0);
-		
-		InvitationRequest request = new InvitationRequest();
-		request.setResponse("AGREE");		
-		request.setMessage("Good Boy");
-		friendService.respondFriendInvitation(token, "35", request);
+	public void testUpdateFriend() throws Exception {  
+		String url = applicationURI + "/friends/97"; 
+		String content = "{\"groupId\": \"2\",\"remarkName\": \"Tim\"}";
+		String response = http.putData(url, content);
+		System.out.println(response);
+	}
+	
+	@Test
+	public void testDeleteFriend() throws Exception {  
+		String url = applicationURI + "/friends/97";  
+		String response = http.deleteData(url);
+		System.out.println(response);
+	}
+	
+	@Test
+	public void testGetFriend() throws Exception {  
+		String url = applicationURI + "/friends?offset=0&limit=5";  
+		String response = http.getData(url);
+		System.out.println(response);
+	}
+	
+	
+	@Test
+	public void testInvitation(){ 
 		
 	}
 	

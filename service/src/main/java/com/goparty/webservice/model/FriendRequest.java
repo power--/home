@@ -4,11 +4,23 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "friendRequest")
 public class FriendRequest {
+	private String message;
+	
 	private String remarkName;
 	
 	private String groupId;
 	
 	private String groupName;
+
+	
+	
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
 	public String getRemarkName() {
 		return remarkName;

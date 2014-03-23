@@ -1,6 +1,7 @@
 package com.goparty.webservice.impl;
   
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.PathParam;
@@ -11,14 +12,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service; 
 
+import com.goparty.data.constant.InvitationAcceptance;
+import com.goparty.data.constant.InvitationStatus;
+import com.goparty.data.model.FriendInvitation;
 import com.goparty.data.model.Group;
 import com.goparty.data.model.User;
 import com.goparty.data.model.UserFriend; 
 import com.goparty.data.model.UserFriendPK;
 import com.goparty.data.service.FriendDataService; 
 import com.goparty.data.service.UserDataService;
+import com.goparty.data.vo.FriendInvitatinVo;
 import com.goparty.webservice.FriendService;
 import com.goparty.webservice.model.FriendRequest;
+import com.goparty.webservice.model.FriendResponse;
 import com.goparty.webservice.model.InvitationRequest;
 
 
@@ -33,18 +39,16 @@ public class FriendServiceImpl implements FriendService {
 	private UserDataService userDataService;
 	
 	@Override
-	public boolean add(String token, String friendId,  FriendRequest request) {
-		User user = userDataService.getUserByToken(token);		
-		UserFriend uf = new UserFriend();
-		uf.setUserId(user.getId());
-		uf.setFriendId(friendId);	 
-		
-		List<Group> groups = new ArrayList<Group>();
-		Group g = new Group();
-		g.setId(request.getGroupId());
-		groups.add(g);
-		uf.setGroups(groups);
-		friendDataService.create(uf);
+	public boolean invite(String token, String friendId,  FriendRequest request) {
+		User user = userDataService.getUserByToken(token);	
+		FriendInvitation invitation = new FriendInvitation();
+		invitation.setInviterId(user.getId());
+		invitation.setInviterMessage(request.getMessage());
+		invitation.setInviteeId(friendId);
+		invitation.setAcceptance(InvitationAcceptance.N);
+		invitation.setStatus(InvitationStatus.INIT);
+		invitation.setUpdateTime(new Date());
+		friendDataService.invite(invitation);		
 		return true;
 	}
 
@@ -69,14 +73,13 @@ public class FriendServiceImpl implements FriendService {
 	}
 	
 	@Override
-	public List<UserFriend> getFriendInvitationList(String token,int offset,int limit) {
-		PageRequest pageable = new PageRequest(offset, limit);		 
+	public List<FriendInvitatinVo> getUnRespInvitations(String token,int offset,int limit) { 
 		User user = userDataService.getUserByToken(token);		
-		return friendDataService.getFriendInvitationList(user.getId(),pageable);
+		return friendDataService.getUnRespInvitations(user.getId(),offset,limit);
 	}
 
 	@Override
-	public boolean respondFriendInvitation(String token, String friendId, InvitationRequest request) {
+	public boolean respondInvitation(String token, String friendId, InvitationRequest request) {
 		User user = userDataService.getUserByToken(token);		
 		UserFriend uf = new UserFriend(); 
 		uf.setUserId(user.getId());
@@ -84,6 +87,13 @@ public class FriendServiceImpl implements FriendService {
 		uf.setStatus(request.getResponse());
 		friendDataService.update(uf);
 		return true;
+	}
+	
+	@Override
+	public List<FriendInvitatinVo> getRespInvitations(String token, int offset,
+			int limit) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -113,6 +123,24 @@ public class FriendServiceImpl implements FriendService {
 		boolean result = friendDataService.deleteGroup(groupId);
 		return result;
 	}
+
+	@Override
+	public List<FriendResponse> getFriends(String token,int offset,int limit) {
+		List<FriendResponse> list = new ArrayList<FriendResponse>();
+		PageRequest pageable = new PageRequest(offset, limit);	
+		User user = userDataService.getUserByToken(token);
+		List<UserFriend> friends = friendDataService.getFriends(user.getId(),pageable);
+		for(UserFriend friend : friends){
+			FriendResponse fr = new FriendResponse();
+			fr.setFriendId(friend.getFriendId());
+			fr.setRemarkName(friend.getRemarkName());
+			fr.setGroups(friend.getGroups());
+			list.add(fr);
+		} 
+		return list;
+	}
+
+	
 
 	
 	 

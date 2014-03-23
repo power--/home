@@ -17,12 +17,15 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional; 
 
 import com.goparty.data.exception.BaseException;
+import com.goparty.data.model.FriendInvitation;
 import com.goparty.data.model.Group;
 import com.goparty.data.model.UserFriend;
 import com.goparty.data.model.UserFriendPK;
 import com.goparty.data.repository.IFriendDataRepository;
+import com.goparty.data.repository.IFriendInvitationDataRepository;
 import com.goparty.data.repository.IGroupDataRepository;
 import com.goparty.data.repository.IUserDataRepository;
+import com.goparty.data.vo.FriendInvitatinVo;
 @Repository("friendDataService")
 @Transactional
 public class FriendDataService {
@@ -33,6 +36,9 @@ public class FriendDataService {
 	private EntityManager em;
 	
 	@Autowired
+	private IFriendInvitationDataRepository friendInvitationDataRepository;
+	
+	@Autowired
 	private IFriendDataRepository friendDataRepository;
 	
 	@Autowired
@@ -41,10 +47,12 @@ public class FriendDataService {
 	@Autowired
 	private IUserDataRepository userDataRepository;
 	
-	public final static String STATUS_INIT = "INIT";
-	public final static String STATUS_AGREE = "AGREE";
-	public final static String STATUS_RJECT = "RJECT";
+	//invitation
+	public void invite(FriendInvitation invitation){
+		friendInvitationDataRepository.save(invitation);
+	}
 	
+	//user friend
 	public UserFriend read(UserFriendPK id) {
 		UserFriend friend = friendDataRepository.findOne(id);
 		return friend;
@@ -58,7 +66,7 @@ public class FriendDataService {
 			}
 		}
 		uf.setUpdateTime(new Date());
-		uf.setStatus(STATUS_INIT);
+		uf.setStatus(UserFriend.STATUS_INIT);
 		uf = friendDataRepository.save(uf);
 		return uf;
 	}
@@ -95,10 +103,25 @@ public class FriendDataService {
 		return ret;
 	}
 	
-	public List<UserFriend> getFriendInvitationList(String userId, Pageable pageable) { 
-		return friendDataRepository.findByUserIdAndStatus(userId, "INIT", pageable);
+	public List<FriendInvitatinVo> getUnRespInvitations(String userId, int offset, int limit) { 
+		Query  query = em.createNativeQuery("SELECT i.id as invitationId,i.inviterMessage,i.`status`,i.updateTime,u.id as userId,u.nickName,u.birthdate,u.gender,u.location,u.signature,u.photo"
+				+ " FROM gp_friend_invitation i join gp_user u on i.inviterId=u.id where  i.`status`='INIT' and i.inviteeId=:userId limit :offset, :limit", FriendInvitatinVo.class);
+		query.setParameter("userId", userId);
+		query.setParameter("offset", offset);
+		query.setParameter("limit", limit);
+		return query.getResultList();
 	}
-
+	
+	public List<UserFriend> getFriends(String userId, Pageable pageable) {		 
+		List<UserFriend> friends = friendDataRepository.findByUserIdAndStatus(userId, UserFriend.STATUS_AGREE, pageable);
+		for(UserFriend f : friends){		
+			f.setGroups(this.getGroups(f.getFriendId()));
+		}
+		return friends;
+	}
+	
+	
+	//group
 	public Group addGroup(Group group){
 		if(StringUtils.isEmpty(group.getName())){
 			throw new BaseException("group name should not be empty.");
@@ -127,6 +150,7 @@ public class FriendDataService {
 		return ret;
 	}
 	
+	
 	public boolean addUserToGroup(String userId,String groupId){
 		Query query = em.createNativeQuery("insert into gp_group_user(groupId,userId) values(?,?)");
 		query.setParameter(1, groupId);
@@ -134,5 +158,13 @@ public class FriendDataService {
 		query.executeUpdate();
 		return true;
 	}
+	
+	public List<Group> getGroups(String userId){
+		Query  query = em.createNativeQuery("select g.* from gp_group_user gu join gp_group g on gu.groupId=g.id where gu.userId=92 ", Group.class);
+		return query.getResultList();
+		
+	}
+
+
 	
 }

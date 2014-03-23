@@ -43,10 +43,7 @@ public class FriendDataServiceTest extends AbstractRepositoryTest {
 	}
 	
 	@Test
-	public void testInvitation(){
-		PageRequest pageable = new PageRequest(0, 5);	
-		List<UserFriend> list = friendDataService.getFriendInvitationList("33",pageable);
-		assertTrue(list.size()>0);
+	public void testInvitation(){ 
 	}
 
 	@Test
