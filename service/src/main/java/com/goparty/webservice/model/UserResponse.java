@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.springframework.format.annotation.DateTimeFormat;
 @XmlRootElement(name = "response")
 public class UserResponse {
-	 
+	 private String id;
 	 private String phone;
 	 private String nickName;
 	 
@@ -82,6 +82,12 @@ public class UserResponse {
 	}
 	public void setWeibo(String weibo) {
 		this.weibo = weibo;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 	 
 	 
