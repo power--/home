@@ -10,6 +10,21 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
+DROP TABLE IF EXISTS `gp_friend_invitation`;
+CREATE TABLE `gp_friend_invitation` (
+  `id` int(11) NOT NULL auto_increment,
+  `inviterId` int(11) default NULL,
+  `inviterMessage` varchar(255) default NULL,
+  `inviteeId` int(11) default NULL,
+  `inviteeMessage` varchar(255) default NULL,
+  `acceptance` varchar(10) default NULL,
+  `status` char(4) default NULL,
+  `updateTime` datetime default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 -- Dumping structure for table openfire.gp_event
 DROP TABLE IF EXISTS `gp_event`;
 CREATE TABLE IF NOT EXISTS `gp_event` (
