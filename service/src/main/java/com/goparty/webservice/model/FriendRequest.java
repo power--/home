@@ -1,50 +1,42 @@
 package com.goparty.webservice.model;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "friendRequest")
-public class FriendRequest {
-	private String message;
+import com.goparty.data.model.Group;
+
+@XmlRootElement(name = "request")
+public class FriendRequest { 
 	
 	private String remarkName;
 	
-	private String groupId;
-	
-	private String groupName;
 
-	
-	
-	public String getMessage() {
-		return message;
-	}
+	private List<Group> groups;
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
 
 	public String getRemarkName() {
 		return remarkName;
 	}
 
+
 	public void setRemarkName(String remarkName) {
 		this.remarkName = remarkName;
 	}
 
-	public String getGroupId() {
-		return groupId;
+
+	public List<Group> getGroups() {
+		return groups;
 	}
 
-	public void setGroupId(String groupId) {
-		this.groupId = groupId;
+
+	public void setGroups(List<Group> groups) {
+		this.groups = groups;
 	}
 
-	public String getGroupName() {
-		return groupName;
-	}
-
-	public void setGroupName(String groupName) {
-		this.groupName = groupName;
-	}
+ 
+	 
+ 
 	
 	
 

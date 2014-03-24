@@ -48,7 +48,13 @@ public class FriendDataService {
 	private IUserDataRepository userDataRepository;
 	
 	//invitation
-	public void invite(FriendInvitation invitation){
+	public void addInvitation(FriendInvitation invitation){
+		friendInvitationDataRepository.save(invitation);
+	}
+	public FriendInvitation getInvitation(String invitationId){
+		return friendInvitationDataRepository.findOne(invitationId);
+	}
+	public void updateInvitation(FriendInvitation invitation){
 		friendInvitationDataRepository.save(invitation);
 	}
 	
@@ -66,7 +72,7 @@ public class FriendDataService {
 			}
 		}
 		uf.setUpdateTime(new Date());
-		uf.setStatus(UserFriend.STATUS_INIT);
+		uf.setStatus(UserFriend.STATUS_NORMAL);
 		uf = friendDataRepository.save(uf);
 		return uf;
 	}
@@ -103,17 +109,27 @@ public class FriendDataService {
 		return ret;
 	}
 	
-	public List<FriendInvitatinVo> getUnRespInvitations(String userId, int offset, int limit) { 
-		Query  query = em.createNativeQuery("SELECT i.id as invitationId,i.inviterMessage,i.`status`,i.updateTime,u.id as userId,u.nickName,u.birthdate,u.gender,u.location,u.signature,u.photo"
-				+ " FROM gp_friend_invitation i join gp_user u on i.inviterId=u.id where  i.`status`='INIT' and i.inviteeId=:userId limit :offset, :limit", FriendInvitatinVo.class);
-		query.setParameter("userId", userId);
+	public List<FriendInvitatinVo> getUnRespInvitations(String inviteeId, int offset, int limit) { 
+		Query  query = em.createNativeQuery("SELECT i.id as invitationId,i.inviterMessage as message,i.`status`,i.updateTime,u.id as userId,u.nickName,u.birthdate,u.gender,u.location,u.signature,u.photo"
+				+ " FROM gp_friend_invitation i join gp_user u on i.inviterId=u.id where  i.`status`='INIT' and i.inviteeId=:inviteeId limit :offset, :limit", FriendInvitatinVo.class);
+		query.setParameter("inviteeId", inviteeId);
 		query.setParameter("offset", offset);
 		query.setParameter("limit", limit);
 		return query.getResultList();
 	}
 	
+	public List<FriendInvitatinVo> getRespInvitations(String inviterId, int offset, int limit) { 
+		Query  query = em.createNativeQuery("SELECT i.id as invitationId,i.inviteeMessage as message,i.`status`,i.updateTime,u.id as userId,u.nickName,u.birthdate,u.gender,u.location,u.signature,u.photo"
+				+ " FROM gp_friend_invitation i join gp_user u on i.inviterId=u.id where  i.`status`='RESP' and i.inviterId=:inviterId limit :offset, :limit", FriendInvitatinVo.class);
+		query.setParameter("inviterId", inviterId);
+		query.setParameter("offset", offset);
+		query.setParameter("limit", limit);
+		return query.getResultList();
+	}
+	
+	
 	public List<UserFriend> getFriends(String userId, Pageable pageable) {		 
-		List<UserFriend> friends = friendDataRepository.findByUserIdAndStatus(userId, UserFriend.STATUS_AGREE, pageable);
+		List<UserFriend> friends = friendDataRepository.findByUserIdAndStatus(userId, UserFriend.STATUS_NORMAL, pageable);
 		for(UserFriend f : friends){		
 			f.setGroups(this.getGroups(f.getFriendId()));
 		}
@@ -150,13 +166,16 @@ public class FriendDataService {
 		return ret;
 	}
 	
-	
-	public boolean addUserToGroup(String userId,String groupId){
+	public void deleteUserFromAllGroup(String userId){
+		Query query = em.createNativeQuery("delete from gp_group_user where userId = ?");
+		query.setParameter(1, userId);
+		query.executeUpdate();
+	}
+	public void addUserToGroup(String userId,String groupId){
 		Query query = em.createNativeQuery("insert into gp_group_user(groupId,userId) values(?,?)");
 		query.setParameter(1, groupId);
 		query.setParameter(2, userId);
-		query.executeUpdate();
-		return true;
+		query.executeUpdate(); 
 	}
 	
 	public List<Group> getGroups(String userId){

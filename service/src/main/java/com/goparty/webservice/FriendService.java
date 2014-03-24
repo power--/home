@@ -28,7 +28,8 @@ import com.goparty.data.model.*;
 import com.goparty.data.vo.FriendInvitatinVo;
 import com.goparty.webservice.model.FriendRequest;
 import com.goparty.webservice.model.FriendResponse;
-import com.goparty.webservice.model.InvitationRequest;
+import com.goparty.webservice.model.FriendInvitationRequest;
+import com.goparty.webservice.model.GroupRequest;
 
 @Path("/friends/")
 @WebService
@@ -37,7 +38,7 @@ public interface FriendService {
 	
 	@POST
 	@Path("{friendId}") 
-	public boolean invite(@HeaderParam("token") String token,  @PathParam("friendId") String friendId, FriendRequest request);
+	public FriendInvitation invite(@HeaderParam("token") String token,  @PathParam("friendId") String friendId, FriendInvitationRequest request);
 	
 	
 	@PUT
@@ -61,7 +62,7 @@ public interface FriendService {
 	
 	@PUT
 	@Path("unrespondedInvitations/{invitationId}")
-	public boolean respondInvitation(@HeaderParam("token") String token,  @PathParam("invitationId") String invitationId, InvitationRequest request);
+	public boolean respondInvitation(@HeaderParam("token") String token,  @PathParam("invitationId") String invitationId, FriendInvitationRequest request);
 	
 	@GET
 	@Path("respondedInvitations")
@@ -70,11 +71,11 @@ public interface FriendService {
  
 	@POST
 	@Path("groups") 
-	public Group addGroup(@HeaderParam("token") String token,  FriendRequest request);
+	public Group addGroup(@HeaderParam("token") String token,  GroupRequest request);
 	
 	@PUT
 	@Path("groups/{groupId}") 
-	public Group updateGroup(@HeaderParam("token") String token,  @PathParam("groupId") String groupId,  FriendRequest request);
+	public Group updateGroup(@HeaderParam("token") String token,  @PathParam("groupId") String groupId,  GroupRequest request);
 	
 	@DELETE
 	@Path("groups/{groupId}") 

@@ -135,7 +135,7 @@ DROP TABLE IF EXISTS `gp_user_friend`;
 CREATE TABLE IF NOT EXISTS `gp_user_friend` (
   `userId` int(10) NOT NULL,
   `friendId` int(10) NOT NULL,
-  `status` char(5) DEFAULT 'INIT' COMMENT 'init  agree reject',
+  `status` char(6) DEFAULT 'NORMAL' COMMENT 'NORMAL, BLACK',
   `updateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `remarkName` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`userId`,`friendId`)

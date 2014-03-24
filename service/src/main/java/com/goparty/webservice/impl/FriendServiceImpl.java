@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service; 
+import org.springframework.util.CollectionUtils;
 
 import com.goparty.data.constant.InvitationAcceptance;
 import com.goparty.data.constant.InvitationStatus;
@@ -25,7 +26,8 @@ import com.goparty.data.vo.FriendInvitatinVo;
 import com.goparty.webservice.FriendService;
 import com.goparty.webservice.model.FriendRequest;
 import com.goparty.webservice.model.FriendResponse;
-import com.goparty.webservice.model.InvitationRequest;
+import com.goparty.webservice.model.FriendInvitationRequest;
+import com.goparty.webservice.model.GroupRequest;
 
 
 @Service("friendService")
@@ -39,7 +41,7 @@ public class FriendServiceImpl implements FriendService {
 	private UserDataService userDataService;
 	
 	@Override
-	public boolean invite(String token, String friendId,  FriendRequest request) {
+	public FriendInvitation invite(String token, String friendId,  FriendInvitationRequest request) {
 		User user = userDataService.getUserByToken(token);	
 		FriendInvitation invitation = new FriendInvitation();
 		invitation.setInviterId(user.getId());
@@ -47,19 +49,28 @@ public class FriendServiceImpl implements FriendService {
 		invitation.setInviteeId(friendId);
 		invitation.setAcceptance(InvitationAcceptance.N);
 		invitation.setStatus(InvitationStatus.INIT);
-		invitation.setUpdateTime(new Date());
-		friendDataService.invite(invitation);		
-		return true;
+		invitation.setUpdateTime(new Date());			
+		friendDataService.addInvitation(invitation);
+		return invitation;
 	}
 
 	@Override
 	public UserFriend update(String token, String friendId, FriendRequest request) {
 		User user = userDataService.getUserByToken(token);
+		//user friend
 		UserFriend uf = new UserFriend();
 		uf.setUserId(user.getId());
 		uf.setFriendId(friendId);
 		uf.setRemarkName(request.getRemarkName());
 		uf = friendDataService.update(uf);
+		//update group
+		if(!CollectionUtils.isEmpty(request.getGroups())){
+			friendDataService.deleteUserFromAllGroup(user.getId());
+			for(Group group: request.getGroups()){
+				friendDataService.addUserToGroup(user.getId(), group.getId());
+			}
+		}
+		
 		return uf;
 	}
 
@@ -79,27 +90,42 @@ public class FriendServiceImpl implements FriendService {
 	}
 
 	@Override
-	public boolean respondInvitation(String token, String friendId, InvitationRequest request) {
-		User user = userDataService.getUserByToken(token);		
-		UserFriend uf = new UserFriend(); 
-		uf.setUserId(user.getId());
-		uf.setFriendId(friendId);	
-		uf.setStatus(request.getResponse());
-		friendDataService.update(uf);
+	public boolean respondInvitation(String token, String invitationId, FriendInvitationRequest request) {
+		//invitation
+		FriendInvitation invitation = friendDataService.getInvitation(invitationId);
+		if(request.getAcceptance().equals(InvitationAcceptance.Y.toString())){
+			invitation.setAcceptance(InvitationAcceptance.Y);
+		}else{
+			invitation.setAcceptance(InvitationAcceptance.N);
+		}
+		invitation.setStatus(InvitationStatus.RESP);
+		invitation.setInviteeMessage(request.getMessage());
+		invitation.setUpdateTime(new Date());
+		friendDataService.updateInvitation(invitation);
+		
+		//user friend
+		if(invitation.getAcceptance().equals(InvitationAcceptance.Y)){
+			User user = userDataService.getUserByToken(token);		
+			UserFriend uf = new UserFriend(); 
+			uf.setUserId(user.getId());
+			uf.setFriendId(invitation.getInviteeId());	
+			uf.setStatus(UserFriend.STATUS_NORMAL);
+			friendDataService.create(uf);
+			logger.info("add friend successfully.");
+		}		
 		return true;
 	}
 	
 	@Override
 	public List<FriendInvitatinVo> getRespInvitations(String token, int offset,
 			int limit) {
-		// TODO Auto-generated method stub
-		return null;
+		User user = userDataService.getUserByToken(token);		
+		return friendDataService.getRespInvitations(user.getId(),offset,limit);
 	}
 
 	@Override
-	public Group addGroup(String token, FriendRequest request) {
-		User user = userDataService.getUserByToken(token);	
-		
+	public Group addGroup(String token, GroupRequest request) {
+		User user = userDataService.getUserByToken(token);			
 		Group group = new Group();
 		group.setName(request.getGroupName());
 		group.setOwnerId(user.getId());
@@ -108,7 +134,7 @@ public class FriendServiceImpl implements FriendService {
 	}
 
 	@Override
-	public Group updateGroup(String token, String groupId,  FriendRequest request) {
+	public Group updateGroup(String token, String groupId,  GroupRequest request) {
 		User user = userDataService.getUserByToken(token);	
 		Group group = new Group();
 		group.setId(groupId);

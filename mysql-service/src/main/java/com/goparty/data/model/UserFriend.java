@@ -20,9 +20,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class UserFriend {
  
 
-	public final static String STATUS_INIT = "INIT";
-	public final static String STATUS_AGREE = "AGREE";
-	public final static String STATUS_RJECT = "RJECT";
+	public final static String STATUS_NORMAL = "NORMAL";
+	public final static String STATUS_BLACK = "BLACK"; 
 	
 	@Id
 	private String userId;

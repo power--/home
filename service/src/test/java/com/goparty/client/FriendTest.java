@@ -37,7 +37,7 @@ import com.goparty.data.model.Group;
 import com.goparty.data.model.UserFriend;
 import com.goparty.webservice.FriendService;
 import com.goparty.webservice.model.FriendRequest;
-import com.goparty.webservice.model.InvitationRequest;
+import com.goparty.webservice.model.FriendInvitationRequest;
 
 public class FriendTest {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -67,17 +67,41 @@ public class FriendTest {
 	
 	
 	@Test
-	public void testAddFriend() throws Exception {  
+	public void testInvite() throws Exception {  
 		String url = applicationURI + "/friends/97"; 
-		String content = "{\"message\": \"我是蔡虎\"}";
+		String content = "{\"message\": \"我是time\"}";
 		String response = http.postData(url, content);
 		System.out.println(response);
 	}
 	
 	@Test
+	public void testRespInvitation() throws Exception{ 
+		String url = applicationURI + "/friends/unrespondedInvitations/3";  
+		String content = "{\"acceptance\": \"Y\",\"message\": \"fuck you!\"}";
+		String response = http.putData(url, content);
+		System.out.println(response);
+	}
+	
+	
+	@Test
+	public void testGetUnRespInvitation() throws Exception{ 
+		String url = applicationURI + "/friends/unrespondedInvitations?offset=0&limit=5";  
+		String response = http.getData(url);
+		System.out.println(response);
+	}
+	
+	@Test
+	public void testGetRespInvitation() throws Exception{ 
+		String url = applicationURI + "/friends/respondedInvitations?offset=0&limit=5";  
+		String response = http.getData(url);
+		System.out.println(response);
+	}
+	
+	
+	@Test
 	public void testUpdateFriend() throws Exception {  
 		String url = applicationURI + "/friends/97"; 
-		String content = "{\"groupId\": \"2\",\"remarkName\": \"Tim\"}";
+		String content = "{\"groups\": [{\"id\":412},{\"id\":25}],\"remarkName\": \"Tim\"}";
 		String response = http.putData(url, content);
 		System.out.println(response);
 	}
@@ -97,10 +121,7 @@ public class FriendTest {
 	}
 	
 	
-	@Test
-	public void testInvitation(){ 
-		
-	}
+	
 	
 	
 	@Test
@@ -111,13 +132,13 @@ public class FriendTest {
 		String response = http.postData(url, json);
 		System.out.println(response);	 
 		
-//		String updateUrl =  "http://localhost/cxf/rest/friends/groups/6";
-//		String updateJson = "{\"groupName\": \"private girl friend \" }";
-//		String updateResp = http.putData(updateUrl, updateJson);
-//		System.out.println(updateResp);	
+		String updateUrl =  "http://localhost/cxf/rest/friends/groups/6";
+		String updateJson = "{\"groupName\": \"private girl friend \" }";
+		String updateResp = http.putData(updateUrl, updateJson);
+		System.out.println(updateResp);	
 		
-//		String deleteResp = http.deleteData("http://localhost/cxf/rest/friends/groups/7");
-//		System.out.println(deleteResp);
+		String deleteResp = http.deleteData("http://localhost/cxf/rest/friends/groups/7");
+		System.out.println(deleteResp);
 	}
 	
 	

@@ -37,7 +37,7 @@ import com.goparty.data.model.Group;
 import com.goparty.data.model.UserFriend;
 import com.goparty.webservice.FriendService;
 import com.goparty.webservice.model.FriendRequest;
-import com.goparty.webservice.model.InvitationRequest;
+import com.goparty.webservice.model.FriendInvitationRequest;
 
 public class MessageTest {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());

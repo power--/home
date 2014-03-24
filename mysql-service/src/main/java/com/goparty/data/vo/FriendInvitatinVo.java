@@ -2,14 +2,18 @@ package com.goparty.data.vo;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlRootElement;
  
 @XmlRootElement(name = "response")
+@Entity
 public class FriendInvitatinVo {
-	private String invitationId;
+	 @Id
+	 private String invitationId;
 	
 	
-	private String userId;
+	 private String userId;
 	 private String nickName;	  
 	 private Date birthdate;	 
 	 private String gender;

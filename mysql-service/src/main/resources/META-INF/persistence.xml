@@ -9,5 +9,6 @@
 		<class>com.goparty.data.model.UserFriend</class>
 		<class>com.goparty.data.model.UserToken</class>
 		<class>com.goparty.data.model.Group</class>
+		<class>com.goparty.data.vo.FriendInvitatinVo</class>
 	</persistence-unit>
 </persistence> 
