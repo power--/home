@@ -11,10 +11,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service; 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import com.goparty.data.constant.InvitationAcceptance;
 import com.goparty.data.constant.InvitationStatus;
+import com.goparty.data.exception.BaseException;
 import com.goparty.data.model.FriendInvitation;
 import com.goparty.data.model.Group;
 import com.goparty.data.model.User;
@@ -23,14 +25,15 @@ import com.goparty.data.model.UserFriendPK;
 import com.goparty.data.service.FriendDataService; 
 import com.goparty.data.service.UserDataService;
 import com.goparty.data.vo.FriendInvitatinVo;
+import com.goparty.data.vo.FriendVo;
 import com.goparty.webservice.FriendService;
-import com.goparty.webservice.model.FriendRequest;
-import com.goparty.webservice.model.FriendResponse;
+import com.goparty.webservice.model.FriendRequest; 
 import com.goparty.webservice.model.FriendInvitationRequest;
 import com.goparty.webservice.model.GroupRequest;
 
 
 @Service("friendService")
+@Transactional
 public class FriendServiceImpl implements FriendService {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -65,9 +68,13 @@ public class FriendServiceImpl implements FriendService {
 		uf = friendDataService.update(uf);
 		//update group
 		if(!CollectionUtils.isEmpty(request.getGroups())){
-			friendDataService.deleteUserFromAllGroup(user.getId());
+			friendDataService.deleteUserFromGroup(friendId,user.getId());
 			for(Group group: request.getGroups()){
-				friendDataService.addUserToGroup(user.getId(), group.getId());
+				Group g = friendDataService.getGroup(group.getId());
+				if(g==null || !g.getOwnerId().equals(user.getId())){
+					throw new NullPointerException("The group you assigned is not belong to you.");
+				}
+				friendDataService.addUserToGroup(friendId, group.getId());
 			}
 		}
 		
@@ -91,8 +98,13 @@ public class FriendServiceImpl implements FriendService {
 
 	@Override
 	public boolean respondInvitation(String token, String invitationId, FriendInvitationRequest request) {
+		User user = userDataService.getUserByToken(token);	
 		//invitation
 		FriendInvitation invitation = friendDataService.getInvitation(invitationId);
+		if(!user.getId().equals(invitation.getInviteeId())){
+			throw new BaseException("You have no permission to respond this invitation.");
+		}
+		
 		if(request.getAcceptance().equals(InvitationAcceptance.Y.toString())){
 			invitation.setAcceptance(InvitationAcceptance.Y);
 		}else{
@@ -104,15 +116,27 @@ public class FriendServiceImpl implements FriendService {
 		friendDataService.updateInvitation(invitation);
 		
 		//user friend
-		if(invitation.getAcceptance().equals(InvitationAcceptance.Y)){
-			User user = userDataService.getUserByToken(token);		
+		if(invitation.getAcceptance().equals(InvitationAcceptance.Y)){	
 			UserFriend uf = new UserFriend(); 
 			uf.setUserId(user.getId());
-			uf.setFriendId(invitation.getInviteeId());	
+			uf.setFriendId(invitation.getInviterId());	
 			uf.setStatus(UserFriend.STATUS_NORMAL);
 			friendDataService.create(uf);
 			logger.info("add friend successfully.");
+			
+			//update group
+			if(!CollectionUtils.isEmpty(request.getGroups())){  
+				friendDataService.deleteUserFromGroup(invitation.getInviterId(),user.getId());
+				for(Group group: request.getGroups()){
+					Group g = friendDataService.getGroup(group.getId());
+					if(g==null || !g.getOwnerId().equals(user.getId())){
+						throw new BaseException("The group you assigned is not belong to you.");
+					}
+					friendDataService.addUserToGroup(invitation.getInviterId(),group.getId());
+				}
+			}
 		}		
+		
 		return true;
 	}
 	
@@ -151,19 +175,11 @@ public class FriendServiceImpl implements FriendService {
 	}
 
 	@Override
-	public List<FriendResponse> getFriends(String token,int offset,int limit) {
-		List<FriendResponse> list = new ArrayList<FriendResponse>();
-		PageRequest pageable = new PageRequest(offset, limit);	
+	public List<FriendVo> getFriends(String token,int offset,int limit) {  
 		User user = userDataService.getUserByToken(token);
-		List<UserFriend> friends = friendDataService.getFriends(user.getId(),pageable);
-		for(UserFriend friend : friends){
-			FriendResponse fr = new FriendResponse();
-			fr.setFriendId(friend.getFriendId());
-			fr.setRemarkName(friend.getRemarkName());
-			fr.setGroups(friend.getGroups());
-			list.add(fr);
-		} 
-		return list;
+		List<FriendVo> friends = friendDataService.getFriends(user.getId(),offset,limit);
+	 
+		return friends;
 	}
 
 	

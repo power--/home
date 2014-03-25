@@ -26,7 +26,8 @@ import com.goparty.data.repository.IFriendInvitationDataRepository;
 import com.goparty.data.repository.IGroupDataRepository;
 import com.goparty.data.repository.IUserDataRepository;
 import com.goparty.data.vo.FriendInvitatinVo;
-@Repository("friendDataService")
+import com.goparty.data.vo.FriendVo;
+//@Repository("friendDataService")
 @Transactional
 public class FriendDataService {
 	
@@ -46,7 +47,17 @@ public class FriendDataService {
 	
 	@Autowired
 	private IUserDataRepository userDataRepository;
+
+	private String sqlGetFriends;
 	
+	
+	
+	public String getSqlGetFriends() {
+		return sqlGetFriends;
+	}
+	public void setSqlGetFriends(String sqlGetFriends) {
+		this.sqlGetFriends = sqlGetFriends;
+	}
 	//invitation
 	public void addInvitation(FriendInvitation invitation){
 		friendInvitationDataRepository.save(invitation);
@@ -120,7 +131,7 @@ public class FriendDataService {
 	
 	public List<FriendInvitatinVo> getRespInvitations(String inviterId, int offset, int limit) { 
 		Query  query = em.createNativeQuery("SELECT i.id as invitationId,i.inviteeMessage as message,i.`status`,i.updateTime,u.id as userId,u.nickName,u.birthdate,u.gender,u.location,u.signature,u.photo"
-				+ " FROM gp_friend_invitation i join gp_user u on i.inviterId=u.id where  i.`status`='RESP' and i.inviterId=:inviterId limit :offset, :limit", FriendInvitatinVo.class);
+				+ " FROM gp_friend_invitation i join gp_user u on i.inviteeId=u.id where  i.`status`='RESP' and i.inviterId=:inviterId limit :offset, :limit", FriendInvitatinVo.class);
 		query.setParameter("inviterId", inviterId);
 		query.setParameter("offset", offset);
 		query.setParameter("limit", limit);
@@ -128,10 +139,14 @@ public class FriendDataService {
 	}
 	
 	
-	public List<UserFriend> getFriends(String userId, Pageable pageable) {		 
-		List<UserFriend> friends = friendDataRepository.findByUserIdAndStatus(userId, UserFriend.STATUS_NORMAL, pageable);
-		for(UserFriend f : friends){		
-			f.setGroups(this.getGroups(f.getFriendId()));
+	public List<FriendVo> getFriends(String userId, int offset, int limit) {		 
+		Query  query = em.createNativeQuery(sqlGetFriends, FriendVo.class);
+		query.setParameter("userId", userId);
+		query.setParameter("offset", offset);
+		query.setParameter("limit", limit); 
+		List<FriendVo> friends = query.getResultList();
+		for(FriendVo f : friends){		
+			f.setGroups(this.getGroups(userId,f.getId()));
 		}
 		return friends;
 	}
@@ -166,9 +181,14 @@ public class FriendDataService {
 		return ret;
 	}
 	
-	public void deleteUserFromAllGroup(String userId){
-		Query query = em.createNativeQuery("delete from gp_group_user where userId = ?");
-		query.setParameter(1, userId);
+	public Group getGroup(String id){
+		return groupDataRepository.findOne(id);
+	}
+	
+	public void deleteUserFromGroup(String userId, String groupOwnerId){ 
+		Query query = em.createNativeQuery("delete gu from gp_group_user gu join gp_group g on g.id=gu.groupId where userId = :userId and g.ownerId=:groupOwnerId");
+		query.setParameter("userId", userId);
+		query.setParameter("groupOwnerId", groupOwnerId);
 		query.executeUpdate();
 	}
 	public void addUserToGroup(String userId,String groupId){
@@ -178,12 +198,15 @@ public class FriendDataService {
 		query.executeUpdate(); 
 	}
 	
-	public List<Group> getGroups(String userId){
-		Query  query = em.createNativeQuery("select g.* from gp_group_user gu join gp_group g on gu.groupId=g.id where gu.userId=92 ", Group.class);
+	public List<Group> getGroups(String userId,String friendId){
+		Query  query = em.createNativeQuery("select g.* from gp_group_user gu join gp_group g on gu.groupId=g.id where gu.userId=:friendId and g.ownerId=:userId", Group.class);
+		query.setParameter("userId", userId);
+		query.setParameter("friendId", friendId);
 		return query.getResultList();
 		
 	}
 
+	
 
 	
 }

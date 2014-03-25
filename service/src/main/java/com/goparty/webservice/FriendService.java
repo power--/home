@@ -26,8 +26,8 @@ import org.apache.cxf.jaxrs.model.wadl.DocTarget;
 
 import com.goparty.data.model.*;
 import com.goparty.data.vo.FriendInvitatinVo;
-import com.goparty.webservice.model.FriendRequest;
-import com.goparty.webservice.model.FriendResponse;
+import com.goparty.data.vo.FriendVo;
+import com.goparty.webservice.model.FriendRequest; 
 import com.goparty.webservice.model.FriendInvitationRequest;
 import com.goparty.webservice.model.GroupRequest;
 
@@ -51,7 +51,7 @@ public interface FriendService {
 	public boolean delete(@HeaderParam("token") String token,  @PathParam("friendId") String friendId);	
 	
 	@GET 
-	public List<FriendResponse> getFriends(@HeaderParam("token") String token,@QueryParam("offset") int offset,@QueryParam("limit") int limit);	 
+	public List<FriendVo> getFriends(@HeaderParam("token") String token,@QueryParam("offset") int offset,@QueryParam("limit") int limit);	 
 	
 	
 	

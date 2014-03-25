@@ -41,4 +41,18 @@ http://www.springframework.org/schema/data/jpa/spring-jpa.xsd ">
 	 
 	<tx:annotation-driven transaction-manager="transactionManager" />
 	
+	<bean id="friendDataService" class="com.goparty.data.service.FriendDataService">
+		<property name="sqlGetFriends">
+			<value><![CDATA[
+			SELECT u.id ,u.nickName,u.birthdate,u.gender,u.location,
+				u.signature,u.photo,
+				uf.remarkName		
+			FROM gp_user_friend uf
+			JOIN gp_user u ON uf.friendId=u.id
+			WHERE uf.status='NORMAL' AND uf.userId=:userId
+			LIMIT :offset, :limit 
+			]]></value>
+		</property>
+	</bean>
+	
 </beans> 

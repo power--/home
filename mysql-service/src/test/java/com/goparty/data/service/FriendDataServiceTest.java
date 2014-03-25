@@ -43,7 +43,8 @@ public class FriendDataServiceTest extends AbstractRepositoryTest {
 	}
 	
 	@Test
-	public void testInvitation(){ 
+	public void testGetFriends(){ 
+		friendDataService.getFriends("98", 0, 5);
 	}
 
 	@Test

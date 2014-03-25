@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.goparty.data.model.Group;
+
 @XmlRootElement(name = "request")
 public class FriendInvitationRequest {
 	
@@ -11,7 +13,7 @@ public class FriendInvitationRequest {
 	
 	private String message;
 	
-	private List<String> groups;
+	private List<Group> groups;
 
 	public String getMessage() {
 		return message;
@@ -29,13 +31,15 @@ public class FriendInvitationRequest {
 		this.acceptance = acceptance;
 	}
 
-	public List<String> getGroups() {
+	public List<Group> getGroups() {
 		return groups;
 	}
 
-	public void setGroups(List<String> groups) {
+	public void setGroups(List<Group> groups) {
 		this.groups = groups;
 	}
+
+ 
 	
 	
 	

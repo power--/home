@@ -76,8 +76,8 @@ public class FriendTest {
 	
 	@Test
 	public void testRespInvitation() throws Exception{ 
-		String url = applicationURI + "/friends/unrespondedInvitations/3";  
-		String content = "{\"acceptance\": \"Y\",\"message\": \"fuck you!\"}";
+		String url = applicationURI + "/friends/unrespondedInvitations/2";  
+		String content = "{\"groups\": [{\"id\":16},{\"id\":17}],\"acceptance\": \"Y\",\"message\": \"fuck you!!\"}";
 		String response = http.putData(url, content);
 		System.out.println(response);
 	}
@@ -101,7 +101,7 @@ public class FriendTest {
 	@Test
 	public void testUpdateFriend() throws Exception {  
 		String url = applicationURI + "/friends/97"; 
-		String content = "{\"groups\": [{\"id\":412},{\"id\":25}],\"remarkName\": \"Tim\"}";
+		String content = "{\"groups\": [{\"id\":16},{\"id\":17}],\"remarkName\": \"Tim\"}";
 		String response = http.putData(url, content);
 		System.out.println(response);
 	}

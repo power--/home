@@ -127,6 +127,7 @@ public class HttpUtils {
 
 			int HttpResult = conn.getResponseCode();
 			System.out.println("\nSending '"+method+"' request to URL : " + siteUrl);
+			System.out.println("Request Data: " + json);
 			System.out.println("Response Code : " + HttpResult);
 			
 			StringBuffer sb = new StringBuffer();
