@@ -15,6 +15,9 @@ import javax.persistence.TypedQuery;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 
 import com.goparty.data.model.Event;
 import com.goparty.data.model.Group;
@@ -27,7 +30,8 @@ public class FriendDataServiceTest extends AbstractRepositoryTest {
 
 	@Autowired
 	private FriendDataService friendDataService;
-	 
+	@Autowired
+	NamedParameterJdbcTemplate jdbcTemplate;
 	
 	@Test 
 	public void testGroup(){
@@ -43,8 +47,20 @@ public class FriendDataServiceTest extends AbstractRepositoryTest {
 	}
 	
 	@Test
+	public void testJdbc(){
+		List<Group> list = jdbcTemplate.query("select * from gp_group",ParameterizedBeanPropertyRowMapper.newInstance(Group.class));
+		for(Group g : list){
+			System.out.println(g);
+		}
+		
+	}
+	
+	@Test
 	public void testGetFriends(){ 
+		List<Group> list = jdbcTemplate.query("select * from gp_group",ParameterizedBeanPropertyRowMapper.newInstance(Group.class));
 		friendDataService.getFriends("98", 0, 5);
+		
+		
 	}
 
 	@Test

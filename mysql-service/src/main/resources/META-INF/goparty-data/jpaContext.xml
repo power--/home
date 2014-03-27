@@ -18,7 +18,12 @@ http://www.springframework.org/schema/data/jpa/spring-jpa.xsd ">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 
-
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+		<constructor-arg>
+			<ref bean="gopartyDataSource"></ref>
+		</constructor-arg>		
+	</bean>
+	
 	<!-- This is abstract so you can extend it in test and main according to environment  -->
 	<bean id="entityManagerFactoryAbstract" abstract="true"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
