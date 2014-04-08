@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Response;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,7 @@ import com.goparty.webservice.FriendService;
 import com.goparty.webservice.model.FriendRequest; 
 import com.goparty.webservice.model.FriendInvitationRequest;
 import com.goparty.webservice.model.GroupRequest;
+import com.goparty.webservice.utils.ResponseUtil;
 
 
 @Service("friendService")
@@ -44,7 +46,7 @@ public class FriendServiceImpl implements FriendService {
 	private UserDataService userDataService;
 	
 	@Override
-	public FriendInvitation invite(String token, String friendId,  FriendInvitationRequest request) {
+	public Response invite(String token, String friendId,  FriendInvitationRequest request) {
 		User user = userDataService.getUserByToken(token);	
 		FriendInvitation invitation = new FriendInvitation();
 		invitation.setInviterId(user.getId());
@@ -54,11 +56,11 @@ public class FriendServiceImpl implements FriendService {
 		invitation.setStatus(InvitationStatus.INIT);
 		invitation.setUpdateTime(new Date());			
 		friendDataService.addInvitation(invitation);
-		return invitation;
+		return ResponseUtil.buildResponse(invitation);
 	}
 
 	@Override
-	public UserFriend update(String token, String friendId, FriendRequest request) {
+	public Response update(String token, String friendId, FriendRequest request) {
 		User user = userDataService.getUserByToken(token);
 		//user friend
 		UserFriend uf = new UserFriend();
@@ -78,26 +80,26 @@ public class FriendServiceImpl implements FriendService {
 			}
 		}
 		
-		return uf;
+		return ResponseUtil.buildResponse(uf);
 	}
 
 	@Override
-	public boolean delete(String token, String friendId) {
+	public Response delete(String token, String friendId) {
 		User user = userDataService.getUserByToken(token);
 		UserFriendPK pk = new UserFriendPK();
 		pk.setUserId(user.getId());
 		pk.setFriendId(friendId);		
-		return friendDataService.delete(pk);
+		return ResponseUtil.buildResponse(friendDataService.delete(pk));
 	}
 	
 	@Override
-	public List<FriendInvitatinVo> getUnRespInvitations(String token,int offset,int limit) { 
+	public Response getUnRespInvitations(String token,int offset,int limit) { 
 		User user = userDataService.getUserByToken(token);		
-		return friendDataService.getUnRespInvitations(user.getId(),offset,limit);
+		return ResponseUtil.buildResponse(friendDataService.getUnRespInvitations(user.getId(),offset,limit));
 	}
 
 	@Override
-	public boolean respondInvitation(String token, String invitationId, FriendInvitationRequest request) {
+	public Response respondInvitation(String token, String invitationId, FriendInvitationRequest request) {
 		User user = userDataService.getUserByToken(token);	
 		//invitation
 		FriendInvitation invitation = friendDataService.getInvitation(invitationId);
@@ -137,49 +139,56 @@ public class FriendServiceImpl implements FriendService {
 			}
 		}		
 		
-		return true;
+		return ResponseUtil.buildResponse(true);
 	}
 	
 	@Override
-	public List<FriendInvitatinVo> getRespInvitations(String token, int offset,
+	public Response getRespInvitations(String token, int offset,
 			int limit) {
 		User user = userDataService.getUserByToken(token);		
-		return friendDataService.getRespInvitations(user.getId(),offset,limit);
+		return ResponseUtil.buildResponse(friendDataService.getRespInvitations(user.getId(),offset,limit));
 	}
 
 	@Override
-	public Group addGroup(String token, GroupRequest request) {
+	public Response addGroup(String token, GroupRequest request) {
 		User user = userDataService.getUserByToken(token);			
 		Group group = new Group();
 		group.setName(request.getGroupName());
 		group.setOwnerId(user.getId());
 		group = friendDataService.addGroup(group );
-		return group;
+		return ResponseUtil.buildResponse(group);
 	}
 
 	@Override
-	public Group updateGroup(String token, String groupId,  GroupRequest request) {
+	public Response getGroups(String token) {
+		User user = userDataService.getUserByToken(token);
+		List<Group> groups = friendDataService.getGroupsByUserId(user.getId());
+		return ResponseUtil.buildResponse(groups);
+	}
+	
+	@Override
+	public Response updateGroup(String token, String groupId,  GroupRequest request) {
 		User user = userDataService.getUserByToken(token);	
 		Group group = new Group();
 		group.setId(groupId);
 		group.setName(request.getGroupName());
 		group.setOwnerId(user.getId());		
 		group = friendDataService.updateGroup(group );
-		return group;
+		return ResponseUtil.buildResponse(group);
 	}
 
 	@Override
-	public boolean deleteGroup(String token, String groupId) {
+	public Response deleteGroup(String token, String groupId) {
 		boolean result = friendDataService.deleteGroup(groupId);
-		return result;
+		return ResponseUtil.buildResponse(result);
 	}
 
 	@Override
-	public List<FriendVo> getFriends(String token,int offset,int limit) {  
+	public Response getFriends(String token,int offset,int limit) {  
 		User user = userDataService.getUserByToken(token);
 		List<FriendVo> friends = friendDataService.getFriends(user.getId(),offset,limit);
 	 
-		return friends;
+		return ResponseUtil.buildResponse(friends);
 	}
 
 	

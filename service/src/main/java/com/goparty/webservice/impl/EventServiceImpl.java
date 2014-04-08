@@ -26,6 +26,7 @@ import com.goparty.data.service.UserDataService;
 import com.goparty.webservice.EventService;
 import com.goparty.webservice.model.CommentRequest;
 import com.goparty.webservice.model.MessageRequest;
+import com.goparty.webservice.utils.ResponseUtil;
 
 @Service("eventService")
 public class EventServiceImpl implements EventService {
@@ -43,13 +44,13 @@ public class EventServiceImpl implements EventService {
 	
 	
 	@Override
-	public Event read(String id) {
+	public Response read(String id) {
 		Event ret = eventDataService.read(id);
-		return ret;
+		return ResponseUtil.buildResponse(ret);
 	}
 
 	@Override
-	public Event create(Event event){
+	public Response create(Event event){
 		if(event.getTitle()==null){
 			throw new BaseException("The event title should not be null");
 		}
@@ -63,17 +64,17 @@ public class EventServiceImpl implements EventService {
 		List<User> refusedAttendees = new ArrayList<User>();
 		refusedAttendees.add(user);
 		event.setRefusedAttendees(refusedAttendees);
-		return event;
+		return ResponseUtil.buildResponse(event);
 	}
 
 	@Override
-	public Event update(Event event) {
+	public Response update(Event event) {
 		eventDataService.update(event);
-		return event;
+		return ResponseUtil.buildResponse(event);
 	}
 
 	@Override
-	public boolean delete(String id) {
+	public Response delete(String id) {
 		boolean ret = false;
 		try{
 			eventDataService.delete(id);
@@ -81,11 +82,11 @@ public class EventServiceImpl implements EventService {
 		}catch(Exception ex){
 			throw ex;
 		}
-		return ret;
+		return ResponseUtil.buildResponse(ret);
 	}
 
 	@Override
-	public BaseModel addInvitee(String eventId, String userId) {
+	public Response addInvitee(String eventId, String userId) {
 		BaseModel ret = new BaseModel();
 		
 		Event evt = eventDataService.read(eventId);
@@ -98,7 +99,7 @@ public class EventServiceImpl implements EventService {
 			Map<String, String> data = new HashMap<String, String>();
 			data.put("eventId", eventId);
 			ret.setData(data);
-			return ret;
+			return ResponseUtil.buildResponse(ret);
 		}
 		
 		User user = userDataService.read(userId);
@@ -109,7 +110,7 @@ public class EventServiceImpl implements EventService {
 			
 			Map<String, String> data = new HashMap<String, String>();
 			data.put("userId", userId);
-			return ret;
+			return ResponseUtil.buildResponse(ret);
 		}
 		
 		if(evt.getAttendees().contains(user)){
@@ -120,7 +121,7 @@ public class EventServiceImpl implements EventService {
 			Map<String, String> data = new HashMap<String, String>();
 			data.put("userId", userId);
 			data.put("eventId", eventId);
-			return ret;
+			return ResponseUtil.buildResponse(ret);
 		}
 		
 		evt.getAttendees().add(user);
@@ -134,11 +135,11 @@ public class EventServiceImpl implements EventService {
 		data.put("userId", userId);
 		data.put("eventId", eventId);
 		
-		return ret;
+		return ResponseUtil.buildResponse(ret);
 	}
 
 	@Override
-	public BaseModel delInvitee(String eventId, String userId) {
+	public Response delInvitee(String eventId, String userId) {
         BaseModel ret = new BaseModel();
 		
 		Event evt = eventDataService.read(eventId);
@@ -150,7 +151,7 @@ public class EventServiceImpl implements EventService {
 			
 			Map<String, String> data = new HashMap<String, String>();
 			data.put("eventId", eventId);
-			return ret;
+			return ResponseUtil.buildResponse(ret);
 		}
 		
 		User user = userDataService.read(userId);
@@ -161,7 +162,7 @@ public class EventServiceImpl implements EventService {
 			
 			Map<String, String> data = new HashMap<String, String>();
 			data.put("userId", userId);
-			return ret;
+			return ResponseUtil.buildResponse(ret);
 		}
 		
 		if(!evt.getAttendees().contains(user)){
@@ -172,7 +173,7 @@ public class EventServiceImpl implements EventService {
 			Map<String, String> data = new HashMap<String, String>();
 			data.put("userId", userId);
 			data.put("eventId", eventId);
-			return ret;
+			return ResponseUtil.buildResponse(ret);
 		}
 		
 		evt.getAttendees().remove(user);
@@ -186,12 +187,12 @@ public class EventServiceImpl implements EventService {
 		data.put("userId", userId);
 		data.put("eventId", eventId);
 		
-		return ret;
+		return ResponseUtil.buildResponse(ret);
 	}
 
 	@Override
-	public BaseModel updateSponser(String eventId, String userId) {
-BaseModel ret = new BaseModel();
+	public Response updateSponser(String eventId, String userId) {
+		BaseModel ret = new BaseModel();
 		
 		Event evt = eventDataService.read(eventId);
 		
@@ -202,7 +203,7 @@ BaseModel ret = new BaseModel();
 			
 			Map<String, String> data = new HashMap<String, String>();
 			data.put("eventId", eventId);
-			return ret;
+			return ResponseUtil.buildResponse(ret);
 		}
 		
 		User user = userDataService.read(userId);
@@ -213,7 +214,7 @@ BaseModel ret = new BaseModel();
 			
 			Map<String, String> data = new HashMap<String, String>();
 			data.put("userId", userId);
-			return ret;
+			return ResponseUtil.buildResponse(ret);
 		}
 		
 		if(evt.getOwner().equals(user)){
@@ -224,7 +225,7 @@ BaseModel ret = new BaseModel();
 			Map<String, String> data = new HashMap<String, String>();
 			data.put("userId", userId);
 			data.put("eventId", eventId);
-			return ret;
+			return ResponseUtil.buildResponse(ret);
 		}
 		
 		evt.setOwner(user);
@@ -238,11 +239,11 @@ BaseModel ret = new BaseModel();
 		data.put("userId", userId);
 		data.put("eventId", eventId);
 		
-		return ret;
+		return ResponseUtil.buildResponse(ret);
 	}
 
 	@Override
-	public EventMessage publishMessage(String token, String eventId, MessageRequest request) {
+	public Response publishMessage(String token, String eventId, MessageRequest request) {
 		User user = userDataService.getUserByToken(token);
 		EventMessage msg = new EventMessage();
 		msg.setUserId(user.getId());
@@ -251,16 +252,16 @@ BaseModel ret = new BaseModel();
 		msg.setPublishTime(new Date());
 		msg.setType(MessageType.USER_MESSAGE);
 		msg = messageDataService.create(msg );
-		return msg;
+		return ResponseUtil.buildResponse(msg);
 	}
 
 	@Override
-	public List<EventMessage> getMessageListByEventId(String eventId,int offset,int limit) {		
-		return messageDataService.findByEventId(eventId, offset, limit);
+	public Response getMessageListByEventId(String eventId,int offset,int limit) {		
+		return ResponseUtil.buildResponse(messageDataService.findByEventId(eventId, offset, limit));
 	}
 
 	@Override
-	public EventComment comment(String token, String eventId,
+	public Response comment(String token, String eventId,
 			CommentRequest request) {
 		User user = userDataService.getUserByToken(token);
 		EventComment comment = new EventComment();
@@ -268,11 +269,11 @@ BaseModel ret = new BaseModel();
 		comment.setEventId(eventId); 
 		comment.setUserId(user.getId());
 		comment.setPublishTime(new Date());
-		return commentDataService.create(comment);
+		return ResponseUtil.buildResponse(commentDataService.create(comment));
 	}
 
 	@Override
-	public List<EventComment> getCommentListByEventId(String eventId,
+	public Response getCommentListByEventId(String eventId,
 			int offset, int limit) {
 		// TODO Auto-generated method stub
 		return null;

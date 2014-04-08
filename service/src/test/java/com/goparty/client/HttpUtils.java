@@ -134,7 +134,7 @@ public class HttpUtils {
 			if (HttpResult == HttpURLConnection.HTTP_OK) {
 				String responseToken = conn.getHeaderField("token");
 				if(responseToken!=null){
-					System.out.println("Got token from server. toke="+token);
+					System.out.println("Got token from server. token="+responseToken);
 				}
 				
 				InputStream input = conn.getInputStream();

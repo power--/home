@@ -160,6 +160,10 @@ public class FriendDataService {
 		return groupDataRepository.save(group);
 	}
 	
+	public List<Group> getGroupsByUserId(String userId){
+		return groupDataRepository.findByOwnerId(userId);
+	}
+	
 	public Group updateGroup(Group group){
 		Group g = groupDataRepository.findOne(group.getId());
 		if(g!=null){

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.ws.rs.core.Response;
+
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
@@ -15,6 +17,7 @@ import com.goparty.data.constant.EventVisibility;
 import com.goparty.data.model.Event;
 import com.goparty.data.model.EventCategory;
 import com.goparty.data.model.User;
+import com.goparty.webservice.utils.BaseData;
 
 public class EventTest {
 
@@ -56,28 +59,31 @@ public class EventTest {
 				true);
 
 		String data = mapper.writeValueAsString(evt).toString();
-		String url = "http://goparty.cloudapp.net/cxf/rest/events";
+		String url = "http://localhost/cxf/rest/events";
 		
 		String resp = HttpClientUtils.post(url, data);
 		
-		Event result = mapper.readValue(resp, Event.class);
+		System.out.println(resp);
+		
+		BaseData res = mapper.readValue(resp, BaseData.class);		
+		Event result = mapper.convertValue(res.getData(), Event.class);
 		result.setTitle("hello PUT");
 		data = mapper.writeValueAsString(result).toString();
 		HttpClientUtils.put(url, data);
 
-		url = "http://goparty.cloudapp.net/cxf/rest/events/"
+		url = "http://localhost/cxf/rest/events/"
 				+ result.getId()+"/invitees/72";
 		
 		HttpClientUtils.put(url, data);
 		
 		HttpClientUtils.delete(url);
 		
-		url = "http://goparty.cloudapp.net/cxf/rest/events/"
+		url = "http://localhost/cxf/rest/events/"
 				+ result.getId()+"/sponsors/33";
 		
 		HttpClientUtils.put(url, data);
 
-        url = "http://goparty.cloudapp.net/cxf/rest/events/"
+        url = "http://localhost/cxf/rest/events/"
 				+ result.getId();
         HttpClientUtils.get(url);
 		
