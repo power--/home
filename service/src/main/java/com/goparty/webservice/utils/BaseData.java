@@ -1,10 +1,10 @@
 package com.goparty.webservice.utils;
 
-public class BaseData<T>{
+public class BaseData{
 	private int code;
 	private String status;
 	private String message;
-	private T data;
+	private String data;
 	public int getCode() {
 		return code;
 	}
@@ -23,10 +23,11 @@ public class BaseData<T>{
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public T getData() {
+	public String getData() {
 		return data;
 	}
-	public void setData(T data) {
+	public void setData(String data) {
 		this.data = data;
-	}	
+	}
+ 	
 }
