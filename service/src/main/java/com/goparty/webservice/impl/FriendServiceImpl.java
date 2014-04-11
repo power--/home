@@ -17,14 +17,14 @@ import org.springframework.util.CollectionUtils;
 
 import com.goparty.data.constant.InvitationAcceptance;
 import com.goparty.data.constant.InvitationStatus;
+import com.goparty.data.dao.FriendDao;
+import com.goparty.data.dao.UserDao;
 import com.goparty.data.exception.BaseException;
 import com.goparty.data.model.FriendInvitation;
 import com.goparty.data.model.Group;
 import com.goparty.data.model.User;
 import com.goparty.data.model.UserFriend; 
 import com.goparty.data.model.UserFriendPK;
-import com.goparty.data.service.FriendDataService; 
-import com.goparty.data.service.UserDataService;
 import com.goparty.data.vo.FriendInvitatinVo;
 import com.goparty.data.vo.FriendVo;
 import com.goparty.webservice.FriendService;
@@ -40,14 +40,14 @@ public class FriendServiceImpl implements FriendService {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
-	private FriendDataService friendDataService;
+	private FriendDao friendDao;
 	
 	@Autowired
-	private UserDataService userDataService;
+	private UserDao userDao;
 	
 	@Override
 	public Response invite(String token, String friendId,  FriendInvitationRequest request) {
-		User user = userDataService.getUserByToken(token);	
+		User user = userDao.getUserByToken(token);	
 		FriendInvitation invitation = new FriendInvitation();
 		invitation.setInviterId(user.getId());
 		invitation.setInviterMessage(request.getMessage());
@@ -55,28 +55,28 @@ public class FriendServiceImpl implements FriendService {
 		invitation.setAcceptance(InvitationAcceptance.N);
 		invitation.setStatus(InvitationStatus.INIT);
 		invitation.setUpdateTime(new Date());			
-		friendDataService.addInvitation(invitation);
+		friendDao.addInvitation(invitation);
 		return ResponseUtil.buildResponse(invitation);
 	}
 
 	@Override
 	public Response update(String token, String friendId, FriendRequest request) {
-		User user = userDataService.getUserByToken(token);
+		User user = userDao.getUserByToken(token);
 		//user friend
 		UserFriend uf = new UserFriend();
 		uf.setUserId(user.getId());
 		uf.setFriendId(friendId);
 		uf.setRemarkName(request.getRemarkName());
-		uf = friendDataService.update(uf);
+		uf = friendDao.update(uf);
 		//update group
 		if(!CollectionUtils.isEmpty(request.getGroups())){
-			friendDataService.deleteUserFromGroup(friendId,user.getId());
+			friendDao.deleteUserFromGroup(friendId,user.getId());
 			for(Group group: request.getGroups()){
-				Group g = friendDataService.getGroup(group.getId());
+				Group g = friendDao.getGroup(group.getId());
 				if(g==null || !g.getOwnerId().equals(user.getId())){
 					throw new NullPointerException("The group you assigned is not belong to you.");
 				}
-				friendDataService.addUserToGroup(friendId, group.getId());
+				friendDao.addUserToGroup(friendId, group.getId());
 			}
 		}
 		
@@ -85,24 +85,24 @@ public class FriendServiceImpl implements FriendService {
 
 	@Override
 	public Response delete(String token, String friendId) {
-		User user = userDataService.getUserByToken(token);
+		User user = userDao.getUserByToken(token);
 		UserFriendPK pk = new UserFriendPK();
 		pk.setUserId(user.getId());
 		pk.setFriendId(friendId);		
-		return ResponseUtil.buildResponse(friendDataService.delete(pk));
+		return ResponseUtil.buildResponse(friendDao.delete(pk));
 	}
 	
 	@Override
 	public Response getUnRespInvitations(String token,int offset,int limit) { 
-		User user = userDataService.getUserByToken(token);		
-		return ResponseUtil.buildResponse(friendDataService.getUnRespInvitations(user.getId(),offset,limit));
+		User user = userDao.getUserByToken(token);		
+		return ResponseUtil.buildResponse(friendDao.getUnRespInvitations(user.getId(),offset,limit));
 	}
 
 	@Override
 	public Response respondInvitation(String token, String invitationId, FriendInvitationRequest request) {
-		User user = userDataService.getUserByToken(token);	
+		User user = userDao.getUserByToken(token);	
 		//invitation
-		FriendInvitation invitation = friendDataService.getInvitation(invitationId);
+		FriendInvitation invitation = friendDao.getInvitation(invitationId);
 		if(!user.getId().equals(invitation.getInviteeId())){
 			throw new BaseException("You have no permission to respond this invitation.");
 		}
@@ -115,7 +115,7 @@ public class FriendServiceImpl implements FriendService {
 		invitation.setStatus(InvitationStatus.RESP);
 		invitation.setInviteeMessage(request.getMessage());
 		invitation.setUpdateTime(new Date());
-		friendDataService.updateInvitation(invitation);
+		friendDao.updateInvitation(invitation);
 		
 		//user friend
 		if(invitation.getAcceptance().equals(InvitationAcceptance.Y)){	
@@ -123,18 +123,18 @@ public class FriendServiceImpl implements FriendService {
 			uf.setUserId(user.getId());
 			uf.setFriendId(invitation.getInviterId());	
 			uf.setStatus(UserFriend.STATUS_NORMAL);
-			friendDataService.create(uf);
+			friendDao.create(uf);
 			logger.info("add friend successfully.");
 			
 			//update group
 			if(!CollectionUtils.isEmpty(request.getGroups())){  
-				friendDataService.deleteUserFromGroup(invitation.getInviterId(),user.getId());
+				friendDao.deleteUserFromGroup(invitation.getInviterId(),user.getId());
 				for(Group group: request.getGroups()){
-					Group g = friendDataService.getGroup(group.getId());
+					Group g = friendDao.getGroup(group.getId());
 					if(g==null || !g.getOwnerId().equals(user.getId())){
 						throw new BaseException("The group you assigned is not belong to you.");
 					}
-					friendDataService.addUserToGroup(invitation.getInviterId(),group.getId());
+					friendDao.addUserToGroup(invitation.getInviterId(),group.getId());
 				}
 			}
 		}		
@@ -145,48 +145,48 @@ public class FriendServiceImpl implements FriendService {
 	@Override
 	public Response getRespInvitations(String token, int offset,
 			int limit) {
-		User user = userDataService.getUserByToken(token);		
-		return ResponseUtil.buildResponse(friendDataService.getRespInvitations(user.getId(),offset,limit));
+		User user = userDao.getUserByToken(token);		
+		return ResponseUtil.buildResponse(friendDao.getRespInvitations(user.getId(),offset,limit));
 	}
 
 	@Override
 	public Response addGroup(String token, GroupRequest request) {
-		User user = userDataService.getUserByToken(token);			
+		User user = userDao.getUserByToken(token);			
 		Group group = new Group();
 		group.setName(request.getGroupName());
 		group.setOwnerId(user.getId());
-		group = friendDataService.addGroup(group );
+		group = friendDao.addGroup(group );
 		return ResponseUtil.buildResponse(group);
 	}
 
 	@Override
 	public Response getGroups(String token) {
-		User user = userDataService.getUserByToken(token);
-		List<Group> groups = friendDataService.getGroupsByUserId(user.getId());
+		User user = userDao.getUserByToken(token);
+		List<Group> groups = friendDao.getGroupsByUserId(user.getId());
 		return ResponseUtil.buildResponse(groups);
 	}
 	
 	@Override
 	public Response updateGroup(String token, String groupId,  GroupRequest request) {
-		User user = userDataService.getUserByToken(token);	
+		User user = userDao.getUserByToken(token);	
 		Group group = new Group();
 		group.setId(groupId);
 		group.setName(request.getGroupName());
 		group.setOwnerId(user.getId());		
-		group = friendDataService.updateGroup(group );
+		group = friendDao.updateGroup(group );
 		return ResponseUtil.buildResponse(group);
 	}
 
 	@Override
 	public Response deleteGroup(String token, String groupId) {
-		boolean result = friendDataService.deleteGroup(groupId);
+		boolean result = friendDao.deleteGroup(groupId);
 		return ResponseUtil.buildResponse(result);
 	}
 
 	@Override
 	public Response getFriends(String token,int offset,int limit) {  
-		User user = userDataService.getUserByToken(token);
-		List<FriendVo> friends = friendDataService.getFriends(user.getId(),offset,limit);
+		User user = userDao.getUserByToken(token);
+		List<FriendVo> friends = friendDao.getFriends(user.getId(),offset,limit);
 	 
 		return ResponseUtil.buildResponse(friends);
 	}

@@ -14,14 +14,15 @@ import javax.persistence.TypedQuery;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired; 
- 
+
+import com.goparty.data.dao.CommentDao;
 import com.goparty.data.model.EventComment;
  
 
-public class CommentDataServiceTest extends AbstractRepositoryTest {
+public class CommentDaoTest extends AbstractRepositoryTest {
 
 	@Autowired
-	private CommentDataService commentDataService;
+	private CommentDao commentDao;
 	 
 	
 	@Test 
@@ -31,7 +32,7 @@ public class CommentDataServiceTest extends AbstractRepositoryTest {
 		comment.setEventId("12"); 
 		comment.setUserId("33");
 		comment.setPublishTime(new Date());
-		commentDataService.create(comment);
+		commentDao.create(comment);
 		 
 		//commentDataService.update("2","update comment");
 		
@@ -40,7 +41,7 @@ public class CommentDataServiceTest extends AbstractRepositoryTest {
 	 
 	@Test
 	public void testList(){
-		List<EventComment> list = commentDataService.findByEventId("12", 0, 5);
+		List<EventComment> list = commentDao.findByEventId("12", 0, 5);
 		assertTrue(list.size()>0);
 	}
  

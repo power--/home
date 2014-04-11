@@ -1,4 +1,4 @@
-package com.goparty.data.service;
+package com.goparty.data.dao;
 
 import java.util.Date;
 import java.util.List;
@@ -19,11 +19,11 @@ import com.goparty.data.exception.BaseException;
 import com.goparty.data.model.EventComment; 
 import com.goparty.data.repository.ICommentDataRepository;
 import com.goparty.data.repository.IUserDataRepository;
-@Repository("commentDataService")
+@Repository("commentDao")
 @Transactional
-public class CommentDataService {
+public class CommentDao {
 	
-	private Log log = LogFactory.getLog(CommentDataService.class);
+	private Log log = LogFactory.getLog(CommentDao.class);
 	
 	@PersistenceContext
 	private EntityManager em;

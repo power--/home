@@ -17,12 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.goparty.data.constant.MessageType;
+import com.goparty.data.dao.CommentDao;
+import com.goparty.data.dao.EventDao;
+import com.goparty.data.dao.MessageDao;
+import com.goparty.data.dao.UserDao;
 import com.goparty.data.exception.BaseException;
 import com.goparty.data.model.*;
-import com.goparty.data.service.CommentDataService;
-import com.goparty.data.service.EventDataService;
-import com.goparty.data.service.MessageDataService;
-import com.goparty.data.service.UserDataService;
 import com.goparty.webservice.EventService;
 import com.goparty.webservice.model.CommentRequest;
 import com.goparty.webservice.model.MessageRequest;
@@ -31,21 +31,21 @@ import com.goparty.webservice.utils.ResponseUtil;
 @Service("eventService")
 public class EventServiceImpl implements EventService {
 	@Autowired
-	private EventDataService eventDataService;
+	private EventDao eventDao;
 	
 	@Autowired
-	private UserDataService userDataService;
+	private UserDao userDao;
 
 	@Autowired
-	private MessageDataService messageDataService;
+	private MessageDao messageDataService;
 	
 	@Autowired
-	private CommentDataService commentDataService;
+	private CommentDao commentDao;
 	
 	
 	@Override
 	public Response read(String id) {
-		Event ret = eventDataService.read(id);
+		Event ret = eventDao.read(id);
 		return ResponseUtil.buildResponse(ret);
 	}
 
@@ -57,7 +57,7 @@ public class EventServiceImpl implements EventService {
 		
 		System.out.println(event.getId());
 		System.out.println(event.getId());
-		eventDataService.create(event);
+		eventDao.create(event);
 		
 		User user = new User();
 		user.setId("18");
@@ -69,7 +69,7 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public Response update(Event event) {
-		eventDataService.update(event);
+		eventDao.update(event);
 		return ResponseUtil.buildResponse(event);
 	}
 
@@ -77,7 +77,7 @@ public class EventServiceImpl implements EventService {
 	public Response delete(String id) {
 		boolean ret = false;
 		try{
-			eventDataService.delete(id);
+			eventDao.delete(id);
 			ret = true;
 		}catch(Exception ex){
 			throw ex;
@@ -89,7 +89,7 @@ public class EventServiceImpl implements EventService {
 	public Response addInvitee(String eventId, String userId) {
 		BaseModel ret = new BaseModel();
 		
-		Event evt = eventDataService.read(eventId);
+		Event evt = eventDao.read(eventId);
 		
 		if(evt == null){
 			ret.setCode(INTERNAL_SERVER_ERROR.getStatusCode());
@@ -102,7 +102,7 @@ public class EventServiceImpl implements EventService {
 			return ResponseUtil.buildResponse(ret);
 		}
 		
-		User user = userDataService.read(userId);
+		User user = userDao.read(userId);
 		if(user == null){
 			ret.setCode(INTERNAL_SERVER_ERROR.getStatusCode());
 			ret.setStatus(INTERNAL_SERVER_ERROR.toString());
@@ -125,7 +125,7 @@ public class EventServiceImpl implements EventService {
 		}
 		
 		evt.getAttendees().add(user);
-		eventDataService.update(evt);
+		eventDao.update(evt);
 		
 		ret.setCode(OK.getStatusCode());
 		ret.setStatus(OK.toString());
@@ -142,7 +142,7 @@ public class EventServiceImpl implements EventService {
 	public Response delInvitee(String eventId, String userId) {
         BaseModel ret = new BaseModel();
 		
-		Event evt = eventDataService.read(eventId);
+		Event evt = eventDao.read(eventId);
 		
 		if(evt == null){
 			ret.setCode(INTERNAL_SERVER_ERROR.getStatusCode());
@@ -154,7 +154,7 @@ public class EventServiceImpl implements EventService {
 			return ResponseUtil.buildResponse(ret);
 		}
 		
-		User user = userDataService.read(userId);
+		User user = userDao.read(userId);
 		if(user == null){
 			ret.setCode(INTERNAL_SERVER_ERROR.getStatusCode());
 			ret.setStatus(INTERNAL_SERVER_ERROR.toString());
@@ -177,7 +177,7 @@ public class EventServiceImpl implements EventService {
 		}
 		
 		evt.getAttendees().remove(user);
-		eventDataService.update(evt);
+		eventDao.update(evt);
 		
 		ret.setCode(OK.getStatusCode());
 		ret.setStatus(OK.toString());
@@ -194,7 +194,7 @@ public class EventServiceImpl implements EventService {
 	public Response updateSponser(String eventId, String userId) {
 		BaseModel ret = new BaseModel();
 		
-		Event evt = eventDataService.read(eventId);
+		Event evt = eventDao.read(eventId);
 		
 		if(evt == null){
 			ret.setCode(INTERNAL_SERVER_ERROR.getStatusCode());
@@ -206,7 +206,7 @@ public class EventServiceImpl implements EventService {
 			return ResponseUtil.buildResponse(ret);
 		}
 		
-		User user = userDataService.read(userId);
+		User user = userDao.read(userId);
 		if(user == null){
 			ret.setCode(INTERNAL_SERVER_ERROR.getStatusCode());
 			ret.setStatus(INTERNAL_SERVER_ERROR.toString());
@@ -229,7 +229,7 @@ public class EventServiceImpl implements EventService {
 		}
 		
 		evt.setOwner(user);
-		eventDataService.update(evt);
+		eventDao.update(evt);
 		
 		ret.setCode(OK.getStatusCode());
 		ret.setStatus(OK.toString());
@@ -244,7 +244,7 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public Response publishMessage(String token, String eventId, MessageRequest request) {
-		User user = userDataService.getUserByToken(token);
+		User user = userDao.getUserByToken(token);
 		EventMessage msg = new EventMessage();
 		msg.setUserId(user.getId());
 		msg.setEventId(eventId);
@@ -263,13 +263,13 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public Response comment(String token, String eventId,
 			CommentRequest request) {
-		User user = userDataService.getUserByToken(token);
+		User user = userDao.getUserByToken(token);
 		EventComment comment = new EventComment();
 		comment.setContent(request.getContent());
 		comment.setEventId(eventId); 
 		comment.setUserId(user.getId());
 		comment.setPublishTime(new Date());
-		return ResponseUtil.buildResponse(commentDataService.create(comment));
+		return ResponseUtil.buildResponse(commentDao.create(comment));
 	}
 
 	@Override

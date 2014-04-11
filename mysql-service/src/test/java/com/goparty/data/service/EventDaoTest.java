@@ -15,15 +15,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.goparty.data.constant.EventStatus;
 import com.goparty.data.constant.EventVisibility;
+import com.goparty.data.dao.EventDao;
 import com.goparty.data.model.Event;
 import com.goparty.data.model.EventCategory;
 import com.goparty.data.model.User;
  
 
-public class EventDataServiceTest extends AbstractRepositoryTest {
+public class EventDaoTest extends AbstractRepositoryTest {
 
 	@Autowired
-	private EventDataService eventDataService;
+	private EventDao eventDao;
 	 
 
 	
@@ -52,9 +53,9 @@ public class EventDataServiceTest extends AbstractRepositoryTest {
 		EventCategory cate = new EventCategory();
 		cate.setId("1");
 		event.setEventCategory(cate);		
-		event = eventDataService.create(event);
+		event = eventDao.create(event);
 		
-		Event e = eventDataService.read(event.getId()); 
+		Event e = eventDao.read(event.getId()); 
 		assertEquals("Hello World",e.getDescription());
 		assertNotNull(e.getOwner().getNickName());
 		 
@@ -90,7 +91,7 @@ public class EventDataServiceTest extends AbstractRepositoryTest {
 		
 		evt.setEventStatus(EventStatus.INIT);
 		evt.setVisibility(EventVisibility.V_PUBLIC);
-		evt = eventDataService.create(evt);
+		evt = eventDao.create(evt);
 	}
 	
 //	@Test

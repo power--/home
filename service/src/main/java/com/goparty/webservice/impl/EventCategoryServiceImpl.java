@@ -1,21 +1,21 @@
 package com.goparty.webservice.impl;
 
-import java.util.List;
+import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.goparty.data.model.EventCategory;
-import com.goparty.data.service.EventCategoryDataService;
+import com.goparty.data.dao.EventCategoryDao;
 import com.goparty.webservice.EventCategoryService;
+import com.goparty.webservice.utils.ResponseUtil;
 
 @Service("eventCategoryService")
 public class EventCategoryServiceImpl implements EventCategoryService {
 	@Autowired
-	private EventCategoryDataService eventCategoryDataService;
+	private EventCategoryDao eventCategoryDao;
 
 	@Override
-	public List<EventCategory> list() {
-		return eventCategoryDataService.list();
+	public Response list() {
+		return ResponseUtil.buildResponse(eventCategoryDao.list());
 	}
 }

@@ -1,4 +1,4 @@
-package com.goparty.data.service;
+package com.goparty.data.dao;
 
 import java.util.Date;
 import java.util.List;
@@ -29,9 +29,9 @@ import com.goparty.data.vo.FriendInvitatinVo;
 import com.goparty.data.vo.FriendVo;
 //@Repository("friendDataService")
 @Transactional
-public class FriendDataService {
+public class FriendDao {
 	
-	private Log log = LogFactory.getLog(FriendDataService.class);
+	private Log log = LogFactory.getLog(FriendDao.class);
 	
 	@PersistenceContext
 	private EntityManager em;

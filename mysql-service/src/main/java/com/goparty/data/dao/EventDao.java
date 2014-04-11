@@ -1,4 +1,4 @@
-package com.goparty.data.service;
+package com.goparty.data.dao;
 
 import java.util.Date;
 import java.util.List;
@@ -16,10 +16,10 @@ import com.goparty.data.model.User;
 import com.goparty.data.repository.IEventDataRepository; 
 
 
-@Repository("eventDataService")
+@Repository("eventDao")
 @Transactional
-public class EventDataService {
-	private Log log = LogFactory.getLog(EventDataService.class);
+public class EventDao {
+	private Log log = LogFactory.getLog(EventDao.class);
 	
 	@Autowired
 	private IEventDataRepository eventDataRepository;

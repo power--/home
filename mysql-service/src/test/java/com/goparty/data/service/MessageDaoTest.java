@@ -16,13 +16,14 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired; 
 
 import com.goparty.data.constant.MessageType;
+import com.goparty.data.dao.MessageDao;
 import com.goparty.data.model.EventMessage;
  
 
-public class MessageDataServiceTest extends AbstractRepositoryTest {
+public class MessageDaoTest extends AbstractRepositoryTest {
 
 	@Autowired
-	private MessageDataService messageDataService;
+	private MessageDao messageDao;
 	 
 	
 	@Test 
@@ -36,14 +37,14 @@ public class MessageDataServiceTest extends AbstractRepositoryTest {
 //		messageDataService.create(msg);
 //		
 //		msg.setType(MessageType.SYSTEM_MESSAGE);
-		messageDataService.update("2","update message");
+		messageDao.update("2","update message");
 		
 //		messageDataService.delete("2");
 	}
 	 
 	@Test
 	public void testList(){
-		List<EventMessage> list = messageDataService.findByEventId("12", 0, 5);
+		List<EventMessage> list = messageDao.findByEventId("12", 0, 5);
 		assertTrue(list.size()>0);
 	}
  

@@ -14,9 +14,9 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.goparty.data.dao.UserDao;
 import com.goparty.data.model.Event;
 import com.goparty.data.model.User;
-import com.goparty.data.service.UserDataService;
 import com.goparty.webservice.MyEventService;
 import com.goparty.webservice.utils.ResponseUtil;
 
@@ -27,7 +27,7 @@ public class MyEventServiceImpl implements MyEventService{
 	private EntityManager em;
 	
 	@Autowired
-	private UserDataService userDataService;
+	private UserDao userDao;
 	
 	@Override
 	public Response list(String token, Date after, Date before, String categories,
@@ -42,7 +42,7 @@ public class MyEventServiceImpl implements MyEventService{
 		criteria.select(rootEvent);
 		
 		
-		User owner = userDataService.getUserByToken(token);
+		User owner = userDao.getUserByToken(token);
 		
 		
 		

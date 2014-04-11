@@ -1,4 +1,4 @@
-package com.goparty.data.service;
+package com.goparty.data.dao;
 
 import java.util.List;
 
@@ -11,10 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.goparty.data.model.EventCategory;
 import com.goparty.data.repository.IEventCategoryRepository;
 
-@Repository("eventCategoryDataService")
+@Repository("eventCategoryDao")
 @Transactional
-public class EventCategoryDataService {
-	private Log log = LogFactory.getLog(EventCategoryDataService.class);
+public class EventCategoryDao {
+	private Log log = LogFactory.getLog(EventCategoryDao.class);
 
 	@Autowired
 	private IEventCategoryRepository eventCategoryRepository;

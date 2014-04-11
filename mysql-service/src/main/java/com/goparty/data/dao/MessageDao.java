@@ -1,4 +1,4 @@
-package com.goparty.data.service;
+package com.goparty.data.dao;
 
 import java.util.Date;
 import java.util.List;
@@ -20,11 +20,11 @@ import com.goparty.data.model.Event;
 import com.goparty.data.model.EventMessage; 
 import com.goparty.data.repository.IMessageDataRepository;
 import com.goparty.data.repository.IUserDataRepository;
-@Repository("messageDataService")
+@Repository("messageDao")
 @Transactional
-public class MessageDataService {
+public class MessageDao {
 	
-	private Log log = LogFactory.getLog(MessageDataService.class);
+	private Log log = LogFactory.getLog(MessageDao.class);
 	
 	@PersistenceContext
 	private EntityManager em;

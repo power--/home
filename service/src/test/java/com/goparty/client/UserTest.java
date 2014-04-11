@@ -21,7 +21,7 @@ public class UserTest {
 	private String token = "4e8bb1e4-4fab-4c4e-9a9f-cf5ece4cc2aa";
 	private HttpUtils http = new HttpUtils(token);
 	
-	private String applicationURI = "http://goparty.cloudapp.net/cxf/rest";
+	private String applicationURI = "http://localhost/cxf/rest";
 //	private String domain = "http://goparty.cloudapp.net";	
 	
 	@Test

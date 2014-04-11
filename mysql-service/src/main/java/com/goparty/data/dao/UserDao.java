@@ -1,4 +1,4 @@
-package com.goparty.data.service;
+package com.goparty.data.dao;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -23,9 +23,9 @@ import com.goparty.data.repository.ITokenDataRepository;
 import com.goparty.data.repository.IUserDataRepository;
  
 
-@Repository("userDataService")
+@Repository("userDao")
 @Transactional
-public class UserDataService {
+public class UserDao {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@PersistenceContext

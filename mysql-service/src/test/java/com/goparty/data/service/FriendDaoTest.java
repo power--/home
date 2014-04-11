@@ -19,6 +19,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 
+import com.goparty.data.dao.FriendDao;
 import com.goparty.data.model.Event;
 import com.goparty.data.model.Group;
 import com.goparty.data.model.User;
@@ -26,10 +27,10 @@ import com.goparty.data.model.UserFriend;
 import com.goparty.data.model.UserFriendPK;
  
 
-public class FriendDataServiceTest extends AbstractRepositoryTest {
+public class FriendDaoTest extends AbstractRepositoryTest {
 
 	@Autowired
-	private FriendDataService friendDataService;
+	private FriendDao friendDao;
 	@Autowired
 	NamedParameterJdbcTemplate jdbcTemplate;
 	
@@ -38,12 +39,12 @@ public class FriendDataServiceTest extends AbstractRepositoryTest {
 		Group g = new Group();
 		g.setName("Girls");
 		g.setOwnerId("33");
-		g = friendDataService.addGroup(g);
+		g = friendDao.addGroup(g);
 		
 		g.setName("Boys");
-		friendDataService.updateGroup(g);
+		friendDao.updateGroup(g);
 		
-		friendDataService.deleteGroup(g.getId());
+		friendDao.deleteGroup(g.getId());
 	}
 	
 	@Test
@@ -58,7 +59,7 @@ public class FriendDataServiceTest extends AbstractRepositoryTest {
 	@Test
 	public void testGetFriends(){ 
 		List<Group> list = jdbcTemplate.query("select * from gp_group",ParameterizedBeanPropertyRowMapper.newInstance(Group.class));
-		friendDataService.getFriends("98", 0, 5);
+		friendDao.getFriends("98", 0, 5);
 		
 		
 	}
@@ -79,11 +80,11 @@ public class FriendDataServiceTest extends AbstractRepositoryTest {
 		groups.add(g2);
 		uf.setGroups(groups);
 		
-		friendDataService.create(uf);
+		friendDao.create(uf);
 		
 		uf.setStatus("AGREE");
 		uf.setRemarkName("Jim");
-		friendDataService.update(uf);
+		friendDao.update(uf);
 	}
  
 	@Test
@@ -91,7 +92,7 @@ public class FriendDataServiceTest extends AbstractRepositoryTest {
 		UserFriendPK pk = new UserFriendPK();
 		pk.setUserId("22");
 		pk.setFriendId("92");
-		friendDataService.delete(pk);
+		friendDao.delete(pk);
 		
 	}
 	 

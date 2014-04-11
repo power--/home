@@ -14,15 +14,16 @@ import javax.persistence.TypedQuery;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.goparty.data.dao.UserDao;
 import com.goparty.data.model.Event;
 import com.goparty.data.model.User;
 import com.goparty.data.model.UserToken;
  
 
-public class UserDataServiceTest extends AbstractRepositoryTest {
+public class UserDaoTest extends AbstractRepositoryTest {
 
 	@Autowired
-	private UserDataService userDataService;
+	private UserDao userDao;
 	
 	@PersistenceContext
 	private EntityManager em;
@@ -30,14 +31,14 @@ public class UserDataServiceTest extends AbstractRepositoryTest {
 	
 	@Test
 	public void testToken(){
-		UserToken token = userDataService.generateToken("33",30);
-		User u = userDataService.getUserByToken(token.getToken());
+		UserToken token = userDao.generateToken("33",30);
+		User u = userDao.getUserByToken(token.getToken());
 		assertTrue(u!=null);
 	}
 	
 	@Test
 	public void testSearch(){
-		List<User> list = userDataService.search("%ahu%", 0, 10);
+		List<User> list = userDao.search("%ahu%", 0, 10);
 		System.out.println(list.size());
 	}
 	
@@ -68,16 +69,16 @@ public class UserDataServiceTest extends AbstractRepositoryTest {
 //		f2.setPassword("f2password");
 //		friends.add(f1);
 //		friends.add(f2);
-		User u33 = userDataService.read("33");
+		User u33 = userDao.read("33");
 		for(User friend : u33.getFriends()){
 			System.out.println(friend.getId() + " , Name = " + friend.getLoginId());
 		}
 		friends.add(u33);
 		user.setFriends(friends);
 		
-		userDataService.create(user);
+		userDao.create(user);
 		user.setNickName("ahu-new");
-		userDataService.update(user);
+		userDao.update(user);
 		
 //		
 //		List<User> list = userDataService.findByNickNameLike("ahu333", 0, 8);
@@ -88,7 +89,7 @@ public class UserDataServiceTest extends AbstractRepositoryTest {
 	 
 	@Test
 	public void testPage(){
-		List<Event> list = userDataService.findByEventCategoryId("1", 1, 5);
+		List<Event> list = userDao.findByEventCategoryId("1", 1, 5);
 		for(Event o : list){			
 			System.out.println(o.getDescription() + "--" + o.getOwner().getId());
 			for(User u : o.getAttendees()){
