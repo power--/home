@@ -11,19 +11,14 @@ http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
 http://www.springframework.org/schema/data/jpa 
 http://www.springframework.org/schema/data/jpa/spring-jpa.xsd ">
  	 	
- 	<context:component-scan base-package="com.goparty.data.dao"/>   
+ 	<context:component-scan base-package="com.goparty.data.service"/>   
 	<jpa:repositories base-package="com.goparty.data.repository" />
 	
 	<bean class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 
-	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
-		<constructor-arg>
-			<ref bean="gopartyDataSource"></ref>
-		</constructor-arg>		
-	</bean>
-	
+
 	<!-- This is abstract so you can extend it in test and main according to environment  -->
 	<bean id="entityManagerFactoryAbstract" abstract="true"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -45,19 +40,5 @@ http://www.springframework.org/schema/data/jpa/spring-jpa.xsd ">
 	</bean>
 	 
 	<tx:annotation-driven transaction-manager="transactionManager" />
-	
-	<bean id="friendDao" class="com.goparty.data.dao.FriendDao">
-		<property name="sqlGetFriends">
-			<value><![CDATA[
-			SELECT u.id ,u.nickName,u.birthdate,u.gender,u.location,
-				u.signature,u.photo,
-				uf.remarkName		
-			FROM gp_user_friend uf
-			JOIN gp_user u ON uf.friendId=u.id
-			WHERE uf.status='NORMAL' AND uf.userId=:userId
-			LIMIT :offset, :limit 
-			]]></value>
-		</property>
-	</bean>
 	
 </beans> 

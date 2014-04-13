@@ -37,7 +37,7 @@ import com.goparty.data.model.Group;
 import com.goparty.data.model.UserFriend;
 import com.goparty.webservice.FriendService;
 import com.goparty.webservice.model.FriendRequest;
-import com.goparty.webservice.model.FriendInvitationRequest;
+import com.goparty.webservice.model.InvitationRequest;
 
 public class MessageTest {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -53,7 +53,7 @@ public class MessageTest {
 	public void testAdd() throws Exception {
 		HttpUtils http = new HttpUtils(token);
 		String url = "http://localhost/cxf/rest/events/12/messages";
-		String json = "{\"content\": \"love you too!\" }";
+		String json = "{\"content\": \"love you!\" }";
 		String response = http.postData(url, json);
 		System.out.println(response);	 
 		

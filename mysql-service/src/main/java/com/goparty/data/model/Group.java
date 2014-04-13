@@ -37,11 +37,6 @@ public class Group {
 	public void setOwnerId(String ownerId) {
 		this.ownerId = ownerId;
 	}
-	@Override
-	public String toString() {
-		return "Group [id=" + id + ", name=" + name + ", ownerId=" + ownerId
-				+ "]";
-	}
 	
 	
 	

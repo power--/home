@@ -4,7 +4,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "response")
 public class ExceptionResponse {	
-	private int code; 
+	private int code;
+	private String status;//success,  error
 	private String message;
 	private String data;
 	public int getCode() {
@@ -13,7 +14,12 @@ public class ExceptionResponse {
 	public void setCode(int code) {
 		this.code = code;
 	}
- 
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public String getMessage() {
 		return message;
 	}

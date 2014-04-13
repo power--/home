@@ -9,16 +9,14 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.goparty.data.dao.UserDao;
 import com.goparty.data.model.Event;
-import com.goparty.data.model.User;
+import com.goparty.data.model.UserProfile;
+import com.goparty.data.service.UserDataService;
 import com.goparty.webservice.MyEventService;
-import com.goparty.webservice.utils.ResponseUtil;
 
 @Service("myEventService")
 public class MyEventServiceImpl implements MyEventService{
@@ -27,10 +25,10 @@ public class MyEventServiceImpl implements MyEventService{
 	private EntityManager em;
 	
 	@Autowired
-	private UserDao userDao;
+	private UserDataService userDataService;
 	
 	@Override
-	public Response list(String token, Date after, Date before, String categories,
+	public List<Event> list(String token, Date after, Date before, String categories,
 			String search, long offset, long limit) {
 		
 		List<Event> ret = null;
@@ -42,7 +40,7 @@ public class MyEventServiceImpl implements MyEventService{
 		criteria.select(rootEvent);
 		
 		
-		User owner = userDao.getUserByToken(token);
+		UserProfile owner = userDataService.getUserByToken(token);
 		
 		
 		
@@ -55,6 +53,6 @@ public class MyEventServiceImpl implements MyEventService{
 		for(Event e:ret){
 			e.getOwner().setFriends(null);
 		}
-		return ResponseUtil.buildResponse(ret);
+		return ret;
 	}
 }

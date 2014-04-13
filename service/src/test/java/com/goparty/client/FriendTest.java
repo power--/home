@@ -37,15 +37,14 @@ import com.goparty.data.model.Group;
 import com.goparty.data.model.UserFriend;
 import com.goparty.webservice.FriendService;
 import com.goparty.webservice.model.FriendRequest;
-import com.goparty.webservice.model.FriendInvitationRequest;
+import com.goparty.webservice.model.InvitationRequest;
 
 public class FriendTest {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	private FriendService friendService; 
-	private String applicationURI = "http://localhost/cxf/rest";
+	private static final String applicationURI ="http://localhost";
 
-	private String token = "4e8bb1e4-4fab-4c4e-9a9f-cf5ece4cc2aa";
-	private HttpUtils http = new HttpUtils(token);
+	private String token = "5397efef-01ef-4d4b-aef8-260508af81bf";
 	
 	@Before
 	public void setUp(){
@@ -64,81 +63,45 @@ public class FriendTest {
         return providers; 
     }  
 	
-	
-	
-	@Test
-	public void testInvite() throws Exception {  
-		String url = applicationURI + "/friends/97"; 
-		String content = "{\"message\": \"我是time\"}";
-		String response = http.postData(url, content);
-		System.out.println(response);
+	@Test 
+	public void testAddFriend(){ 
+		String friendId = "95";
+//		friendService.add(token,friendId, "2");
+		 
+		FriendRequest ur = new FriendRequest();
+		ur.setRemarkName("new Remark");
+		friendService.update(token,friendId, ur);
+		
 	}
 	
 	@Test
-	public void testRespInvitation() throws Exception{ 
-		String url = applicationURI + "/friends/unrespondedInvitations/2";  
-		String content = "{\"groups\": [{\"id\":16},{\"id\":17}],\"acceptance\": \"Y\",\"message\": \"fuck you!!\"}";
-		String response = http.putData(url, content);
-		System.out.println(response);
+	public void testInvitation(){
+		List<UserFriend> list = friendService.getFriendInvitationList(token,0,5);
+		assertTrue(list.size()>0);
+		
+		InvitationRequest request = new InvitationRequest();
+		request.setResponse("AGREE");		
+		request.setMessage("Good Boy");
+		friendService.respondFriendInvitation(token, "35", request);
+		
 	}
-	
-	
-	@Test
-	public void testGetUnRespInvitation() throws Exception{ 
-		String url = applicationURI + "/friends/unrespondedInvitations?offset=0&limit=5";  
-		String response = http.getData(url);
-		System.out.println(response);
-	}
-	
-	@Test
-	public void testGetRespInvitation() throws Exception{ 
-		String url = applicationURI + "/friends/respondedInvitations?offset=0&limit=5";  
-		String response = http.getData(url);
-		System.out.println(response);
-	}
-	
-	
-	@Test
-	public void testUpdateFriend() throws Exception {  
-		String url = applicationURI + "/friends/97"; 
-		String content = "{\"groups\": [{\"id\":16},{\"id\":17}],\"remarkName\": \"Tim\"}";
-		String response = http.putData(url, content);
-		System.out.println(response);
-	}
-	
-	@Test
-	public void testDeleteFriend() throws Exception {  
-		String url = applicationURI + "/friends/97";  
-		String response = http.deleteData(url);
-		System.out.println(response);
-	}
-	
-	@Test
-	public void testGetFriend() throws Exception {  
-		String url = applicationURI + "/friends?offset=0&limit=5";  
-		String response = http.getData(url);
-		System.out.println(response);
-	}
-	
-	
-	
 	
 	
 	@Test
 	public void testAdd() throws Exception {
 		HttpUtils http = new HttpUtils(token);
 		String url = "http://localhost/cxf/rest/friends/groups";
-		String json = "{\"groupName\": \"bb\" }";
+		String json = "{\"groupName\": \"\" }";
 		String response = http.postData(url, json);
 		System.out.println(response);	 
 		
-		String updateUrl =  "http://localhost/cxf/rest/friends/groups/6";
-		String updateJson = "{\"groupName\": \"private girl friend \" }";
-		String updateResp = http.putData(updateUrl, updateJson);
-		System.out.println(updateResp);	
+//		String updateUrl =  "http://localhost/cxf/rest/friends/groups/6";
+//		String updateJson = "{\"groupName\": \"private girl friend \" }";
+//		String updateResp = http.putData(updateUrl, updateJson);
+//		System.out.println(updateResp);	
 		
-		String deleteResp = http.deleteData("http://localhost/cxf/rest/friends/groups/7");
-		System.out.println(deleteResp);
+//		String deleteResp = http.deleteData("http://localhost/cxf/rest/friends/groups/7");
+//		System.out.println(deleteResp);
 	}
 	
 	

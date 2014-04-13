@@ -56,12 +56,12 @@ public class Event{
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "gp_event_attendee", joinColumns = @JoinColumn(name = "eventId"), inverseJoinColumns = @JoinColumn(name = "userId"))
 	@IndexedEmbedded
-	private List<User> attendees;
+	private List<UserProfile> attendees;
 
 	@OneToOne
 	@JoinColumn(name = "ownerId")
 	@IndexedEmbedded
-	private User owner;
+	private UserProfile owner;
 
 	@OneToOne
 	@JoinColumn(name = "cateId")
@@ -77,7 +77,7 @@ public class Event{
 	private boolean locationShareable;
 
 	@Transient
-	private List<User> refusedAttendees;
+	private List<UserProfile> refusedAttendees;
 
 	public String getId() {
 		return id;
@@ -129,19 +129,19 @@ public class Event{
 
 //	@XmlElementWrapper(name = "attendees")
 //	@XmlElement(name = "attendee")
-	public List<User> getAttendees() {
+	public List<UserProfile> getAttendees() {
 		return attendees;
 	}
 
-	public void setAttendees(List<User> attendees) {
+	public void setAttendees(List<UserProfile> attendees) {
 		this.attendees = attendees;
 	}
 
-	public User getOwner() {
+	public UserProfile getOwner() {
 		return owner;
 	}
 
-	public void setOwner(User owner) {
+	public void setOwner(UserProfile owner) {
 		this.owner = owner;
 	}
 
@@ -179,11 +179,11 @@ public class Event{
 
 //	@XmlElementWrapper(name = "refusedAttendees")
 //	@XmlElement(name = "attendee")
-	public List<User> getRefusedAttendees() {
+	public List<UserProfile> getRefusedAttendees() {
 		return refusedAttendees;
 	}
 
-	public void setRefusedAttendees(List<User> refusedAttendees) {
+	public void setRefusedAttendees(List<UserProfile> refusedAttendees) {
 		this.refusedAttendees = refusedAttendees;
 	}
 }

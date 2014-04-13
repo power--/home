@@ -3,25 +3,19 @@ package com.goparty.webservice.impl;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.activation.DataHandler;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
-import org.apache.cxf.common.util.StringUtils; 
+import org.apache.cxf.common.util.StringUtils;
+import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory; 
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
  
@@ -36,18 +30,19 @@ import org.springframework.stereotype.Service;
 
 
 
-import com.goparty.data.dao.FriendDao;
-import com.goparty.data.dao.UserDao;
-import com.goparty.data.exception.BaseException;
+
+
+
+import com.goparty.data.model.Event;
 import com.goparty.data.model.StringResponse;
-import com.goparty.data.model.User;  
+import com.goparty.data.model.UserProfile; 
+import com.goparty.data.model.UserFriend;
 import com.goparty.data.model.UserToken;
+import com.goparty.data.service.UserDataService;
+import com.goparty.data.service.FriendDataService;
 import com.goparty.exception.ValidationException;
-import com.goparty.webservice.UserService; 
-import com.goparty.webservice.model.LoginRequest; 
-import com.goparty.webservice.model.UserRequest;
-import com.goparty.webservice.model.UserResponse;
-import com.goparty.webservice.utils.ResponseUtil;
+import com.goparty.webservice.UserService;
+import com.goparty.webservice.model.LoginRequest;
 
 
 @Service("userService")
@@ -57,66 +52,48 @@ public class UserServiceImpl implements UserService {
 	String rootDir =  "D:/";
 	
 	@Autowired
-	private UserDao userDao;
+	private UserDataService userDataService;
 	
 	@Autowired
-	private FriendDao friendDao;
+	private FriendDataService userFriendDataService;
 
 	@Override
-	public Response getUserInfo(String id) {		
-		User ret = userDao.read(id);  
-		return ResponseUtil.buildResponse(getUserResponse(ret));
+	public UserProfile getUserInfo(String id) {
+		UserProfile ret = userDataService.read(id); 
+		return ret;
 	}
-	
 
-	//ignore null values
-	private String[] getNullPropertyNames (Object source) {
-	    final BeanWrapper src = new BeanWrapperImpl(source);
-	    java.beans.PropertyDescriptor[] pds = src.getPropertyDescriptors();
 
-	    Set<String> emptyNames = new HashSet<String>();
-	    for(java.beans.PropertyDescriptor pd : pds) {
-	        Object srcValue = src.getPropertyValue(pd.getName());
-	        if (srcValue == null) emptyNames.add(pd.getName());
-	    }
-	    String[] result = new String[emptyNames.size()];
-	    return emptyNames.toArray(result);
-	}
-	private UserResponse getUserResponse(User user){
-		UserResponse userResponse = new UserResponse();
-		BeanUtils.copyProperties(user, userResponse);
-		return userResponse;
-	}
 	@Override
-	public Response getProfile(String token) {
-		User ret = userDao.getUserByToken(token);
-		return ResponseUtil.buildResponse(getUserResponse(ret));
+	public UserProfile getProfile(String token) {
+		UserProfile ret = userDataService.getUserByToken(token);
+		return ret;
 	} 
 
 	@Override
-	public Response updateProfile(String token,UserRequest request) {
-		User currentUser = userDao.getUserByToken(token); 
-		BeanUtils.copyProperties(request, currentUser,getNullPropertyNames(request));
-		return ResponseUtil.buildResponse(getUserResponse(userDao.update(currentUser)));
-	} 
-
-	public UserDao getUserDataService() {
-		return userDao;
+	public UserProfile updateProfile(UserProfile user) {		
+		return userDataService.update(user);
 	}
 
-	public void setUserDataService(UserDao userDataService) {
-		this.userDao = userDataService;
+ 
+
+	public UserDataService getUserDataService() {
+		return userDataService;
+	}
+
+	public void setUserDataService(UserDataService userDataService) {
+		this.userDataService = userDataService;
 	}
 
 	@Override
-	public Response uploadImage(MultipartBody image,String userId) {	
+	public StringResponse uploadImage(MultipartBody image,String userId) {	
 		StringResponse response = new StringResponse();	
 		MediaType contentType = image.getAllAttachments().get(0).getContentType();
 		logger.info("content-type : " + contentType.getType());
 		String extensionName = getExtensionName(contentType.toString());
 		if(extensionName == null){
 			response.setMessage("Don't support this type of image.");
-			return ResponseUtil.buildResponse(response);
+			return response;
 		}
 		String fileName = String.valueOf(System.currentTimeMillis()) + extensionName;		
 		DataHandler handler = image.getAllAttachments().get(0).getDataHandler();
@@ -136,13 +113,13 @@ public class UserServiceImpl implements UserService {
 			e.printStackTrace();
 		}
 	
-		User user = new User();
+		UserProfile user = new UserProfile();
 		user.setId(userId);
 		user.setPhoto(fileName);
-		userDao.update(user);
+		userDataService.update(user);
 		logger.info("upload image successfully,filename:" + fileName); 		 
 		response.setMessage(fileName);
-		return ResponseUtil.buildResponse(response);
+		return response;
 	}
 	
 	
@@ -157,65 +134,62 @@ public class UserServiceImpl implements UserService {
 			return ".ico";
 		}
 		return null;
-	} 
-	
+	}
+
+	 
+  
+
+
 	@Override
-	public Response login(String token, LoginRequest request){
+	public UserProfile login(String token, LoginRequest request){
 		if(StringUtils.isEmpty(token)){
 			String openId = request.getOpenId();
 			String tokenId = request.getTokenId();
-			String mobile = request.getMobile();
 			//validation using openId and tokenId, then get the user info by API
 			//validation...
-			String loginId = mobile;//openId;
-			String nickName = mobile; //tokenId;  //get by API  
+			String loginId = openId;
+			String nickName = tokenId;  //get by API  
 			
-			User user = userDao.getUserByLoginId(loginId);
+			UserProfile user = userDataService.getUserByLoginId(loginId);
 			if(user == null){
-				User newGuy = new User();
+				UserProfile newGuy = new UserProfile();
 				newGuy.setLoginId(loginId);	
 				newGuy.setNickName(nickName);
-				user = userDao.create(newGuy);				
+				user = userDataService.create(newGuy);				
 			}else{
 				//existed this user in our system				
 			} 
-			UserToken ut = userDao.generateToken(user.getId(),30);//expired the token after one month
+			UserToken ut = userDataService.generateToken(user.getId(),30);//expired the token after one month
 			token = ut.getToken();
 		}else{
 			//validate token
-			UserToken ut = userDao.getUserToken(token);
+			UserToken ut = userDataService.getUserToken(token);
 			Date curDate = new Date();
-			if(ut != null && curDate.after(ut.getExpireTime())){ 
-				throw new BaseException("Token has expired");
+			if(ut != null && curDate.after(ut.getExpireTime())){
+				Map<String, String> data = new HashMap();
+				data.put("1", "Token has expired");
+				throw new ValidationException(data);
 			}
 		}
-		User u = userDao.getUserByToken(token);
-		if(u==null){
-			throw new BaseException("User not exist!");
-		}
+		UserProfile u = userDataService.getUserByToken(token);
 		logger.info("Login successfully. token=" + token + ", userId=" + u.getId());
-		UserResponse response = getUserResponse(u);		
-		 
-		return ResponseUtil.buildResponse(response,u.getToken());
+		return u;
 	}
 
+
 	@Override
-	public Response logout(String token) {
-		UserToken ut = userDao.getUserToken(token);
+	public boolean logout(String token) {
+		UserToken ut = userDataService.getUserToken(token);
 		if(ut != null){
-			userDao.generateToken(ut.getUserId(),-1);
+			userDataService.generateToken(ut.getUserId(),-1);
 		}
-		return ResponseUtil.buildResponse(true);
+		return true;
 	}
 
 
 	@Override
-	public Response search(String keyword, int offset, int limit) {
-		List<UserResponse> urList = new ArrayList<UserResponse>();
-		for(User user : userDao.search(keyword, offset, limit)){ 
-			urList.add(this.getUserResponse(user));
-		}
-		return ResponseUtil.buildResponse(urList);
+	public List<UserProfile> search(String keyword, int offset, int limit) {
+		return userDataService.search(keyword, offset, limit);
 	}
 
  

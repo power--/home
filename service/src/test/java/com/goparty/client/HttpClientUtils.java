@@ -8,6 +8,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class HttpClientUtils {
+	
+	public static String token="Bearer bcdb3dff-09b2-49a1-aaa8-182ce64c8e43";
+	
+	
 	public static String get(String url) throws Exception{
 		System.out.println("GET");
 		System.out.println(url);
@@ -20,6 +24,7 @@ public class HttpClientUtils {
 
 			con.setRequestMethod("GET");
 			con.setRequestProperty("Accept", "application/json");
+			con.setRequestProperty("Authorization", token);
 
 
 			int responseCode = con.getResponseCode();
@@ -70,6 +75,7 @@ public class HttpClientUtils {
 					.setRequestProperty("Content-Type", "application/json");
 			urlConnection.setRequestProperty("Accept", "application/json");
 			urlConnection.setRequestProperty("charset", "utf-8");
+			urlConnection.setRequestProperty("Authorization", token);
 
 			urlConnection.setRequestProperty("Content-Length",
 					"" + data.getBytes("UTF-8").length);
@@ -142,6 +148,7 @@ public class HttpClientUtils {
 					.setRequestProperty("Content-Type", "application/json");
 			urlConnection.setRequestProperty("Accept", "application/json");
 			urlConnection.setRequestProperty("charset", "utf-8");
+			urlConnection.setRequestProperty("Authorization", token);
 
 			urlConnection.setRequestProperty("Content-Length",
 					"" + data.getBytes("UTF-8").length);
@@ -206,6 +213,7 @@ public class HttpClientUtils {
 
 			con.setRequestMethod("DELETE");
 			con.setRequestProperty("Accept", "application/json");
+			con.setRequestProperty("Authorization", token);
 
 			int responseCode = con.getResponseCode();
 			System.out.println("\nSending 'DELETE' request to URL : " + url);

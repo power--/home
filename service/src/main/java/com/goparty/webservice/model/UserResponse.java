@@ -4,11 +4,8 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.springframework.format.annotation.DateTimeFormat;
 @XmlRootElement(name = "response")
-@JsonSerialize(include=Inclusion.NON_NULL)
 public class UserResponse {
 	 private String id;
 	 private String phone;

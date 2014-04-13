@@ -36,7 +36,9 @@ http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 		</property>
 		<property name="jpaProperties">
 			<props>
-				<prop key="hibernate.hbm2ddl.auto">create</prop>
+			    <!--  
+				<prop key="hibernate.hbm2ddl.auto">validate</prop>
+				-->
 			</props>
 		</property>
 	</bean>

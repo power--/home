@@ -50,9 +50,6 @@
         <property name="serializeAsArray" value="true"/>
         <property name="supportUnwrapped" value="true"/>
 	</bean>
-	
-	<bean id="jacksonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider">
-	</bean>
 
 	<util:map id="jsonNamespaceMap" map-class="java.util.Hashtable">
 		<entry key="http://www.goparty.com/apis" value="b" />
@@ -63,7 +60,7 @@
     <jaxrs:server id="restContainer" address="/rest">
 		<jaxrs:providers>
 			<ref bean="jaxbProvider" />
-			<ref bean="jacksonProvider" />
+			<ref bean="jsonProvider" />
 			<ref bean="wadlProvider" />
 			<ref bean="exceptionHandler"/>
   		</jaxrs:providers>

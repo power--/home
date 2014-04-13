@@ -1,5 +1,6 @@
 package com.goparty.ex;
- 
+
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -10,17 +11,21 @@ import javax.ws.rs.ext.ExceptionMapper;
 import com.goparty.data.exception.BaseException; 
 import com.goparty.webservice.model.ExceptionResponse;
 
-public class BaseExceptionMapper implements ExceptionMapper<RuntimeException>{
+public class BaseExceptionMapper implements ExceptionMapper<BaseException>{
 
 	@Override
-	public Response toResponse(RuntimeException exception) {
+	public Response toResponse(BaseException exception) {
 		ResponseBuilder rb = Response.status(Response.Status.OK);
 		ExceptionResponse resp = new ExceptionResponse();
-//		int code = exception.getCode();
-//		if(code == 0){
-//			resp.setCode(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode());
-//		}
-		resp.setCode(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode());
+		int code = exception.getCode();
+		if(code == 0){
+			resp.setCode(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode());
+		}
+		if(code == Response.Status.OK.getStatusCode()){
+			resp.setStatus("success");
+		}else{
+			resp.setStatus("error");
+		}
 		resp.setMessage(exception.getMessage());
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw);
