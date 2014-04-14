@@ -1,10 +1,6 @@
 package com.goparty.webservice;
 
-import java.util.List;
-
-import javax.jws.WebMethod;
 import javax.jws.WebService;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -12,21 +8,14 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.apache.cxf.annotations.GZIP;
-import org.apache.cxf.jaxrs.ext.multipart.Attachment;
-import org.apache.cxf.jaxrs.ext.multipart.Multipart;
-import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
-import org.apache.cxf.jaxrs.model.wadl.Description;
-import org.apache.cxf.jaxrs.model.wadl.Descriptions;
-import org.apache.cxf.jaxrs.model.wadl.DocTarget;
 
-import com.goparty.data.model.*;
+import com.goparty.webservice.model.FriendInvitationRequest;
 import com.goparty.webservice.model.FriendRequest;
-import com.goparty.webservice.model.InvitationRequest;
+import com.goparty.webservice.model.GroupRequest;
 
 @Path("/friends/")
 @WebService
@@ -35,40 +24,51 @@ public interface FriendService {
 	
 	@POST
 	@Path("{friendId}") 
-	public boolean add(@HeaderParam("token") String token,  @PathParam("friendId") String friendId, FriendRequest request);
+	public Response invite(@HeaderParam("token") String token,  @PathParam("friendId") String friendId, FriendInvitationRequest request);
 	
 	
 	@PUT
 	@Path("{friendId}") 
-	public UserFriend update(@HeaderParam("token") String token, @PathParam("friendId") String friendId, FriendRequest request);	
+	public Response update(@HeaderParam("token") String token, @PathParam("friendId") String friendId, FriendRequest request);	
 	
 	
 	@DELETE
 	@Path("{friendId}") 
-	public boolean delete(@HeaderParam("token") String token,  @PathParam("friendId") String friendId);	
+	public Response delete(@HeaderParam("token") String token,  @PathParam("friendId") String friendId);	
 	
+	@GET 
+	public Response getFriends(@HeaderParam("token") String token,@QueryParam("offset") int offset,@QueryParam("limit") int limit);	 
 	
 	
 	
 	@GET
-	@Path("invitations")
-	public List<UserFriend> getFriendInvitationList(@HeaderParam("token") String token,@QueryParam("offset") int offset,@QueryParam("limit") int limit);
+	@Path("unrespondedInvitations")
+	public Response getUnRespInvitations(@HeaderParam("token") String token,@QueryParam("offset") int offset,@QueryParam("limit") int limit);
 		
 	
 	@PUT
-	@Path("invitations/{friendId}")
-	public boolean respondFriendInvitation(@HeaderParam("token") String token,  @PathParam("friendId") String friendId, InvitationRequest request);
+	@Path("unrespondedInvitations/{invitationId}")
+	public Response respondInvitation(@HeaderParam("token") String token,  @PathParam("invitationId") String invitationId, FriendInvitationRequest request);
+	
+	@GET
+	@Path("respondedInvitations")
+	public Response getRespInvitations(@HeaderParam("token") String token,@QueryParam("offset") int offset,@QueryParam("limit") int limit);
 	
  
 	@POST
 	@Path("groups") 
-	public Group addGroup(@HeaderParam("token") String token,  FriendRequest request);
+	public Response addGroup(@HeaderParam("token") String token,  GroupRequest request);
+	
+	@GET
+	@Path("groups") 
+	public Response getGroups(@HeaderParam("token") String token);
+	
 	
 	@PUT
 	@Path("groups/{groupId}") 
-	public Group updateGroup(@HeaderParam("token") String token,  @PathParam("groupId") String groupId,  FriendRequest request);
+	public Response updateGroup(@HeaderParam("token") String token,  @PathParam("groupId") String groupId,  GroupRequest request);
 	
 	@DELETE
 	@Path("groups/{groupId}") 
-	public boolean deleteGroup(@HeaderParam("token") String token,@PathParam("groupId") String groupId);
+	public Response deleteGroup(@HeaderParam("token") String token,@PathParam("groupId") String groupId);
 }

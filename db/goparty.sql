@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS `gp_group_user` (
 
 
 -- Dumping structure for table openfire.gp_user
-DROP TABLE IF EXISTS `gp_user_profile`;
+DROP TABLE IF EXISTS `gp_user`;
 CREATE TABLE IF NOT EXISTS `gp_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `loginId` varchar(255) DEFAULT NULL,

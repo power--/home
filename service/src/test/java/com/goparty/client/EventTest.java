@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.ws.rs.core.Response;
+
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
@@ -14,7 +16,8 @@ import com.goparty.data.constant.EventStatus;
 import com.goparty.data.constant.EventVisibility;
 import com.goparty.data.model.Event;
 import com.goparty.data.model.EventCategory;
-import com.goparty.data.model.UserProfile;
+import com.goparty.data.model.User;
+import com.goparty.webservice.utils.BaseData;
 
 public class EventTest {
 
@@ -30,18 +33,18 @@ public class EventTest {
 		cate.setId("1");
 		evt.setEventCategory(cate);
 
-		List<UserProfile> attendees = new ArrayList<UserProfile>();
+		List<User> attendees = new ArrayList<User>();
 
-		UserProfile u1 = new UserProfile();
+		User u1 = new User();
 		u1.setId("18");
 		attendees.add(u1);
 
-		UserProfile u2 = new UserProfile();
+		User u2 = new User();
 		u2.setId("19");
 		attendees.add(u2);
 		evt.setAttendees(attendees);
 
-		UserProfile owner = new UserProfile();
+		User owner = new User();
 		owner.setId("33");
 		evt.setOwner(owner);
 
@@ -56,28 +59,31 @@ public class EventTest {
 				true);
 
 		String data = mapper.writeValueAsString(evt).toString();
-		String url = "http://localhost:8080/cxf/rest/events";
+		String url = "http://localhost/cxf/rest/events";
 		
 		String resp = HttpClientUtils.post(url, data);
 		
-		Event result = mapper.readValue(resp, Event.class);
+		System.out.println(resp);
+		
+		BaseData res = mapper.readValue(resp, BaseData.class);		
+		Event result = mapper.convertValue(res.getData(), Event.class);
 		result.setTitle("hello PUT");
 		data = mapper.writeValueAsString(result).toString();
 		HttpClientUtils.put(url, data);
 
-		url = "http://localhost:8080/cxf/rest/events/"
+		url = "http://localhost/cxf/rest/events/"
 				+ result.getId()+"/invitees/72";
 		
 		HttpClientUtils.put(url, data);
 		
 		HttpClientUtils.delete(url);
 		
-		url = "http://localhost:8080/cxf/rest/events/"
+		url = "http://localhost/cxf/rest/events/"
 				+ result.getId()+"/sponsors/33";
 		
 		HttpClientUtils.put(url, data);
 
-        url = "http://localhost:8080/cxf/rest/events/"
+        url = "http://localhost/cxf/rest/events/"
 				+ result.getId();
         HttpClientUtils.get(url);
 		

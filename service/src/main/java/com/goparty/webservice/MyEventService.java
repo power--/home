@@ -9,6 +9,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Response;
 
 import org.apache.cxf.annotations.GZIP;
 import org.apache.cxf.jaxrs.model.wadl.Description;
@@ -27,5 +28,5 @@ public interface MyEventService {
 		@Description(value = "return my events", target = DocTarget.METHOD),
 		@Description(value = "return my events", target = DocTarget.RETURN)
 	})
-	public List<Event> list(@HeaderParam("token") String token, @QueryParam("after") Date after, @QueryParam("before") Date before, @QueryParam("categories") String categories, @QueryParam("search") String search, @QueryParam("offset") long offset, @QueryParam("limit") long limit);
+	public Response list(@HeaderParam("token") String token, @QueryParam("after") Date after, @QueryParam("before") Date before, @QueryParam("categories") String categories, @QueryParam("search") String search, @QueryParam("offset") long offset, @QueryParam("limit") long limit);
 }

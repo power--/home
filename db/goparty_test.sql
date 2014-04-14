@@ -123,9 +123,9 @@ DELETE FROM `gp_event_category`;
 /*!40000 ALTER TABLE `gp_event_category` DISABLE KEYS */;
 INSERT INTO `gp_event_category` (`id`, `name`) VALUES
 	(1, 'KTV '),
-	(2, '鐢靛奖闄�'),
-	(3, '杩愬姩鍋ヨ韩 '),
-	(4, '鍚冮キ');
+	(2, '电影院 '),
+	(3, '运动健身 '),
+	(4, '吃饭');
 /*!40000 ALTER TABLE `gp_event_category` ENABLE KEYS */;
 
 
@@ -187,9 +187,9 @@ INSERT INTO `gp_group_user` (`groupId`, `userId`) VALUES
 /*!40000 ALTER TABLE `gp_group_user` ENABLE KEYS */;
 
 
--- Dumping structure for table openfire.gp_user_profile
-DROP TABLE IF EXISTS `gp_user_profile_profile`;
-CREATE TABLE IF NOT EXISTS `gp_user_profile` (
+-- Dumping structure for table openfire.gp_user
+DROP TABLE IF EXISTS `gp_user`;
+CREATE TABLE IF NOT EXISTS `gp_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `loginId` varchar(255) DEFAULT NULL,
   `nickName` varchar(255) DEFAULT NULL,
@@ -207,10 +207,10 @@ CREATE TABLE IF NOT EXISTS `gp_user_profile` (
   UNIQUE KEY `loginId` (`loginId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8;
 
--- Dumping data for table openfire.gp_user_profile: ~40 rows (approximately)
-DELETE FROM `gp_user_profile`;
-/*!40000 ALTER TABLE `gp_user_profile` DISABLE KEYS */;
-INSERT INTO `gp_user_profile` (`id`, `loginId`, `nickName`, `password`, `qq`, `birthdate`, `gender`, `location`, `phone`, `photo`, `signature`, `weChat`, `weibo`) VALUES
+-- Dumping data for table openfire.gp_user: ~40 rows (approximately)
+DELETE FROM `gp_user`;
+/*!40000 ALTER TABLE `gp_user` DISABLE KEYS */;
+INSERT INTO `gp_user` (`id`, `loginId`, `nickName`, `password`, `qq`, `birthdate`, `gender`, `location`, `phone`, `photo`, `signature`, `weChat`, `weibo`) VALUES
 	(12, 'att212', 'att2', 'password', NULL, '2014-03-03 06:41:14', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 	(17, 'user1717', 'ahu', 'password', NULL, '2014-03-03 06:41:14', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 	(18, 'user1818', 'ahu', 'password', NULL, '2014-03-03 06:41:14', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -251,12 +251,12 @@ INSERT INTO `gp_user_profile` (`id`, `loginId`, `nickName`, `password`, `qq`, `b
 	(96, 'openId--96', 'tokenId--', NULL, NULL, '2014-03-03 06:41:14', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 	(97, 'openId--97', 'tokenId--', NULL, NULL, '2014-03-03 06:41:14', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 	(98, 'openId--', 'tokenId--', NULL, NULL, '2014-03-03 06:42:01', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-/*!40000 ALTER TABLE `gp_user_profile` ENABLE KEYS */;
+/*!40000 ALTER TABLE `gp_user` ENABLE KEYS */;
 
 
--- Dumping structure for table openfire.gp_user_profile_friend
-DROP TABLE IF EXISTS `gp_user_profile_friend`;
-CREATE TABLE IF NOT EXISTS `gp_user_profile_friend` (
+-- Dumping structure for table openfire.gp_user_friend
+DROP TABLE IF EXISTS `gp_user_friend`;
+CREATE TABLE IF NOT EXISTS `gp_user_friend` (
   `userId` int(10) NOT NULL,
   `friendId` int(10) NOT NULL,
   `status` char(5) DEFAULT 'INIT' COMMENT 'init  agree reject',
@@ -265,10 +265,10 @@ CREATE TABLE IF NOT EXISTS `gp_user_profile_friend` (
   PRIMARY KEY (`userId`,`friendId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table openfire.gp_user_profile_friend: ~24 rows (approximately)
-DELETE FROM `gp_user_profile_friend`;
-/*!40000 ALTER TABLE `gp_user_profile_friend` DISABLE KEYS */;
-INSERT INTO `gp_user_profile_friend` (`userId`, `friendId`, `status`, `updateTime`, `remarkName`) VALUES
+-- Dumping data for table openfire.gp_user_friend: ~24 rows (approximately)
+DELETE FROM `gp_user_friend`;
+/*!40000 ALTER TABLE `gp_user_friend` DISABLE KEYS */;
+INSERT INTO `gp_user_friend` (`userId`, `friendId`, `status`, `updateTime`, `remarkName`) VALUES
 	(22, 92, 'AGREE', '2014-03-04 08:37:17', 'Jim'),
 	(22, 99, NULL, NULL, NULL),
 	(33, 34, 'INIT', '2014-03-03 07:19:01', 'yrtytry'),
@@ -299,7 +299,7 @@ INSERT INTO `gp_user_profile_friend` (`userId`, `friendId`, `status`, `updateTim
 	(92, 33, 'INIT', '2014-02-28 08:41:05', NULL),
 	(93, 33, 'INIT', '2014-02-28 08:56:51', NULL),
 	(95, 33, 'INIT', '2014-03-03 06:33:04', NULL);
-/*!40000 ALTER TABLE `gp_user_profile_friend` ENABLE KEYS */;
+/*!40000 ALTER TABLE `gp_user_friend` ENABLE KEYS */;
 
 
 -- Dumping structure for table openfire.gp_user_token
