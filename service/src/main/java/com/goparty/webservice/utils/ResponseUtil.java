@@ -5,6 +5,7 @@ import javax.ws.rs.core.Response;
 import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
 import org.codehaus.jackson.annotate.JsonMethod;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
 import com.goparty.data.exception.BaseException;
  
@@ -17,7 +18,8 @@ public class ResponseUtil {
 		data.setStatus("success");
 		
 		ObjectMapper mapper = new ObjectMapper();        
-        mapper.setVisibility(JsonMethod.FIELD, Visibility.ANY);            
+        mapper.setVisibility(JsonMethod.FIELD, Visibility.ANY);
+        mapper.setSerializationInclusion(Inclusion.NON_NULL);
         String json = "";
 		try {
 			json = mapper.writeValueAsString(response);
@@ -33,7 +35,8 @@ public class ResponseUtil {
 		data.setCode(200);
 		data.setStatus("success");
 		ObjectMapper mapper = new ObjectMapper();        
-        mapper.setVisibility(JsonMethod.FIELD, Visibility.ANY);            
+        mapper.setVisibility(JsonMethod.FIELD, Visibility.ANY);  
+        mapper.setSerializationInclusion(Inclusion.NON_NULL);
         String json = "";
 		try {
 			json = mapper.writeValueAsString(response);

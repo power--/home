@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.goparty.data.exception.BaseException;
 import com.goparty.data.model.*;
 import com.goparty.data.repository.IEventDataRepository;
 import com.goparty.data.repository.ITokenDataRepository;
@@ -93,6 +94,9 @@ public class UserDao {
 		if(ut!=null){
 			user = userDataRepository.findOne(ut.getUserId());	
 			user.setToken(ut.getToken());
+		}
+		if(user==null){
+			throw new BaseException("User not exist!");
 		}
 		return 	user;
 	}
