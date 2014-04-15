@@ -121,7 +121,7 @@ public class FriendDao {
 	}
 	
 	public List<FriendInvitatinVo> getUnRespInvitations(String inviteeId, int offset, int limit) { 
-		Query  query = em.createNativeQuery("SELECT i.id as invitationId,i.inviterMessage as message,i.`status`,i.updateTime,u.id as userId,u.nickName,u.birthdate,u.gender,u.location,u.signature,u.photo"
+		Query  query = em.createNativeQuery("SELECT i.id as invitationId,i.inviterMessage as message,i.`status`,i.updateTime,u.id as userId,u.nickName,u.birthdate,u.gender,u.location,u.signature,u.photo,u.weChat,u.weibo,u.qq"
 				+ " FROM gp_friend_invitation i join gp_user u on i.inviterId=u.id where  i.`status`='INIT' and i.inviteeId=:inviteeId limit :offset, :limit", FriendInvitatinVo.class);
 		query.setParameter("inviteeId", inviteeId);
 		query.setParameter("offset", offset);
@@ -130,7 +130,7 @@ public class FriendDao {
 	}
 	
 	public List<FriendInvitatinVo> getRespInvitations(String inviterId, int offset, int limit) { 
-		Query  query = em.createNativeQuery("SELECT i.id as invitationId,i.inviteeMessage as message,i.`status`,i.updateTime,u.id as userId,u.nickName,u.birthdate,u.gender,u.location,u.signature,u.photo"
+		Query  query = em.createNativeQuery("SELECT i.id as invitationId,i.inviteeMessage as message,i.`status`,i.updateTime,u.id as userId,u.nickName,u.birthdate,u.gender,u.location,u.signature,u.photo,u.weChat,u.weibo,u.qq"
 				+ " FROM gp_friend_invitation i join gp_user u on i.inviteeId=u.id where  i.`status`='RESP' and i.inviterId=:inviterId limit :offset, :limit", FriendInvitatinVo.class);
 		query.setParameter("inviterId", inviterId);
 		query.setParameter("offset", offset);

@@ -20,11 +20,32 @@ public class FriendInvitatinVo {
 	 private String location;
 	 private String signature;
 	 private String photo;
+	 private String weChat;
+	 private String weibo;
+	 private String qq;
 	 
 	 private String message;
 	 private String status;
 	 private Date updateTime;
 	 
+	public String getWeChat() {
+		return weChat;
+	}
+	public void setWeChat(String weChat) {
+		this.weChat = weChat;
+	}
+	public String getWeibo() {
+		return weibo;
+	}
+	public void setWeibo(String weibo) {
+		this.weibo = weibo;
+	}
+	public String getQq() {
+		return qq;
+	}
+	public void setQq(String qq) {
+		this.qq = qq;
+	}
 	public String getInvitationId() {
 		return invitationId;
 	}

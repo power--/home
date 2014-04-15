@@ -31,6 +31,8 @@ import com.goparty.webservice.FriendService;
 import com.goparty.webservice.model.FriendRequest; 
 import com.goparty.webservice.model.FriendInvitationRequest;
 import com.goparty.webservice.model.GroupRequest;
+import com.goparty.webservice.model.InvitationResponse;
+import com.goparty.webservice.model.UserResponse;
 import com.goparty.webservice.utils.ResponseUtil;
 
 
@@ -95,7 +97,30 @@ public class FriendServiceImpl implements FriendService {
 	@Override
 	public Response getUnRespInvitations(String token,int offset,int limit) { 
 		User user = userDao.getUserByToken(token);		
-		return ResponseUtil.buildResponse(friendDao.getUnRespInvitations(user.getId(),offset,limit));
+		List<FriendInvitatinVo> friendInvitatinVos = friendDao.getUnRespInvitations(user.getId(),offset,limit);		
+		List<InvitationResponse> invitations= new ArrayList<InvitationResponse>();
+		for(FriendInvitatinVo vo : friendInvitatinVos){
+			InvitationResponse invitation = new InvitationResponse();
+			invitation.setInvitationId(vo.getInvitationId());
+			UserResponse inviter = new UserResponse();
+			inviter.setId(vo.getUserId());
+			inviter.setLocation(vo.getLocation());
+			inviter.setNickName(vo.getNickName());
+			inviter.setPhoto(vo.getPhoto());
+			inviter.setSignature(vo.getSignature());
+			inviter.setBirthdate(vo.getBirthdate());
+			inviter.setGender(vo.getGender());
+			inviter.setPhone(vo.getPhoto());
+			inviter.setWeChat(vo.getWeChat());
+			inviter.setWeibo(vo.getWeibo());
+			inviter.setQq(vo.getQq()); 
+			invitation.setInviter(inviter );
+			invitation.setInviterMessage(vo.getMessage());;
+			invitation.setStatus(vo.getStatus());
+			invitation.setUpdateTime(vo.getUpdateTime());
+			invitations.add(invitation);
+		}
+		return ResponseUtil.buildResponse(invitations);
 	}
 
 	@Override
@@ -124,6 +149,12 @@ public class FriendServiceImpl implements FriendService {
 			uf.setFriendId(invitation.getInviterId());	
 			uf.setStatus(UserFriend.STATUS_NORMAL);
 			friendDao.create(uf);
+			
+			UserFriend uf2 = new UserFriend(); 
+			uf2.setUserId(invitation.getInviterId());
+			uf2.setFriendId(user.getId());	
+			uf2.setStatus(UserFriend.STATUS_NORMAL);
+			friendDao.create(uf2);
 			logger.info("add friend successfully.");
 			
 			//update group
@@ -143,10 +174,32 @@ public class FriendServiceImpl implements FriendService {
 	}
 	
 	@Override
-	public Response getRespInvitations(String token, int offset,
-			int limit) {
-		User user = userDao.getUserByToken(token);		
-		return ResponseUtil.buildResponse(friendDao.getRespInvitations(user.getId(),offset,limit));
+	public Response getRespInvitations(String token, int offset,int limit) {
+		User user = userDao.getUserByToken(token);				
+		List<FriendInvitatinVo> friendInvitatinVos = friendDao.getRespInvitations(user.getId(),offset,limit);		
+		List<InvitationResponse> invitations= new ArrayList<InvitationResponse>();
+		for(FriendInvitatinVo vo : friendInvitatinVos){
+			InvitationResponse invitation = new InvitationResponse();
+			invitation.setInvitationId(vo.getInvitationId());
+			UserResponse invitee = new UserResponse();
+			invitee.setId(vo.getUserId());
+			invitee.setLocation(vo.getLocation());
+			invitee.setNickName(vo.getNickName());
+			invitee.setPhoto(vo.getPhoto());
+			invitee.setSignature(vo.getSignature());
+			invitee.setBirthdate(vo.getBirthdate());
+			invitee.setGender(vo.getGender());
+			invitee.setPhone(vo.getPhoto());
+			invitee.setWeChat(vo.getWeChat());
+			invitee.setWeibo(vo.getWeibo());
+			invitee.setQq(vo.getQq()); 
+			invitation.setInviter(invitee );
+			invitation.setInviteeMessage(vo.getMessage());;
+			invitation.setStatus(vo.getStatus());
+			invitation.setUpdateTime(vo.getUpdateTime());	
+			invitations.add(invitation);
+		}
+		return ResponseUtil.buildResponse(invitations); 
 	}
 
 	@Override
