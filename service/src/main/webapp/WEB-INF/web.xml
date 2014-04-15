@@ -56,12 +56,27 @@
 		<load-on-startup>2</load-on-startup>
 		
 	</servlet>
+	
+	<servlet>
+		<servlet-name>photo</servlet-name>
+		<servlet-class>com.goparty.photo.PhotoServlet</servlet-class>
+		<init-param>
+			<param-name>baseDir</param-name>
+			<param-value>C:/photo</param-value>
+		</init-param>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
 
 	<servlet-mapping>
     	<servlet-name>default</servlet-name>
     	<url-pattern>/static/*</url-pattern>
 	</servlet-mapping>
 
+	<servlet-mapping>
+    	<servlet-name>photo</servlet-name>
+    	<url-pattern>/photoStore/*</url-pattern>
+	</servlet-mapping>
+	
     <servlet-mapping>
         <servlet-name>CXFServlet</servlet-name>
         <url-pattern>/cxf/*</url-pattern>
