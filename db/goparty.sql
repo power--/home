@@ -165,8 +165,8 @@ CREATE TABLE IF NOT EXISTS `gp_moment` (
   `id` char(36) NOT NULL,
   `eventId` int(11) NOT NULL,
   `userId` int(10) NOT NULL,
-  'moment' varchar(512),
-  `visibility` tinyint(4) NULL
+  `moment` varchar(512) DEFAULT NULL,
+  `visibility` tinyint(4) DEFAULT NULL,
   `updateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -174,8 +174,9 @@ CREATE TABLE IF NOT EXISTS `gp_moment` (
 DROP TABLE IF EXISTS `gp_photo`;
 CREATE TABLE IF NOT EXISTS `gp_photo` (
   `id` char(36) NOT NULL,
-  `momentId` int(11) NOT NULL,
+  `momentId` char(36) NOT NULL,
   `format` varchar(32) NOT NULL,
+  `nickName` varchar(512) NULL,
   `updateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

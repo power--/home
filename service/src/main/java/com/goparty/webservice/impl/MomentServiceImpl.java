@@ -2,6 +2,7 @@ package com.goparty.webservice.impl;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -92,12 +93,16 @@ public class MomentServiceImpl implements MomentService {
 			}
 		}
 		
-		model = momentDataRepository.save(model);
+		momentDataRepository.save(model);
 		
 		MomentRepsone resp = new MomentRepsone();
 		resp.setId(model.getId());
 		resp.setMoment(model.getMoment());
 		resp.setVisibility(model.getVisibility());
+		
+		if(model.getPhotos()!=null&&model.getPhotos().size()>0){
+			resp.setPhotos(new LinkedList<PhotoInfo>());
+		}
 		
 		for(Photo p :model.getPhotos()){
 			PhotoInfo info = new PhotoInfo();
@@ -105,8 +110,10 @@ public class MomentServiceImpl implements MomentService {
 			model.getEvent().getId();
 			p.getId();
 			p.getFormat();
-//			info.setPhoto("photoStore/"+model.getUser().getId()+"/"+model.getEvent().getId()+p.getId()+"."+p.getFormat());
+			info.setPhoto("photoStore/"+model.getUser().getId()+"/"+model.getEvent().getId()+"/"+p.getId()+"."+p.getFormat());
 			info.setNickName(p.getNickName());
+			
+			resp.getPhotos().add(info);
 		}
 		
 		

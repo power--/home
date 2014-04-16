@@ -1,14 +1,13 @@
 package com.goparty.photo;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -38,16 +37,15 @@ public class PhotoServlet implements HttpRequestHandler {
 
 		String fullPath = baseDir + File.separator + relativePath;
 
-		File file = new File(fullPath);
 
-		log.info("Looking for file " + file.getAbsolutePath());
+		log.info("Looking for file " + fullPath);
 
 		// show a 404 page
-		if (!file.exists() || !file.isFile()) {
+		if (!Files.exists(Paths.get(fullPath)) || Files.isDirectory(Paths.get(fullPath))) {
 			httpError(404, response);
 		} else {
 			try {
-				streamImageFile(file, response);
+				streamImageFile(fullPath, response);
 			} catch (Exception ex) {
 				httpError(500, response);
 				log.error(ex);
@@ -56,37 +54,25 @@ public class PhotoServlet implements HttpRequestHandler {
 
 	}
 
-	private void streamImageFile(File file, HttpServletResponse response) {
+	private void streamImageFile(String fullPath, HttpServletResponse response) {
 		// find the right MIME type and set it as content type
-		response.setContentType(getContentType(file));
-		BufferedInputStream bis = null;
+		response.setContentType(getContentType(fullPath));
+		
 		BufferedOutputStream bos = null;
 		try {
-			response.setContentLength((int) file.length());
-
-			// Use Buffered Stream for reading/writing.
-			bis = new BufferedInputStream(new FileInputStream(file));
+			
+			
+			byte[] bytes = Files.readAllBytes(Paths.get(fullPath));
+			response.setContentLength(bytes.length);
+			
 			bos = new BufferedOutputStream(response.getOutputStream());
-
-			byte[] buff = new byte[(int) file.length()];
-			int bytesRead;
-
-			// Simple read/write loop.
-			while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
-				bos.write(buff, 0, bytesRead);
-			}
+			bos.write(bytes);
+			
 		} catch (Exception e) {
 			log.error(e);
 
 			throw new RuntimeException(e);
 		} finally {
-			if (bis != null) {
-				try {
-					bis.close();
-				} catch (IOException e) {
-					log.error(e);
-				}
-			}
 			if (bos != null) {
 				try {
 					bos.close();
@@ -97,23 +83,26 @@ public class PhotoServlet implements HttpRequestHandler {
 		}
 	}
 
-	private String getContentType(File file) {
-		if (file.getName().length() > 0) {
-			String[] parts = file.getName().split("\\.");
+	private String getContentType(String file) {
+		if (file.length() > 0) {
+			String[] parts = file.split("\\.");
 			if (parts.length > 0) {
 				// only last part interests me
 				String extention = parts[parts.length - 1];
 				if (extention.equalsIgnoreCase("jpg")) {
 					return "image/jpg";
-				} else if (extention.equalsIgnoreCase("gif")) {
+				}else if(extention.equalsIgnoreCase("jpeg")){
+					return "image/jpeg";
+				}
+				
+				else if (extention.equalsIgnoreCase("gif")) {
 					return "image/gif";
 				} else if (extention.equalsIgnoreCase("png")) {
 					return "image/png";
 				}
 			}
 		}
-		throw new RuntimeException("Can not find content type for the file "
-				+ file.getAbsolutePath());
+		throw new RuntimeException("Can not find content type for the file "+ file);
 	}
 
 	private String trimToEmpty(String pathInfo) {
