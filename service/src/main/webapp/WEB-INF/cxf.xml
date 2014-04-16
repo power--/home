@@ -75,6 +75,7 @@
             <ref bean="eventCategoryService"/>
             <ref bean="myEventService" />
             <ref bean="fullTextIndexService" />
+            <ref bean="momentService" />
         </jaxrs:serviceBeans>
         <jaxrs:extensionMappings>
             <entry key="xml" value="application/xml" />

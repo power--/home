@@ -12,7 +12,7 @@ import org.apache.cxf.annotations.GZIP;
 
 import com.goparty.webservice.model.MomentRequest;
 
-@Path("/events/")
+@Path("/mevents/")
 @WebService
 @GZIP
 public interface MomentService {

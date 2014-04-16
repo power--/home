@@ -39,7 +39,6 @@ http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
 				<property name="showSql" value="true" />
 				<property name="generateDdl" value="true" />
-				<property name="databasePlatform" value="org.hibernate.dialect.MysqlDialect" />
 			</bean>
 		</property>
 		<property name="jpaProperties">

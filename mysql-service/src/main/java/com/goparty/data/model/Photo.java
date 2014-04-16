@@ -22,7 +22,7 @@ public class Photo {
 	@Column 
 	private String nickName;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "momentId", nullable = false)
 	private Moment moment;
 	@Column

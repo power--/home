@@ -36,6 +36,7 @@ public class MomentRepositoryTest extends AbstractRepositoryTest{
 		p.setId(UUID.randomUUID().toString());
 		System.out.println("photo:"+ p.getId());
 		p.setMoment(model);
+		p.setFormat("JPG");
 		model.getPhotos().add(p);
 		
 		momentDataRepository.save(model);

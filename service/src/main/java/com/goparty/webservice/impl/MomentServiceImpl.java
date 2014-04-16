@@ -11,6 +11,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.goparty.data.dao.UserDao;
 import com.goparty.data.model.Event;
@@ -25,7 +26,7 @@ import com.goparty.webservice.model.MomentRequest;
 import com.goparty.webservice.model.PhotoInfo;
 import com.goparty.webservice.utils.ResponseUtil;
 
-
+@Service("momentService")
 public class MomentServiceImpl implements MomentService {
 	private Log log = LogFactory.getLog(MomentServiceImpl.class);
 	
@@ -44,10 +45,12 @@ public class MomentServiceImpl implements MomentService {
 		Moment model = new Moment();
 		model.setId(UUID.randomUUID().toString());
 		
-		User currentUser = userDao.getUserByToken(token);
+		User currentUser = new User();
+		currentUser.setId("21");
 		Event evt = new Event();
 		evt.setId(eventId);
 		model.setEvent(evt);
+		model.setUser(currentUser);
 		
 		List<PhotoInfo> photos = request.getPhotos();
 		
@@ -79,6 +82,7 @@ public class MomentServiceImpl implements MomentService {
 					Photo aPhoto = new Photo();
 					aPhoto.setId(id);
 					aPhoto.setFormat(format);
+					aPhoto.setMoment(model);
 					
 					model.getPhotos().add(aPhoto);
 					
@@ -98,7 +102,10 @@ public class MomentServiceImpl implements MomentService {
 		for(Photo p :model.getPhotos()){
 			PhotoInfo info = new PhotoInfo();
 			info.setId(p.getId());
-			info.setPhoto("test/ind.jpg");
+			model.getEvent().getId();
+			p.getId();
+			p.getFormat();
+//			info.setPhoto("photoStore/"+model.getUser().getId()+"/"+model.getEvent().getId()+p.getId()+"."+p.getFormat());
 			info.setNickName(p.getNickName());
 		}
 		

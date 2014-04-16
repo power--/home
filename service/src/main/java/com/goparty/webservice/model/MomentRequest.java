@@ -1,5 +1,6 @@
 package com.goparty.webservice.model;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -11,7 +12,7 @@ public class MomentRequest {
 	private String visibility;
 	
 	@XmlElementWrapper(name="photos")
-	private List<PhotoInfo> photos;
+	private List<PhotoInfo> photos = new LinkedList<PhotoInfo>();
 
 	public String getMoment() {
 		return moment;
