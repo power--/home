@@ -1,8 +1,10 @@
 package com.goparty.data.model;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,10 +14,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
 
 import com.goparty.data.constant.EventVisibility;
 
 @Entity
+@Table(name="gp_moment")
 public class Moment {
 	@Id
 	private String id;
@@ -34,8 +40,11 @@ public class Moment {
 	@Enumerated(EnumType.ORDINAL)
 	private EventVisibility visibility;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "moment")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "moment", cascade=CascadeType.ALL)
 	private List<Photo> photos = new LinkedList<Photo>();
+	
+	@Column
+	private Date updateTime;
 
 	public String getId() {
 		return id;
@@ -83,5 +92,13 @@ public class Moment {
 
 	public void setPhotos(List<Photo> photos) {
 		this.photos = photos;
+	}
+
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
 	}
 }

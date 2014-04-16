@@ -11,7 +11,7 @@ public class MomentRequest {
 	private String visibility;
 	
 	@XmlElementWrapper(name="photos")
-	private List<PhotoRequest> photos;
+	private List<PhotoInfo> photos;
 
 	public String getMoment() {
 		return moment;
@@ -29,11 +29,11 @@ public class MomentRequest {
 		this.visibility = visibility;
 	}
 
-	public List<PhotoRequest> getPhotos() {
+	public List<PhotoInfo> getPhotos() {
 		return photos;
 	}
 
-	public void setPhotos(List<PhotoRequest> photos) {
+	public void setPhotos(List<PhotoInfo> photos) {
 		this.photos = photos;
 	}
 }

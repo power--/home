@@ -158,3 +158,24 @@ CREATE TABLE IF NOT EXISTS `gp_user_token` (
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+
+
+DROP TABLE IF EXISTS `gp_moment`;
+CREATE TABLE IF NOT EXISTS `gp_moment` (
+  `id` char(36) NOT NULL,
+  `eventId` int(11) NOT NULL,
+  `userId` int(10) NOT NULL,
+  'moment' varchar(512),
+  `visibility` tinyint(4) NULL
+  `updateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `gp_photo`;
+CREATE TABLE IF NOT EXISTS `gp_photo` (
+  `id` char(36) NOT NULL,
+  `momentId` int(11) NOT NULL,
+  `format` varchar(32) NOT NULL,
+  `updateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

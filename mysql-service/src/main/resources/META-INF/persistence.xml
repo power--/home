@@ -11,5 +11,7 @@
 		<class>com.goparty.data.model.Group</class>
 		<class>com.goparty.data.vo.FriendInvitatinVo</class>
 		<class>com.goparty.data.vo.FriendVo</class>
+		<class>com.goparty.data.model.Moment</class>
+		<class>com.goparty.data.model.Photo</class>
 	</persistence-unit>
 </persistence> 

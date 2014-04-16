@@ -58,13 +58,9 @@
 	</servlet>
 	
 	<servlet>
-		<servlet-name>photo</servlet-name>
-		<servlet-class>com.goparty.photo.PhotoServlet</servlet-class>
-		<init-param>
-			<param-name>baseDir</param-name>
-			<param-value>C:/photo</param-value>
-		</init-param>
-		<load-on-startup>2</load-on-startup>
+	    <display-name>PhotoServlet</display-name>
+		<servlet-name>photoServlet</servlet-name>
+		<servlet-class>org.springframework.web.context.support.HttpRequestHandlerServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -73,7 +69,7 @@
 	</servlet-mapping>
 
 	<servlet-mapping>
-    	<servlet-name>photo</servlet-name>
+    	<servlet-name>photoServlet</servlet-name>
     	<url-pattern>/photoStore/*</url-pattern>
 	</servlet-mapping>
 	
