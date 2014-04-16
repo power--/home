@@ -1,6 +1,6 @@
 package com.goparty.webservice;
 
-import java.util.List;
+import java.util.Date;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -19,7 +19,7 @@ import org.apache.cxf.jaxrs.model.wadl.Description;
 import org.apache.cxf.jaxrs.model.wadl.Descriptions;
 import org.apache.cxf.jaxrs.model.wadl.DocTarget;
 
-import com.goparty.data.model.*; 
+import com.goparty.data.model.Event;
 import com.goparty.webservice.model.CommentRequest;
 import com.goparty.webservice.model.MessageRequest;
 
@@ -114,5 +114,14 @@ public interface EventService {
 	@Path("{eventId}/comments")
 	public Response getCommentListByEventId(@PathParam("eventId") String eventId,@QueryParam("offset") int offset,@QueryParam("limit") int limit);
 	
-	
+	@WebMethod
+	@GET
+	@Descriptions({
+		@Description(value = "return events", target = DocTarget.METHOD),
+		@Description(value = "return events", target = DocTarget.RETURN)
+	})
+	@Path("list")
+	public Response list(@HeaderParam("token") String token, @QueryParam("scope") String scope,@QueryParam("after") Date after, @QueryParam("before") Date before, @QueryParam("categories") String categories, @QueryParam("search") String search, @QueryParam("offset") long offset, @QueryParam("limit") long limit);
+
 }
+	

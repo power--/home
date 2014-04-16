@@ -279,5 +279,12 @@ public class EventServiceImpl implements EventService {
 		return null;
 	}
 	
+	@Override
+	public Response list(String token, String scope, Date after, Date before,
+			String categories, String search, long offset, long limit) {
+		User user = userDao.getUserByToken(token);		
+		List<Event> ret = eventDao.getEvents(user.getId(),scope,after, before,categories,search,offset,limit);
+		return ResponseUtil.buildResponse(ret);
+	}
 	
 }
