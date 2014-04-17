@@ -19,9 +19,6 @@ public class Photo {
 	@Column
 	private String format;
 	
-	@Column 
-	private String nickName;
-	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "momentId", nullable = false)
 	private Moment moment;
@@ -58,13 +55,5 @@ public class Photo {
 
 	public void setMoment(Moment moment) {
 		this.moment = moment;
-	}
-
-	public String getNickName() {
-		return nickName;
-	}
-
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
 	}
 }
