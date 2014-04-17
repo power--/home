@@ -1,5 +1,6 @@
 package com.goparty.webservice.model;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -8,6 +9,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
 import com.goparty.data.constant.EventVisibility;
+import com.goparty.data.model.User;
 
 @XmlRootElement(name = "response")
 @JsonSerialize(include=Inclusion.NON_NULL)
@@ -16,6 +18,9 @@ public class MomentRepsone {
 	private String moment;
 	private EventVisibility visibility;
 	private List<PhotoInfo> photos;
+	private User sender;
+	private Date publishTime;
+	
 	public String getId() {
 		return id;
 	}
@@ -39,5 +44,17 @@ public class MomentRepsone {
 	}
 	public void setPhotos(List<PhotoInfo> photos) {
 		this.photos = photos;
+	}
+	public User getSender() {
+		return sender;
+	}
+	public void setSender(User sender) {
+		this.sender = sender;
+	}
+	public Date getPublishTime() {
+		return publishTime;
+	}
+	public void setPublishTime(Date publishTime) {
+		this.publishTime = publishTime;
 	}
 }

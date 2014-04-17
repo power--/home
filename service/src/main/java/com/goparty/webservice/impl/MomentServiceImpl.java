@@ -13,13 +13,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.goparty.data.dao.UserDao;
 import com.goparty.data.model.Event;
 import com.goparty.data.model.Moment;
 import com.goparty.data.model.Photo;
 import com.goparty.data.model.User;
-import com.goparty.data.repository.IMomentRepository;
+import com.goparty.data.repository.IMomentDataRepository;
 import com.goparty.photo.PhotoStore;
 import com.goparty.webservice.MomentService;
 import com.goparty.webservice.model.MomentRepsone;
@@ -38,16 +39,16 @@ public class MomentServiceImpl implements MomentService {
 	private PhotoStore photoStore;
 
 	@Autowired
-	private IMomentRepository momentRepository;
+	private IMomentDataRepository momentDataRepository;
 	
 	@Override
+	@Transactional
 	public Response create(String eventId, String token, MomentRequest request) {
 		
 		Moment model = new Moment();
 		model.setId(UUID.randomUUID().toString());
 		
-		User currentUser = new User();
-		currentUser.setId("21");
+		User currentUser = userDao.getUserByToken(token);
 		Event evt = new Event();
 		evt.setId(eventId);
 		model.setEvent(evt);
@@ -93,12 +94,20 @@ public class MomentServiceImpl implements MomentService {
 			}
 		}
 		
-		momentRepository.save(model);
+		model = momentDataRepository.save(model);
 		
 		MomentRepsone resp = new MomentRepsone();
 		resp.setId(model.getId());
 		resp.setMoment(model.getMoment());
 		resp.setVisibility(model.getVisibility());
+		
+		User sender = new User();
+		sender.setId(model.getUser().getId());
+		sender.setNickName(model.getUser().getNickName());
+		resp.setSender(sender);
+		
+		resp.setPublishTime(model.getUpdateTime());
+		
 		
 		if(model.getPhotos()!=null&&model.getPhotos().size()>0){
 			resp.setPhotos(new LinkedList<PhotoInfo>());
@@ -111,7 +120,6 @@ public class MomentServiceImpl implements MomentService {
 			p.getId();
 			p.getFormat();
 			info.setPhoto("photoStore/"+model.getUser().getId()+"/"+model.getEvent().getId()+"/"+p.getId()+"."+p.getFormat());
-			info.setNickName(p.getNickName());
 			
 			resp.getPhotos().add(info);
 		}
