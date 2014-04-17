@@ -176,7 +176,6 @@ CREATE TABLE IF NOT EXISTS `gp_photo` (
   `id` char(36) NOT NULL,
   `momentId` char(36) NOT NULL,
   `format` varchar(32) NOT NULL,
-  `nickName` varchar(512) NULL,
   `updateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
