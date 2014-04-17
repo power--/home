@@ -1,15 +1,18 @@
 package com.goparty.client;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.zip.GZIPOutputStream;
 
 import org.apache.commons.codec.binary.Base64;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -45,7 +48,7 @@ public class MomentTest {
 
 		HttpURLConnection urlConnection = null;
 		try {
-			URL u = new URL("http://localhost/cxf/rest/mevents/12/moments");
+			URL u = new URL("http://goparty.cloudapp.net/cxf/rest/mevents/10/moments");
 			urlConnection = (HttpURLConnection) u.openConnection();
 			urlConnection.setDoOutput(true);
 			urlConnection.setRequestMethod("POST");
@@ -57,13 +60,14 @@ public class MomentTest {
 			urlConnection.setRequestProperty("Accept", "application/json");
 			urlConnection.setRequestProperty("charset", "utf-8");
 			urlConnection.setRequestProperty("token", "98326219-4388-4692-a93f-f18b2c7a275e");
+			urlConnection.setRequestProperty("Accept-Encoding", "gzip");
+			urlConnection.setRequestProperty("Content-Encoding", "gzip");
+			
+			byte[] outBytes = toGzip(data);
+			urlConnection.setRequestProperty("Content-Length", "" + outBytes.length);
 
-			urlConnection.setRequestProperty("Content-Length",
-					"" + data.getBytes("UTF-8").length);
-
-			OutputStreamWriter out = new OutputStreamWriter(
-					urlConnection.getOutputStream());
-			out.write(data);
+			OutputStream out = urlConnection.getOutputStream();
+			out.write(outBytes);
 			out.close();
 
 			int HttpResult = urlConnection.getResponseCode();
@@ -106,5 +110,17 @@ public class MomentTest {
 		System.out.println(ret);
 		System.out.println("-------------END------------------------");
 		
+	}
+	
+	private byte[] toGzip(String text) throws Exception {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		try {
+			OutputStream out = new GZIPOutputStream(baos);
+			out.write(text.getBytes("UTF-8"));
+			out.close();
+			return baos.toByteArray();
+		} finally {
+			baos.close();
+		}
 	}
 }
