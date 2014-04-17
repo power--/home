@@ -13,6 +13,6 @@ import com.goparty.data.model.UserFriendPK;
  
 
 @Transactional
-public interface IMessageDataRepository extends JpaRepository<EventMessage, String>{  
+public interface IMessageRepository extends JpaRepository<EventMessage, String>{  
 	Page<EventMessage> findByEventId(String eventId,Pageable pageable);
 }

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.goparty.data.model.Event;
-import com.goparty.data.repository.IEventDataRepository;
+import com.goparty.data.repository.IEventRepository;
 
 
 @Repository("eventDao")
@@ -26,20 +26,20 @@ public class EventDao {
 	private EntityManager em;
 	
 	@Autowired
-	private IEventDataRepository eventDataRepository;
+	private IEventRepository eventRepository;
 	
 	
 	public Event read(String id) {
-		Event event = eventDataRepository.findOne(id);
+		Event event = eventRepository.findOne(id);
 		return event;
 	}
 
 	public Event create(Event event) {
-		return eventDataRepository.save(event);
+		return eventRepository.save(event);
 	}
 
 	public Event update(Event event) {
-		return eventDataRepository.save(event);
+		return eventRepository.save(event);
 		
 	}
 
@@ -47,7 +47,7 @@ public class EventDao {
 		boolean ret = false;
 		
 		try{
-			eventDataRepository.delete(id);
+			eventRepository.delete(id);
 			ret = true;
 		}catch(Exception ex){
 			log.error("del user error",ex);

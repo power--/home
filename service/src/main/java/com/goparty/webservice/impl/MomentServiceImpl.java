@@ -19,7 +19,7 @@ import com.goparty.data.model.Event;
 import com.goparty.data.model.Moment;
 import com.goparty.data.model.Photo;
 import com.goparty.data.model.User;
-import com.goparty.data.repository.IMomentDataRepository;
+import com.goparty.data.repository.IMomentRepository;
 import com.goparty.photo.PhotoStore;
 import com.goparty.webservice.MomentService;
 import com.goparty.webservice.model.MomentRepsone;
@@ -38,7 +38,7 @@ public class MomentServiceImpl implements MomentService {
 	private PhotoStore photoStore;
 
 	@Autowired
-	private IMomentDataRepository momentDataRepository;
+	private IMomentRepository momentRepository;
 	
 	@Override
 	public Response create(String eventId, String token, MomentRequest request) {
@@ -93,7 +93,7 @@ public class MomentServiceImpl implements MomentService {
 			}
 		}
 		
-		momentDataRepository.save(model);
+		momentRepository.save(model);
 		
 		MomentRepsone resp = new MomentRepsone();
 		resp.setId(model.getId());

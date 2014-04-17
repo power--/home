@@ -11,7 +11,7 @@ import com.goparty.data.model.UserFriend;
  
 
 @Transactional
-public interface IFriendInvitationDataRepository extends JpaRepository<FriendInvitation, String>{  
+public interface IFriendInvitationRepository extends JpaRepository<FriendInvitation, String>{  
 
 	//获取被邀请者的信息
 	List<FriendInvitation> findByinviteeIdAndStatus(String inviteeId,String status, Pageable pageable); 

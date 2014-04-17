@@ -17,8 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.goparty.data.exception.BaseException; 
 import com.goparty.data.model.EventComment; 
-import com.goparty.data.repository.ICommentDataRepository;
-import com.goparty.data.repository.IUserDataRepository;
+import com.goparty.data.repository.ICommentRepository;
+import com.goparty.data.repository.IUserRepository;
 @Repository("commentDao")
 @Transactional
 public class CommentDao {
@@ -29,25 +29,25 @@ public class CommentDao {
 	private EntityManager em;
 	
 	@Autowired
-	private ICommentDataRepository commentDataRepository;
+	private ICommentRepository commentRepository;
 	
 	 
 	@Autowired
-	private IUserDataRepository userDataRepository;
+	private IUserRepository userRepository;
 	 
 	
 	public EventComment read(String id) {
-		EventComment comment = commentDataRepository.findOne(id);
+		EventComment comment = commentRepository.findOne(id);
 		return comment;
 	}
 
 	public EventComment create(EventComment comment) { 		 
-		comment = commentDataRepository.save(comment);
+		comment = commentRepository.save(comment);
 		return comment;
 	}
 
 	public boolean update(String id, String content) {	 
-		EventComment comment = commentDataRepository.findOne(id);
+		EventComment comment = commentRepository.findOne(id);
 		if(comment!=null){
 			Query query = em.createNativeQuery("update gp_event_comment set content=:content where id=:id");
 			query.setParameter("id", id);
@@ -62,7 +62,7 @@ public class CommentDao {
 	public boolean delete(String id) {
 		boolean ret = false;		
 		try{
-			commentDataRepository.delete(id);
+			commentRepository.delete(id);
 			ret = true;
 		}catch(Exception ex){
 			log.error("del user error",ex);
@@ -73,7 +73,7 @@ public class CommentDao {
 	 
 	public List<EventComment> findByEventId(String eventId,int offset,int limit){		
 		PageRequest pageable = new PageRequest(offset, limit);		 
-		Page<EventComment> commentList = commentDataRepository.findByEventId(eventId, pageable);
+		Page<EventComment> commentList = commentRepository.findByEventId(eventId, pageable);
 		return commentList.getContent();
 	} 
 }

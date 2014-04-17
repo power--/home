@@ -11,6 +11,6 @@ import com.goparty.data.model.UserFriendPK;
  
 
 @Transactional
-public interface IFriendDataRepository extends JpaRepository<UserFriend, UserFriendPK>{ 
+public interface IFriendRepository extends JpaRepository<UserFriend, UserFriendPK>{ 
 	List<UserFriend> findByUserIdAndStatus(String userId,String status, Pageable pageable); 
 }

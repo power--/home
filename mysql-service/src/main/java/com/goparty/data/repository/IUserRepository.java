@@ -10,6 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.goparty.data.model.User; 
 
 @Transactional
-public interface IUserDataRepository extends JpaRepository<User, String>{ 
+public interface IUserRepository extends JpaRepository<User, String>{ 
 	public User findByLoginId(String loginId);
 }

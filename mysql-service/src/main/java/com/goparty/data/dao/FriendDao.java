@@ -21,10 +21,10 @@ import com.goparty.data.model.FriendInvitation;
 import com.goparty.data.model.Group;
 import com.goparty.data.model.UserFriend;
 import com.goparty.data.model.UserFriendPK;
-import com.goparty.data.repository.IFriendDataRepository;
-import com.goparty.data.repository.IFriendInvitationDataRepository;
-import com.goparty.data.repository.IGroupDataRepository;
-import com.goparty.data.repository.IUserDataRepository;
+import com.goparty.data.repository.IFriendRepository;
+import com.goparty.data.repository.IFriendInvitationRepository;
+import com.goparty.data.repository.IGroupRepository;
+import com.goparty.data.repository.IUserRepository;
 import com.goparty.data.vo.FriendInvitatinVo;
 import com.goparty.data.vo.FriendVo;
 //@Repository("friendDataService")
@@ -37,16 +37,16 @@ public class FriendDao {
 	private EntityManager em;
 	
 	@Autowired
-	private IFriendInvitationDataRepository friendInvitationDataRepository;
+	private IFriendInvitationRepository friendInvitationRepository;
 	
 	@Autowired
-	private IFriendDataRepository friendDataRepository;
+	private IFriendRepository friendRepository;
 	
 	@Autowired
-	private IGroupDataRepository groupDataRepository;
+	private IGroupRepository groupRepository;
 	
 	@Autowired
-	private IUserDataRepository userDataRepository;
+	private IUserRepository userRepository;
 
 	private String sqlGetFriends;
 	
@@ -60,18 +60,18 @@ public class FriendDao {
 	}
 	//invitation
 	public void addInvitation(FriendInvitation invitation){
-		friendInvitationDataRepository.save(invitation);
+		friendInvitationRepository.save(invitation);
 	}
 	public FriendInvitation getInvitation(String invitationId){
-		return friendInvitationDataRepository.findOne(invitationId);
+		return friendInvitationRepository.findOne(invitationId);
 	}
 	public void updateInvitation(FriendInvitation invitation){
-		friendInvitationDataRepository.save(invitation);
+		friendInvitationRepository.save(invitation);
 	}
 	
 	//user friend
 	public UserFriend read(UserFriendPK id) {
-		UserFriend friend = friendDataRepository.findOne(id);
+		UserFriend friend = friendRepository.findOne(id);
 		return friend;
 	}
 
@@ -84,7 +84,7 @@ public class FriendDao {
 		}
 		uf.setUpdateTime(new Date());
 		uf.setStatus(UserFriend.STATUS_NORMAL);
-		uf = friendDataRepository.save(uf);
+		uf = friendRepository.save(uf);
 		return uf;
 	}
 
@@ -92,7 +92,7 @@ public class FriendDao {
 		UserFriendPK pk = new UserFriendPK();
 		pk.setUserId(userFriend.getUserId());
 		pk.setFriendId(userFriend.getFriendId());
-		UserFriend uf = friendDataRepository.findOne(pk);
+		UserFriend uf = friendRepository.findOne(pk);
 		if(uf == null){
 			throw new BaseException("Friend not exist");
 		}
@@ -104,14 +104,14 @@ public class FriendDao {
 			uf.setRemarkName(userFriend.getRemarkName());
 		}
 		uf.setUpdateTime(new Date());		
-		return friendDataRepository.save(uf);
+		return friendRepository.save(uf);
 		
 	}
 
 	public boolean delete(UserFriendPK id) {
 		boolean ret = false;		
 		try{
-			friendDataRepository.delete(id);
+			friendRepository.delete(id);
 			ret = true;
 		}catch(Exception ex){
 			log.error("del user error",ex);
@@ -157,18 +157,18 @@ public class FriendDao {
 		if(StringUtils.isEmpty(group.getName())){
 			throw new BaseException("group name should not be empty.");
 		}
-		return groupDataRepository.save(group);
+		return groupRepository.save(group);
 	}
 	
 	public List<Group> getGroupsByUserId(String userId){
-		return groupDataRepository.findByOwnerId(userId);
+		return groupRepository.findByOwnerId(userId);
 	}
 	
 	public Group updateGroup(Group group){
-		Group g = groupDataRepository.findOne(group.getId());
+		Group g = groupRepository.findOne(group.getId());
 		if(g!=null){
 			g.setName(group.getName());
-			g = groupDataRepository.save(g);
+			g = groupRepository.save(g);
 		}
 		return g;
 	}
@@ -176,7 +176,7 @@ public class FriendDao {
 	public boolean deleteGroup(String id){
 		boolean ret = false;		
 		try{
-			groupDataRepository.delete(id);
+			groupRepository.delete(id);
 			ret = true;
 		}catch(Exception ex){
 			log.error("del group error",ex);
@@ -186,7 +186,7 @@ public class FriendDao {
 	}
 	
 	public Group getGroup(String id){
-		return groupDataRepository.findOne(id);
+		return groupRepository.findOne(id);
 	}
 	
 	public void deleteUserFromGroup(String userId, String groupOwnerId){ 

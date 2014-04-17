@@ -9,12 +9,12 @@ import com.goparty.data.model.Event;
 import com.goparty.data.model.Moment;
 import com.goparty.data.model.Photo;
 import com.goparty.data.model.User;
-import com.goparty.data.repository.IMomentDataRepository;
+import com.goparty.data.repository.IMomentRepository;
 
 public class MomentRepositoryTest extends AbstractRepositoryTest{
 	
 	@Autowired
-	private IMomentDataRepository momentDataRepository;
+	private IMomentRepository momentRepository;
 	
 	@Test
 	public void test(){
@@ -39,7 +39,7 @@ public class MomentRepositoryTest extends AbstractRepositoryTest{
 		p.setFormat("JPG");
 		model.getPhotos().add(p);
 		
-		momentDataRepository.save(model);
+		momentRepository.save(model);
 		
 	}
 }

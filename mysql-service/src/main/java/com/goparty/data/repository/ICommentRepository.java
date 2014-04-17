@@ -9,6 +9,6 @@ import com.goparty.data.model.EventComment;
  
 
 @Transactional
-public interface ICommentDataRepository extends JpaRepository<EventComment, String>{  
+public interface ICommentRepository extends JpaRepository<EventComment, String>{  
 	Page<EventComment> findByEventId(String eventId,Pageable pageable);
 }

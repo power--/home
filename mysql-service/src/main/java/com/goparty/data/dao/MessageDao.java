@@ -18,8 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.goparty.data.exception.BaseException;
 import com.goparty.data.model.Event;
 import com.goparty.data.model.EventMessage; 
-import com.goparty.data.repository.IMessageDataRepository;
-import com.goparty.data.repository.IUserDataRepository;
+import com.goparty.data.repository.IMessageRepository;
+import com.goparty.data.repository.IUserRepository;
 @Repository("messageDao")
 @Transactional
 public class MessageDao {
@@ -30,25 +30,25 @@ public class MessageDao {
 	private EntityManager em;
 	
 	@Autowired
-	private IMessageDataRepository messageDataRepository;
+	private IMessageRepository messageRepository;
 	
 	 
 	@Autowired
-	private IUserDataRepository userDataRepository;
+	private IUserRepository userRepository;
 	 
 	
 	public EventMessage read(String id) {
-		EventMessage message = messageDataRepository.findOne(id);
+		EventMessage message = messageRepository.findOne(id);
 		return message;
 	}
 
 	public EventMessage create(EventMessage msg) { 		 
-		msg = messageDataRepository.save(msg);
+		msg = messageRepository.save(msg);
 		return msg;
 	}
 
 	public boolean update(String id, String content) {	 
-		EventMessage updateMsg = messageDataRepository.findOne(id);
+		EventMessage updateMsg = messageRepository.findOne(id);
 		if(updateMsg!=null){
 			Query query = em.createNativeQuery("update gp_event_message set content=:content where id=:id");
 			query.setParameter("id", id);
@@ -63,7 +63,7 @@ public class MessageDao {
 	public boolean delete(String id) {
 		boolean ret = false;		
 		try{
-			messageDataRepository.delete(id);
+			messageRepository.delete(id);
 			ret = true;
 		}catch(Exception ex){
 			log.error("del user error",ex);
@@ -74,7 +74,7 @@ public class MessageDao {
 	 
 	public List<EventMessage> findByEventId(String eventId,int offset,int limit){		
 		PageRequest pageable = new PageRequest(offset, limit);		 
-		Page<EventMessage> msgList = messageDataRepository.findByEventId(eventId, pageable);
+		Page<EventMessage> msgList = messageRepository.findByEventId(eventId, pageable);
 		return msgList.getContent();
 	} 
 }

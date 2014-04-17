@@ -9,6 +9,6 @@ import com.goparty.data.model.Group;
  
 
 @Transactional
-public interface IGroupDataRepository extends JpaRepository<Group, String>{ 
+public interface IGroupRepository extends JpaRepository<Group, String>{ 
 	public List<Group> findByOwnerId(String userId); 
 }

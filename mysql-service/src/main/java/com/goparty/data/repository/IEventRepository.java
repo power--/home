@@ -8,6 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.goparty.data.model.Event;  
 
 @Transactional
-public interface IEventDataRepository extends JpaRepository<Event, String>{
+public interface IEventRepository extends JpaRepository<Event, String>{
 	public Page<Event> findByEventCategoryIdOrderByStartTimeDesc(String cateId, Pageable pageable);
 }

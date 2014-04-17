@@ -2,11 +2,10 @@ package com.goparty.data.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
- 
-import com.goparty.data.model.UserToken;
- 
+
+import com.goparty.data.model.Moment;
 
 @Transactional
-public interface ITokenDataRepository extends JpaRepository<UserToken, String>{ 
-	public UserToken findByToken(String token); 
+public interface IMomentRepository extends JpaRepository<Moment, String> {
+
 }

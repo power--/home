@@ -19,9 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.goparty.data.exception.BaseException;
 import com.goparty.data.model.*;
-import com.goparty.data.repository.IEventDataRepository;
-import com.goparty.data.repository.ITokenDataRepository;
-import com.goparty.data.repository.IUserDataRepository;
+import com.goparty.data.repository.IEventRepository;
+import com.goparty.data.repository.ITokenRepository;
+import com.goparty.data.repository.IUserRepository;
  
 
 @Repository("userDao")
@@ -33,13 +33,13 @@ public class UserDao {
 	private EntityManager em;
 	
 	@Autowired
-	private IUserDataRepository userDataRepository;
+	private IUserRepository userRepository;
 	
 	@Autowired
-	private IEventDataRepository eventDataRepository;
+	private IEventRepository eventRepository;
 	
 	@Autowired
-	private ITokenDataRepository tokenDataRepository;
+	private ITokenRepository tokenRepository;
 	
 	public List<User> search(String keyword,int page,int size){
 		String sql = "select * from gp_user where loginId like '%keyword%' "
@@ -52,15 +52,15 @@ public class UserDao {
 	
 	
 	public User create(User user){	 
-		return userDataRepository.save(user); 
+		return userRepository.save(user); 
 	}
 	
 	public User update(User user){ 
-		return userDataRepository.save(user);
+		return userRepository.save(user);
 	}
 	
 	public User read(String id){
-		User user = userDataRepository.findOne(id);		
+		User user = userRepository.findOne(id);		
 		return user;
 	}
 	
@@ -68,7 +68,7 @@ public class UserDao {
 		boolean ret = false;
 		
 		try{
-			userDataRepository.delete(id);
+			userRepository.delete(id);
 			ret = true;
 		}catch(Exception ex){
 			logger.error("del user error",ex);
@@ -80,19 +80,19 @@ public class UserDao {
 	
 	public List<Event> findByEventCategoryId(String cateId,int offset,int limit){		
 		PageRequest pageable = new PageRequest(offset, limit);		 
-		Page<Event> events = eventDataRepository.findByEventCategoryIdOrderByStartTimeDesc(cateId, pageable);
+		Page<Event> events = eventRepository.findByEventCategoryIdOrderByStartTimeDesc(cateId, pageable);
 		return events.getContent();
 	}
 	
 	public User getUserByLoginId(String loginId){
-		return userDataRepository.findByLoginId(loginId);
+		return userRepository.findByLoginId(loginId);
 	}
 	
 	public User getUserByToken(String token){
 		User user = null;
-		UserToken ut = tokenDataRepository.findByToken(token);
+		UserToken ut = tokenRepository.findByToken(token);
 		if(ut!=null){
-			user = userDataRepository.findOne(ut.getUserId());	
+			user = userRepository.findOne(ut.getUserId());	
 			user.setToken(ut.getToken());
 		}
 		if(user==null){
@@ -103,7 +103,7 @@ public class UserDao {
 	
 	
 	public UserToken getUserToken(String token){
-		return tokenDataRepository.findByToken(token);
+		return tokenRepository.findByToken(token);
 	}
 	
 	public UserToken generateToken(String userId, int offsetDays){
@@ -116,7 +116,7 @@ public class UserDao {
 		cal.setTime(new Date());
 		cal.add(Calendar.DAY_OF_YEAR, offsetDays);//one month
 		token.setExpireTime(cal.getTime());
-		UserToken ut = tokenDataRepository.save(token);	
+		UserToken ut = tokenRepository.save(token);	
 		return ut;
 	}
 }
