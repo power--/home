@@ -1,6 +1,5 @@
 package com.goparty.photo;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -58,28 +57,15 @@ public class PhotoServlet implements HttpRequestHandler {
 		// find the right MIME type and set it as content type
 		response.setContentType(getContentType(fullPath));
 		
-		BufferedOutputStream bos = null;
 		try {
 			
-			
-			byte[] bytes = Files.readAllBytes(Paths.get(fullPath));
-			response.setContentLength(bytes.length);
-			
-			bos = new BufferedOutputStream(response.getOutputStream());
-			bos.write(bytes);
+			long length = Files.copy(Paths.get(fullPath), response.getOutputStream());
+			response.setContentLength((int)length);
 			
 		} catch (Exception e) {
 			log.error(e);
 
 			throw new RuntimeException(e);
-		} finally {
-			if (bos != null) {
-				try {
-					bos.close();
-				} catch (IOException e) {
-					log.error(e);
-				}
-			}
 		}
 	}
 
