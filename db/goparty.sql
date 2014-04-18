@@ -23,7 +23,34 @@ CREATE TABLE `gp_friend_invitation` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `gp_event_invitation`;
+CREATE TABLE `gp_event_invitation` (
+  `id` int(11) NOT NULL auto_increment,
+  `eventId` int(11) default NULL,
+  `inviterId` int(11) default NULL,
+  `inviterMessage` varchar(255) default NULL,
+  `inviteeId` int(11) default NULL,
+  `inviteeMessage` varchar(255) default NULL,
+  `participance` varchar(10) default NULL,
+  `status` char(4) default NULL,
+  `updateTime` datetime default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `gp_event_application`;
+CREATE TABLE `gp_event_application` (
+  `id` int(11) NOT NULL auto_increment,
+  `eventId` int(11) default NULL,
+  `applicantId` int(11) default NULL,
+  `applicantMessage` varchar(255) default NULL,
+  `adminIds` varchar(255) default NULL,
+  `approverId` int(11) default NULL,
+  `approverMessage` varchar(255) default NULL,
+  `approval` varchar(10) default NULL,
+  `status` char(4) default NULL,
+  `updateTime` datetime default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping structure for table openfire.gp_event
 DROP TABLE IF EXISTS `gp_event`;
