@@ -9,9 +9,9 @@ import org.hibernate.search.annotations.Indexed;
 
 @XmlRootElement(name = "eventCategory")
 @Entity
-@Table(name="gp_event_category")
+@Table(name="gp_category")
 @Indexed
-public class EventCategory {
+public class Category {
 	@Id
 	private String id;
 	private String name;

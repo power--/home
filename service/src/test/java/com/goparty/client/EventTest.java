@@ -15,7 +15,7 @@ import org.junit.Test;
 import com.goparty.data.constant.EventStatus;
 import com.goparty.data.constant.EventVisibility;
 import com.goparty.data.model.Event;
-import com.goparty.data.model.EventCategory;
+import com.goparty.data.model.Category;
 import com.goparty.data.model.User;
 import com.goparty.webservice.utils.BaseData;
 
@@ -29,7 +29,7 @@ public class EventTest {
 		evt.setEndTime(new Date());
 		evt.setLocation("Shenzhen");
 		evt.setDescription("test");
-		EventCategory cate = new EventCategory();
+		Category cate = new Category();
 		cate.setId("1");
 		evt.setEventCategory(cate);
 
