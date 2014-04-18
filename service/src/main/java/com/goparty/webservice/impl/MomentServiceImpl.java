@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.goparty.data.constant.EventVisibility;
 import com.goparty.data.dao.UserDao;
+import com.goparty.data.exception.BaseException;
 import com.goparty.data.model.Event;
 import com.goparty.data.model.Moment;
 import com.goparty.data.model.Photo;
@@ -96,6 +98,28 @@ public class MomentServiceImpl implements MomentService {
 		
 		model = momentRepository.save(model);
 		
+		MomentRepsone resp = this.buildRespone(model);
+		
+		return ResponseUtil.buildResponse(resp);
+	}
+	
+	
+
+	@Override
+	public Response read(String token, String momentId) {
+		Moment model = momentRepository.findOne(momentId);
+		
+		if(model==null){
+			throw new BaseException("Moment doesn't exist for id: "+momentId);
+		}
+		
+		MomentRepsone resp = this.buildRespone(model);
+		
+		return ResponseUtil.buildResponse(resp);
+	}
+	
+	
+	private MomentRepsone buildRespone(Moment model){
 		MomentRepsone resp = new MomentRepsone();
 		resp.setId(model.getId());
 		resp.setMoment(model.getMoment());
@@ -124,7 +148,15 @@ public class MomentServiceImpl implements MomentService {
 			resp.getPhotos().add(info);
 		}
 		
-		
-		return ResponseUtil.buildResponse(resp);
+		return resp;
 	}
+
+
+
+	@Override
+	public Response list(String eventId, String token, int offset, int limit) {
+		return null;
+	}
+	
+	
 }
