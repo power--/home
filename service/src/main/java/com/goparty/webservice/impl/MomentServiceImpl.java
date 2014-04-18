@@ -2,6 +2,7 @@ package com.goparty.webservice.impl;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -12,10 +13,10 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.goparty.data.constant.EventVisibility;
 import com.goparty.data.dao.UserDao;
 import com.goparty.data.exception.BaseException;
 import com.goparty.data.model.Event;
@@ -155,7 +156,17 @@ public class MomentServiceImpl implements MomentService {
 
 	@Override
 	public Response list(String eventId, String token, int offset, int limit) {
-		return null;
+		PageRequest pageable = new PageRequest(offset, limit);
+		
+		List<Moment> list = momentRepository.findByEventId(eventId, pageable);
+		
+		List<MomentRepsone> respList = new ArrayList<MomentRepsone>(list.size());
+		
+		for(Moment m :list){
+			respList.add(this.buildRespone(m));	
+		}
+		
+		return ResponseUtil.buildResponse(respList);
 	}
 	
 	
