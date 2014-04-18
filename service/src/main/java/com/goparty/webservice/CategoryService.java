@@ -14,7 +14,7 @@ import org.apache.cxf.jaxrs.model.wadl.DocTarget;
 @Path("/eventcategories/")
 @WebService
 @GZIP
-public interface EventCategoryService {
+public interface CategoryService {
 	
 	@WebMethod
 	@GET

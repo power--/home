@@ -66,7 +66,7 @@ public class Event{
 	@OneToOne
 	@JoinColumn(name = "cateId")
 	@IndexedEmbedded
-	private EventCategory eventCategory;
+	private Category eventCategory;
 
 	@Enumerated(EnumType.ORDINAL)
 	private EventStatus eventStatus;
@@ -145,11 +145,11 @@ public class Event{
 		this.owner = owner;
 	}
 
-	public EventCategory getEventCategory() {
+	public Category getEventCategory() {
 		return eventCategory;
 	}
 
-	public void setEventCategory(EventCategory eventCategory) {
+	public void setEventCategory(Category eventCategory) {
 		this.eventCategory = eventCategory;
 	}
 	

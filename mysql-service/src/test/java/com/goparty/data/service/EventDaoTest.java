@@ -17,7 +17,7 @@ import com.goparty.data.constant.EventStatus;
 import com.goparty.data.constant.EventVisibility;
 import com.goparty.data.dao.EventDao;
 import com.goparty.data.model.Event;
-import com.goparty.data.model.EventCategory;
+import com.goparty.data.model.Category;
 import com.goparty.data.model.User;
  
 
@@ -50,7 +50,7 @@ public class EventDaoTest extends AbstractRepositoryTest {
 		attendees.add(user2);		
 		event.setAttendees(attendees); 
 		
-		EventCategory cate = new EventCategory();
+		Category cate = new Category();
 		cate.setId("1");
 		event.setEventCategory(cate);		
 		event = eventDao.create(event);
@@ -69,7 +69,7 @@ public class EventDaoTest extends AbstractRepositoryTest {
 		evt.setEndTime(new Date());
 		evt.setLocation("Shenzhen");
 		evt.setDescription("test");
-		EventCategory cate = new EventCategory();
+		Category cate = new Category();
 		cate.setId("1");
 		evt.setEventCategory(cate);
 		
