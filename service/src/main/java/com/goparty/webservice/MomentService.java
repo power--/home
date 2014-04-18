@@ -2,7 +2,7 @@ package com.goparty.webservice;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
-import javax.ws.rs.GET;
+import javax.ws.rs.*;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -21,6 +21,12 @@ public interface MomentService {
 	@GET
 	@Path("{momentId}")
 	public Response read(@HeaderParam("token") String token, @PathParam("momentId") String momentId);
+	
+	
+	@WebMethod
+	@DELETE
+	@Path("{momentId}")
+	public Response delete(@HeaderParam("token") String token, @PathParam("momentId") String momentId);
 	
 	
 

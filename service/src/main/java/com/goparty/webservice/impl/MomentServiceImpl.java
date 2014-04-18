@@ -83,8 +83,18 @@ public class MomentServiceImpl implements MomentService {
 	}
 
 
-
-	
-	
-	
+	@Override
+	public Response delete(String token, String momentId) {
+		boolean ret = false;
+		try{
+			momentRepository.delete(momentId);
+			ret = true;
+		}catch(Exception ex){
+			log.error(ex);
+			throw new BaseException("error happened during delete action.");
+		}
+		
+		return ResponseUtil.buildResponse(ret);
+		
+	}
 }
