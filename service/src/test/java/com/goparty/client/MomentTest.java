@@ -48,7 +48,7 @@ public class MomentTest {
 
 		HttpURLConnection urlConnection = null;
 		try {
-			URL u = new URL("http://goparty.cloudapp.net/cxf/rest/mevents/10/moments");
+			URL u = new URL("http://localhost/cxf/rest/events/10/moments");
 			urlConnection = (HttpURLConnection) u.openConnection();
 			urlConnection.setDoOutput(true);
 			urlConnection.setRequestMethod("POST");

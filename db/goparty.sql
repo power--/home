@@ -85,9 +85,9 @@ CREATE TABLE IF NOT EXISTS `gp_event_attendee` (
 -- Data exporting was unselected.
 
 
--- Dumping structure for table openfire.gp_event_category
+-- Dumping structure for table openfire.gp_category
 DROP TABLE IF EXISTS `gp_category`;
-CREATE TABLE IF NOT EXISTS `gp_event_category` (
+CREATE TABLE IF NOT EXISTS `gp_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)

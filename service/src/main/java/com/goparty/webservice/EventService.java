@@ -22,6 +22,7 @@ import org.apache.cxf.jaxrs.model.wadl.DocTarget;
 import com.goparty.data.model.Event;
 import com.goparty.webservice.model.CommentRequest;
 import com.goparty.webservice.model.MessageRequest;
+import com.goparty.webservice.model.MomentRequest;
 
 @Path("/events/")
 @WebService
@@ -123,5 +124,10 @@ public interface EventService {
 	@Path("list")
 	public Response list(@HeaderParam("token") String token, @QueryParam("scope") String scope,@QueryParam("after") Date after, @QueryParam("before") Date before, @QueryParam("categories") String categories, @QueryParam("search") String search, @QueryParam("offset") long offset, @QueryParam("limit") long limit);
 
+
+	@WebMethod
+	@POST
+	@Path("{eventId}/moments")
+	public Response create(@PathParam("eventId") String eventId, @HeaderParam("token") String token, MomentRequest request);
 }
 	
