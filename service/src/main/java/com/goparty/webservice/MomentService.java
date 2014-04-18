@@ -19,12 +19,9 @@ public interface MomentService {
 
 	@WebMethod
 	@GET
-	@Path("/moments/{momentId}")
+	@Path("{momentId}")
 	public Response read(@HeaderParam("token") String token, @PathParam("momentId") String momentId);
 	
-	@WebMethod
-	@GET
-	@Path("{eventId}/moments")
-	public Response list(@PathParam("eventId") String eventId, @HeaderParam("token") String token, int offset,int limit);
+	
 
 }

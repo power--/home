@@ -24,8 +24,7 @@ import com.goparty.webservice.model.PhotoInfo;
 
 public class MomentTest {
 	
-	@Test
-	public void testJson() throws Exception{
+	public void testCreateMoment() throws Exception{
 		MomentRequest req = new MomentRequest();
 		req.setMoment("Hello　World");
 		req.setVisibility(EventVisibility.V_PUBLIC.toString());
@@ -110,6 +109,17 @@ public class MomentTest {
 		System.out.println(ret);
 		System.out.println("-------------END------------------------");
 		
+	}
+	
+	public void testReadMoment() throws Exception{
+		String url = "http://localhost/cxf/rest/moments/13845527-c42d-4ed9-b807-ff04c4bcf887";
+		HttpClientUtils.get(url);
+	}
+	
+	@Test
+	public void testListMoment() throws Exception{
+		String url ="http://localhost/cxf/rest/events/10/moments?offset=0&limit=5";
+		HttpClientUtils.get(url);
 	}
 	
 	private byte[] toGzip(String text) throws Exception {

@@ -84,20 +84,7 @@ public class MomentServiceImpl implements MomentService {
 
 
 
-	@Override
-	public Response list(String eventId, String token, int offset, int limit) {
-		PageRequest pageable = new PageRequest(offset, limit);
-		
-		List<Moment> list = momentRepository.findByEventId(eventId, pageable);
-		
-		List<MomentRepsone> respList = new ArrayList<MomentRepsone>(list.size());
-		
-		for(Moment m :list){
-			respList.add(this.buildRespone(m));	
-		}
-		
-		return ResponseUtil.buildResponse(respList);
-	}
+	
 	
 	
 }

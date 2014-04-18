@@ -129,5 +129,10 @@ public interface EventService {
 	@POST
 	@Path("{eventId}/moments")
 	public Response create(@PathParam("eventId") String eventId, @HeaderParam("token") String token, MomentRequest request);
+	
+	@WebMethod
+	@GET
+	@Path("{eventId}/moments")
+	public Response list(@PathParam("eventId") String eventId, @HeaderParam("token") String token, @QueryParam("offset") int offset,@QueryParam("limit") int limit);
 }
 	
