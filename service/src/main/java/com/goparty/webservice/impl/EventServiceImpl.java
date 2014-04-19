@@ -319,12 +319,14 @@ public class EventServiceImpl implements EventService {
 	
 	@Override
 	public Response list(String eventId, String token,int offset, int limit,Date before, Date after, String keyword) {
-		PageRequest pageable = new PageRequest(offset, limit);
-		
 		List<Moment> list = momentDao.list(eventId, token, offset, limit, before, after, keyword);
 		
-		return ResponseUtil.buildResponse(list);
-	}
-
-	
+		List<MomentRepsone> resp = new ArrayList<MomentRepsone>(list.size());
+		
+		for(Moment m : list){
+			resp.add(buildMomentRespone(m));
+		}
+		
+		return ResponseUtil.buildResponse(resp);
+	}	
 }
