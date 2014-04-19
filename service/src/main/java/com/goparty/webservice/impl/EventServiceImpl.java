@@ -117,160 +117,60 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public Response addInvitee(String eventId, String userId) {
-		BaseModel ret = new BaseModel();
-		
-		Event evt = eventDao.read(eventId);
-		
+	public Response addInvitee(String eventId, String userId) { 
+		Event evt = eventDao.read(eventId);		
 		if(evt == null){
-			ret.setCode(INTERNAL_SERVER_ERROR.getStatusCode());
-			ret.setStatus(INTERNAL_SERVER_ERROR.toString());
-			ret.setMessage("no_such_event");
-			
-			Map<String, String> data = new HashMap<String, String>();
-			data.put("eventId", eventId);
-			ret.setData(data);
-			return ResponseUtil.buildResponse(ret);
+			throw new BaseException("no_such_event");
 		}
-		
 		User user = userDao.read(userId);
 		if(user == null){
-			ret.setCode(INTERNAL_SERVER_ERROR.getStatusCode());
-			ret.setStatus(INTERNAL_SERVER_ERROR.toString());
-			ret.setMessage("no_such_user");
-			
-			Map<String, String> data = new HashMap<String, String>();
-			data.put("userId", userId);
-			return ResponseUtil.buildResponse(ret);
+			throw new BaseException("no_such_user"); 
 		}
-		
 		if(evt.getAttendees().contains(user)){
-			ret.setCode(INTERNAL_SERVER_ERROR.getStatusCode());
-			ret.setStatus(INTERNAL_SERVER_ERROR.toString());
-			ret.setMessage("user_existed_in_attendees.");
-			
-			Map<String, String> data = new HashMap<String, String>();
-			data.put("userId", userId);
-			data.put("eventId", eventId);
-			return ResponseUtil.buildResponse(ret);
-		}
-		
+			throw new BaseException("user_existed_in_attendees"); 			 
+		}		
 		evt.getAttendees().add(user);
 		eventDao.update(evt);
-		
-		ret.setCode(OK.getStatusCode());
-		ret.setStatus(OK.toString());
-		ret.setMessage("success");
-		
-		Map<String, String> data = new HashMap<String, String>();
-		data.put("userId", userId);
-		data.put("eventId", eventId);
-		
-		return ResponseUtil.buildResponse(ret);
+		 
+		return ResponseUtil.buildResponse(true);
 	}
 
 	@Override
-	public Response delInvitee(String eventId, String userId) {
-        BaseModel ret = new BaseModel();
-		
-		Event evt = eventDao.read(eventId);
-		
+	public Response delInvitee(String eventId, String userId) { 
+		Event evt = eventDao.read(eventId);		
 		if(evt == null){
-			ret.setCode(INTERNAL_SERVER_ERROR.getStatusCode());
-			ret.setStatus(INTERNAL_SERVER_ERROR.toString());
-			ret.setMessage("no_such_event");
-			
-			Map<String, String> data = new HashMap<String, String>();
-			data.put("eventId", eventId);
-			return ResponseUtil.buildResponse(ret);
-		}
-		
+			throw new BaseException("no_such_event");
+		}		
 		User user = userDao.read(userId);
 		if(user == null){
-			ret.setCode(INTERNAL_SERVER_ERROR.getStatusCode());
-			ret.setStatus(INTERNAL_SERVER_ERROR.toString());
-			ret.setMessage("no_such_user");
-			
-			Map<String, String> data = new HashMap<String, String>();
-			data.put("userId", userId);
-			return ResponseUtil.buildResponse(ret);
-		}
-		
+			throw new BaseException("no_such_user"); 
+		}		
 		if(!evt.getAttendees().contains(user)){
-			ret.setCode(INTERNAL_SERVER_ERROR.getStatusCode());
-			ret.setStatus(INTERNAL_SERVER_ERROR.toString());
-			ret.setMessage("user_not_in_attendees.");
-			
-			Map<String, String> data = new HashMap<String, String>();
-			data.put("userId", userId);
-			data.put("eventId", eventId);
-			return ResponseUtil.buildResponse(ret);
-		}
-		
+			throw new BaseException("user_existed_in_attendees"); 	
+		}		
 		evt.getAttendees().remove(user);
-		eventDao.update(evt);
+		eventDao.update(evt);		 
 		
-		ret.setCode(OK.getStatusCode());
-		ret.setStatus(OK.toString());
-		ret.setMessage("success");
-		
-		Map<String, String> data = new HashMap<String, String>();
-		data.put("userId", userId);
-		data.put("eventId", eventId);
-		
-		return ResponseUtil.buildResponse(ret);
+		return ResponseUtil.buildResponse(true);
 	}
 
 	@Override
-	public Response updateSponser(String eventId, String userId) {
-		BaseModel ret = new BaseModel();
-		
-		Event evt = eventDao.read(eventId);
-		
+	public Response updateSponser(String eventId, String userId) { 
+		Event evt = eventDao.read(eventId);		
 		if(evt == null){
-			ret.setCode(INTERNAL_SERVER_ERROR.getStatusCode());
-			ret.setStatus(INTERNAL_SERVER_ERROR.toString());
-			ret.setMessage("no_such_event");
-			
-			Map<String, String> data = new HashMap<String, String>();
-			data.put("eventId", eventId);
-			return ResponseUtil.buildResponse(ret);
-		}
-		
+			throw new BaseException("no_such_event");
+		}		
 		User user = userDao.read(userId);
 		if(user == null){
-			ret.setCode(INTERNAL_SERVER_ERROR.getStatusCode());
-			ret.setStatus(INTERNAL_SERVER_ERROR.toString());
-			ret.setMessage("no_such_user");
-			
-			Map<String, String> data = new HashMap<String, String>();
-			data.put("userId", userId);
-			return ResponseUtil.buildResponse(ret);
-		}
-		
+			throw new BaseException("no_such_user");
+		}		
 		if(evt.getOwner().equals(user)){
-			ret.setCode(INTERNAL_SERVER_ERROR.getStatusCode());
-			ret.setStatus(INTERNAL_SERVER_ERROR.toString());
-			ret.setMessage("cannot_use_yourself");
-			
-			Map<String, String> data = new HashMap<String, String>();
-			data.put("userId", userId);
-			data.put("eventId", eventId);
-			return ResponseUtil.buildResponse(ret);
-		}
-		
+			throw new BaseException("cannot_use_yourself"); 	
+		}		
 		evt.setOwner(user);
 		eventDao.update(evt);
 		
-		ret.setCode(OK.getStatusCode());
-		ret.setStatus(OK.toString());
-		ret.setMessage("success");
-		
-		Map<String, String> data = new HashMap<String, String>();
-		data.put("userId", userId);
-		data.put("eventId", eventId);
-		
-		return ResponseUtil.buildResponse(ret);
+		return ResponseUtil.buildResponse(true);
 	}
 
 	@Override
