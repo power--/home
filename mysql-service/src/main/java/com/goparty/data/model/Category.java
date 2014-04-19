@@ -15,6 +15,7 @@ public class Category {
 	@Id
 	private String id;
 	private String name;
+	private String logo;
 	public String getId() {
 		return id;
 	}
@@ -27,8 +28,15 @@ public class Category {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public String getLogo() {
+		return logo;
+	}
+	public void setLogo(String logo) {
+		this.logo = logo;
+	}
 	@Override
 	public String toString() {
-		return "EventCategory [id=" + id + ", name=" + name + "]";
+		return "Category [id=" + id + ", name=" + name + ", logo=" + logo + "]";
 	}
+ 
 }

@@ -89,6 +89,7 @@ DROP TABLE IF EXISTS `gp_category`;
 CREATE TABLE IF NOT EXISTS `gp_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
+  `logo` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
