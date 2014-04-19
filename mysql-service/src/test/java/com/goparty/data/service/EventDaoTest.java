@@ -41,7 +41,7 @@ public class EventDaoTest extends AbstractRepositoryTest {
 		Event event = new Event(); 
 		event.setDescription("Hello World");
 		event.setTitle("A Title");
-		event.setEventStatus(EventStatus.INIT);
+		event.setStatus(EventStatus.INIT);
 		
 		User owner = new User();
 		owner.setId("21");
@@ -56,7 +56,7 @@ public class EventDaoTest extends AbstractRepositoryTest {
 		attendees.add(owner);
 		attendees.add(user1);
 		attendees.add(user2);		
-		event.setAttendees(attendees); 
+		event.setMembers(attendees); 
 		
 		Category cate = new Category();
 		cate.setId("1");
@@ -97,13 +97,13 @@ public class EventDaoTest extends AbstractRepositoryTest {
 		User u2 = new User();
 		u2.setId("19");
 		attendees.add(u2);
-		evt.setAttendees(attendees);
+		evt.setMembers(attendees);
 		
 		User owner = new User();
 		owner.setId("18");
 		evt.setOwner(owner);
 		
-		evt.setEventStatus(EventStatus.INIT);
+		evt.setStatus(EventStatus.INIT);
 		evt.setVisibility(EventVisibility.V_PUBLIC);
 		evt = eventDao.create(evt);
 	}
@@ -112,7 +112,7 @@ public class EventDaoTest extends AbstractRepositoryTest {
 	@Transactional
 	public void testMany2ManyRead() throws JsonGenerationException, JsonMappingException, IOException{
 		Event e = eventDao.read("34");	
-		for(User u : e.getAttendees()){
+		for(User u : e.getMembers()){
 			System.out.println(e.getTitle() + " -- User:" + u.getId() + u.getNickName());
 		}
 		for(Category c : e.getCategories()){

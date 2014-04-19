@@ -57,7 +57,7 @@ public class Event{
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "gp_event_attendee", joinColumns = @JoinColumn(name = "eventId"), inverseJoinColumns = @JoinColumn(name = "userId"))
 	@IndexedEmbedded
-	private List<User> attendees;
+	private List<User> members;
 
 	@OneToOne
 	@JoinColumn(name = "ownerId")
@@ -69,7 +69,7 @@ public class Event{
 	private List<Category> categories;
 	
 	@Enumerated(EnumType.ORDINAL)
-	private EventStatus eventStatus;
+	private EventStatus status;
 
 	@Enumerated(EnumType.ORDINAL)
 	private EventVisibility visibility;
@@ -126,15 +126,14 @@ public class Event{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-//	@XmlElementWrapper(name = "attendees")
+ 
 //	@XmlElement(name = "attendee")
-	public List<User> getAttendees() {
-		return attendees;
+	public List<User> getMembers() {
+		return members;
 	}
 
-	public void setAttendees(List<User> attendees) {
-		this.attendees = attendees;
+	public void setMembers(List<User> members) {
+		this.members = members;
 	}
 
 	public List<Category> getCategories() {
@@ -154,12 +153,12 @@ public class Event{
 	}
  
 	
-	public EventStatus getEventStatus() {
-		return eventStatus;
+	public EventStatus getStatus() {
+		return status;
 	}
 
-	public void setEventStatus(EventStatus eventStatus) {
-		this.eventStatus = eventStatus;
+	public void setStatus(EventStatus status) {
+		this.status = status;
 	}
 
 	public EventVisibility getVisibility() {

@@ -5,28 +5,23 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.ws.rs.core.Response;
-
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.junit.Test;
- 
- 
 
 import com.goparty.data.constant.EventStatus;
 import com.goparty.data.constant.EventVisibility;
-import com.goparty.data.model.Event;
 import com.goparty.data.model.Category;
+import com.goparty.data.model.Event;
 import com.goparty.data.model.User;
-import com.goparty.webservice.model.EventRequest;
 import com.goparty.webservice.utils.BaseData;
 
 public class EventTest {
 
 	@Test
 	public void testEvent() throws Exception {
-		EventRequest evt = new EventRequest();
+		Event evt = new Event();
 		evt.setTitle("hello");
 		evt.setStartTime(new Date());
 		evt.setEndTime(new Date());

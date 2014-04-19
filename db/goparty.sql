@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `gp_event` (
   `endTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `startTime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `location` varchar(255) DEFAULT NULL,
-  `eventStatus` tinyint(4) NOT NULL,
+  `status` tinyint(4) NOT NULL,
   `visibility` tinyint(4) NOT NULL,
   `locationShareable` tinyint(1) NOT NULL,
   `ownerId` int(10) DEFAULT NULL,

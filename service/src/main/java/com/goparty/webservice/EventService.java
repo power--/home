@@ -21,7 +21,6 @@ import org.apache.cxf.jaxrs.model.wadl.DocTarget;
 
 import com.goparty.data.model.Event;
 import com.goparty.webservice.model.CommentRequest;
-import com.goparty.webservice.model.EventRequest;
 import com.goparty.webservice.model.MessageRequest;
 import com.goparty.webservice.model.MomentRequest;
 
@@ -46,7 +45,7 @@ public interface EventService {
 		@Description(value = "stores a new event data", target = DocTarget.METHOD),
 		@Description(value = "the newly created event data", target = DocTarget.RETURN)
 	})
-	public Response create(EventRequest request);
+	public Response create(Event request);
 	
 	@WebMethod
 	@PUT

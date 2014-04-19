@@ -2,17 +2,12 @@ package com.goparty.webservice.impl;
 
 
 
-import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
-import static javax.ws.rs.core.Response.Status.OK;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.ws.rs.core.Response;
@@ -21,7 +16,6 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +26,6 @@ import com.goparty.data.dao.MessageDao;
 import com.goparty.data.dao.MomentDao;
 import com.goparty.data.dao.UserDao;
 import com.goparty.data.exception.BaseException;
-import com.goparty.data.model.BaseModel;
 import com.goparty.data.model.Event;
 import com.goparty.data.model.EventComment;
 import com.goparty.data.model.EventMessage;
@@ -43,7 +36,6 @@ import com.goparty.data.repository.IMomentRepository;
 import com.goparty.photo.PhotoStore;
 import com.goparty.webservice.EventService;
 import com.goparty.webservice.model.CommentRequest;
-import com.goparty.webservice.model.EventRequest;
 import com.goparty.webservice.model.MessageRequest;
 import com.goparty.webservice.model.MomentRepsone;
 import com.goparty.webservice.model.MomentRequest;
@@ -84,22 +76,10 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public Response create(EventRequest request){
-		if(request.getTitle()==null){
+	public Response create(Event event){
+		if(event.getTitle()==null){
 			throw new BaseException("The event title should not be null");
-		}
-		Event event = new Event();
-		event.setTitle(request.getTitle());
-		event.setStartTime(request.getStartTime());
-		event.setEndTime(request.getEndTime());
-		event.setLocation(request.getLocation());
-		event.setDescription(request.getDescription());
-		event.setCategories(request.getCategories());
-		event.setAttendees(request.getMembers());
-		event.setEventStatus(request.getStatus());
-		event.setVisibility(request.getVisibility());
-		event.setLocationShareable(request.isLocationShareable());
-		event.setOwner(request.getOwner());
+		} 
 		eventDao.create(event);
 		 
 		return ResponseUtil.buildResponse(event);
@@ -133,10 +113,10 @@ public class EventServiceImpl implements EventService {
 		if(user == null){
 			throw new BaseException("no_such_user"); 
 		}
-		if(evt.getAttendees().contains(user)){
+		if(evt.getMembers().contains(user)){
 			throw new BaseException("user_existed_in_attendees"); 			 
 		}		
-		evt.getAttendees().add(user);
+		evt.getMembers().add(user);
 		eventDao.update(evt);
 		 
 		return ResponseUtil.buildResponse(true);
@@ -152,10 +132,10 @@ public class EventServiceImpl implements EventService {
 		if(user == null){
 			throw new BaseException("no_such_user"); 
 		}		
-		if(!evt.getAttendees().contains(user)){
+		if(!evt.getMembers().contains(user)){
 			throw new BaseException("user_existed_in_attendees"); 	
 		}		
-		evt.getAttendees().remove(user);
+		evt.getMembers().remove(user);
 		eventDao.update(evt);		 
 		
 		return ResponseUtil.buildResponse(true);
