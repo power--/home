@@ -47,6 +47,9 @@ public class User {
 	 
 	 @Transient
 	 private String token;
+	 
+	 @Transient	 
+	 private boolean admin;
 	   
 	public String getId() {
 		return id;
@@ -67,6 +70,13 @@ public class User {
 		this.loginId = loginId;
 	}
  
+ 
+	public boolean isAdmin() {
+		return admin;
+	}
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
 	public String getPassword() {
 		return password;
 	}

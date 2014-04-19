@@ -13,18 +13,20 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.junit.Test;
  
  
+
 import com.goparty.data.constant.EventStatus;
 import com.goparty.data.constant.EventVisibility;
 import com.goparty.data.model.Event;
 import com.goparty.data.model.Category;
 import com.goparty.data.model.User;
+import com.goparty.webservice.model.EventRequest;
 import com.goparty.webservice.utils.BaseData;
 
 public class EventTest {
 
 	@Test
 	public void testEvent() throws Exception {
-		Event evt = new Event();
+		EventRequest evt = new EventRequest();
 		evt.setTitle("hello");
 		evt.setStartTime(new Date());
 		evt.setEndTime(new Date());
@@ -41,18 +43,19 @@ public class EventTest {
 
 		User u1 = new User();
 		u1.setId("18");
+		u1.setAdmin(true);
 		attendees.add(u1);
 
 		User u2 = new User();
 		u2.setId("19");
 		attendees.add(u2);
-		evt.setAttendees(attendees);
+		evt.setMembers(attendees);
 
 		User owner = new User();
-		owner.setId("33");
+		owner.setId("18");
 		evt.setOwner(owner);
 
-		evt.setEventStatus(EventStatus.INIT);
+		evt.setStatus(EventStatus.INIT);
 		evt.setVisibility(EventVisibility.V_PUBLIC);
 
 		ObjectMapper mapper = new ObjectMapper();

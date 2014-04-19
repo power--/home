@@ -43,6 +43,7 @@ import com.goparty.data.repository.IMomentRepository;
 import com.goparty.photo.PhotoStore;
 import com.goparty.webservice.EventService;
 import com.goparty.webservice.model.CommentRequest;
+import com.goparty.webservice.model.EventRequest;
 import com.goparty.webservice.model.MessageRequest;
 import com.goparty.webservice.model.MomentRepsone;
 import com.goparty.webservice.model.MomentRequest;
@@ -78,27 +79,29 @@ public class EventServiceImpl implements EventService {
 	
 	@Override
 	public Response read(String id) {
-		Event ret = eventDao.read(id);
-		ret.setAttendees(null);
-		ret.setOwner(null);
+		Event ret = eventDao.read(id); 
 		return ResponseUtil.buildResponse(ret);
 	}
 
 	@Override
-	public Response create(Event event){
-		if(event.getTitle()==null){
+	public Response create(EventRequest request){
+		if(request.getTitle()==null){
 			throw new BaseException("The event title should not be null");
 		}
-		
-		System.out.println(event.getId());
-		System.out.println(event.getId());
+		Event event = new Event();
+		event.setTitle(request.getTitle());
+		event.setStartTime(request.getStartTime());
+		event.setEndTime(request.getEndTime());
+		event.setLocation(request.getLocation());
+		event.setDescription(request.getDescription());
+		event.setCategories(request.getCategories());
+		event.setAttendees(request.getMembers());
+		event.setEventStatus(request.getStatus());
+		event.setVisibility(request.getVisibility());
+		event.setLocationShareable(request.isLocationShareable());
+		event.setOwner(request.getOwner());
 		eventDao.create(event);
-		
-		User user = new User();
-		user.setId("18");
-		List<User> refusedAttendees = new ArrayList<User>();
-		refusedAttendees.add(user);
-		event.setRefusedAttendees(refusedAttendees);
+		 
 		return ResponseUtil.buildResponse(event);
 	}
 
