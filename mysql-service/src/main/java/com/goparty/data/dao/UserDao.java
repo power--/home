@@ -27,7 +27,7 @@ import com.goparty.data.repository.IUserRepository;
 @Repository("userDao")
 @Transactional
 public class UserDao {
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	private static Logger logger = LoggerFactory.getLogger(UserDao.class);
 	
 	@PersistenceContext
 	private EntityManager em;

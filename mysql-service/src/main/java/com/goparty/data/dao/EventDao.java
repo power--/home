@@ -20,7 +20,7 @@ import com.goparty.data.repository.IEventRepository;
 @Repository("eventDao")
 @Transactional
 public class EventDao {
-	private Log log = LogFactory.getLog(EventDao.class);
+	private static Log log = LogFactory.getLog(EventDao.class);
 	
 	@PersistenceContext
 	private EntityManager em;

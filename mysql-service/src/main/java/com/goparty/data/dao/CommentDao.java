@@ -23,7 +23,7 @@ import com.goparty.data.repository.IUserRepository;
 @Transactional
 public class CommentDao {
 	
-	private Log log = LogFactory.getLog(CommentDao.class);
+	private static Log log = LogFactory.getLog(CommentDao.class);
 	
 	@PersistenceContext
 	private EntityManager em;

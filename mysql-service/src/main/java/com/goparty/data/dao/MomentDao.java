@@ -7,6 +7,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,7 @@ import com.goparty.data.model.Moment;
 @Repository("MomentDao")
 @Transactional
 public class MomentDao {
+	private static Log log = LogFactory.getLog(MomentDao.class);
 	
 	@PersistenceContext
 	private EntityManager em;

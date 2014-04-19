@@ -24,7 +24,7 @@ import com.goparty.data.repository.IUserRepository;
 @Transactional
 public class MessageDao {
 	
-	private Log log = LogFactory.getLog(MessageDao.class);
+	private static Log log = LogFactory.getLog(MessageDao.class);
 	
 	@PersistenceContext
 	private EntityManager em;

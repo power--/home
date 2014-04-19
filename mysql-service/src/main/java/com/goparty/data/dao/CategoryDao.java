@@ -14,7 +14,7 @@ import com.goparty.data.repository.ICategoryRepository;
 @Repository("categoryDao")
 @Transactional
 public class CategoryDao {
-	private Log log = LogFactory.getLog(CategoryDao.class);
+	private static Log log = LogFactory.getLog(CategoryDao.class);
 
 	@Autowired
 	private ICategoryRepository categoryRepository;

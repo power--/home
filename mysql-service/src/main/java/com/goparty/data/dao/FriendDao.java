@@ -31,7 +31,7 @@ import com.goparty.data.vo.FriendVo;
 @Transactional
 public class FriendDao {
 	
-	private Log log = LogFactory.getLog(FriendDao.class);
+	private static Log log = LogFactory.getLog(FriendDao.class);
 	
 	@PersistenceContext
 	private EntityManager em;
