@@ -29,6 +29,7 @@ import com.goparty.data.constant.MessageType;
 import com.goparty.data.dao.CommentDao;
 import com.goparty.data.dao.EventDao;
 import com.goparty.data.dao.MessageDao;
+import com.goparty.data.dao.MomentDao;
 import com.goparty.data.dao.UserDao;
 import com.goparty.data.exception.BaseException;
 import com.goparty.data.model.BaseModel;
@@ -70,6 +71,9 @@ public class EventServiceImpl implements EventService {
 
 	@Autowired
 	private IMomentRepository momentRepository;
+	
+	@Autowired
+	private MomentDao momentDao;
 	
 	
 	@Override
@@ -314,18 +318,12 @@ public class EventServiceImpl implements EventService {
 	
 	
 	@Override
-	public Response list(String eventId, String token,int offset, int limit) {
+	public Response list(String eventId, String token,int offset, int limit,Date before, Date after, String keyword) {
 		PageRequest pageable = new PageRequest(offset, limit);
 		
-		List<Moment> list = momentRepository.findByEventId(eventId, pageable);
+		List<Moment> list = momentDao.list(eventId, token, offset, limit, before, after, keyword);
 		
-		List<MomentRepsone> respList = new ArrayList<MomentRepsone>(list.size());
-		
-		for(Moment m :list){
-			respList.add(this.buildMomentRespone(m));	
-		}
-		
-		return ResponseUtil.buildResponse(respList);
+		return ResponseUtil.buildResponse(list);
 	}
 
 	

@@ -116,13 +116,13 @@ public class MomentTest {
 		HttpClientUtils.get(url);
 	}
 	
-	
+	@Test
 	public void testListMoment() throws Exception{
 		String url ="http://localhost/cxf/rest/events/10/moments?offset=0&limit=5";
 		HttpClientUtils.get(url);
 	}
 	
-	@Test
+	
 	public void testDelMoment() throws Exception{
 		String url = "http://localhost/cxf/rest/moments/13845527-c42d-4ed9-b807-ff04c4bcf887";
 		HttpClientUtils.delete(url);
