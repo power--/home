@@ -44,36 +44,10 @@ public class User {
 	 private String weChat;
 	 private String qq;
 	 private String weibo;
-	
-	 //@Transient
-	 @ManyToMany(fetch = FetchType.LAZY)    
-	 @JoinTable(name="gp_user_friend",joinColumns=@JoinColumn(name="userId"),
-	                    inverseJoinColumns=@JoinColumn(name="friendId"))
-	 private List<User> friends;
-	  
+	 
 	 @Transient
 	 private String token;
-	 
-	 
-	public List<User> getFriends() {
-		return friends;
-	}
-	public void setFriends(List<User> friends) {
-		this.friends = friends;
-	}
-	
- 
-	 
-//	@ManyToMany(fetch = FetchType.LAZY,mappedBy="attendees",cascade=CascadeType.ALL)
-//	 private List<Event> events;
-//	 
-//	 
-//	public List<Event> getEvents() {
-//		return events;
-//	}
-//	public void setEvents(List<Event> events) {
-//		this.events = events;
-//	}
+	   
 	public String getId() {
 		return id;
 	}

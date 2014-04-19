@@ -69,12 +69,12 @@ public class UserDaoTest extends AbstractRepositoryTest {
 //		f2.setPassword("f2password");
 //		friends.add(f1);
 //		friends.add(f2);
-		User u33 = userDao.read("33");
-		for(User friend : u33.getFriends()){
-			System.out.println(friend.getId() + " , Name = " + friend.getLoginId());
-		}
-		friends.add(u33);
-		user.setFriends(friends);
+//		User u33 = userDao.read("33");
+//		for(User friend : u33.getFriends()){
+//			System.out.println(friend.getId() + " , Name = " + friend.getLoginId());
+//		}
+//		friends.add(u33);
+//		user.setFriends(friends);
 		
 		userDao.create(user);
 		user.setNickName("ahu-new");

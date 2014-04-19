@@ -52,9 +52,7 @@ public class MyEventServiceImpl implements MyEventService{
 		
 		ret = query.getResultList();
 		
-		for(Event e:ret){
-			e.getOwner().setFriends(null);
-		}
+	 
 		return ResponseUtil.buildResponse(ret);
 	}
 }
