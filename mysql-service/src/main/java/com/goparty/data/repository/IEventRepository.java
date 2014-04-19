@@ -9,5 +9,5 @@ import com.goparty.data.model.Event;
 
 @Transactional
 public interface IEventRepository extends JpaRepository<Event, String>{
-	public Page<Event> findByEventCategoryIdOrderByStartTimeDesc(String cateId, Pageable pageable);
+	public Page<Event> findByOwnerIdOrderByStartTimeDesc(String ownerId, Pageable pageable);
 }

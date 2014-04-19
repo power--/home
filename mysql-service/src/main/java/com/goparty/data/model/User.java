@@ -46,7 +46,7 @@ public class User {
 	 private String weibo;
 	
 	 //@Transient
-	 @ManyToMany(fetch = FetchType.EAGER)    
+	 @ManyToMany(fetch = FetchType.LAZY)    
 	 @JoinTable(name="gp_user_friend",joinColumns=@JoinColumn(name="userId"),
 	                    inverseJoinColumns=@JoinColumn(name="friendId"))
 	 private List<User> friends;

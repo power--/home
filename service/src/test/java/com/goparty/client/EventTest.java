@@ -11,7 +11,8 @@ import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.junit.Test;
-
+ 
+ 
 import com.goparty.data.constant.EventStatus;
 import com.goparty.data.constant.EventVisibility;
 import com.goparty.data.model.Event;
@@ -31,7 +32,10 @@ public class EventTest {
 		evt.setDescription("test");
 		Category cate = new Category();
 		cate.setId("1");
-		evt.setEventCategory(cate);
+		List<Category> cates = new ArrayList<Category>();
+		cates.add(cate);
+		evt.setCategories(cates);
+		
 
 		List<User> attendees = new ArrayList<User>();
 
@@ -57,7 +61,10 @@ public class EventTest {
 		mapper.configure(
 				DeserializationConfig.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY,
 				true);
+		
 
+				
+				
 		String data = mapper.writeValueAsString(evt).toString();
 		String url = "http://localhost/cxf/rest/events";
 		
@@ -66,7 +73,7 @@ public class EventTest {
 		System.out.println(resp);
 		
 		BaseData res = mapper.readValue(resp, BaseData.class);		
-		Event result = mapper.convertValue(res.getData(), Event.class);
+		Event result = mapper.readValue(res.getData(), Event.class);
 		result.setTitle("hello PUT");
 		data = mapper.writeValueAsString(result).toString();
 		HttpClientUtils.put(url, data);

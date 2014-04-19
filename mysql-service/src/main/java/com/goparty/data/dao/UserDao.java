@@ -78,9 +78,9 @@ public class UserDao {
 		return ret;
 	}
 	
-	public List<Event> findByEventCategoryId(String cateId,int offset,int limit){		
+	public List<Event> findByOwnerId(String ownerId,int offset,int limit){		
 		PageRequest pageable = new PageRequest(offset, limit);		 
-		Page<Event> events = eventRepository.findByEventCategoryIdOrderByStartTimeDesc(cateId, pageable);
+		Page<Event> events = eventRepository.findByOwnerIdOrderByStartTimeDesc(ownerId, pageable);
 		return events.getContent();
 	}
 	

@@ -89,7 +89,7 @@ public class UserDaoTest extends AbstractRepositoryTest {
 	 
 	@Test
 	public void testPage(){
-		List<Event> list = userDao.findByEventCategoryId("1", 1, 5);
+		List<Event> list = userDao.findByOwnerId("1", 1, 5);
 		for(Event o : list){			
 			System.out.println(o.getDescription() + "--" + o.getOwner().getId());
 			for(User u : o.getAttendees()){

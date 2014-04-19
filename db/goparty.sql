@@ -64,7 +64,6 @@ CREATE TABLE IF NOT EXISTS `gp_event` (
   `eventStatus` tinyint(4) NOT NULL,
   `visibility` tinyint(4) NOT NULL,
   `locationShareable` tinyint(1) NOT NULL,
-  `cateId` tinyint(4) NOT NULL,
   `ownerId` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -94,7 +93,12 @@ CREATE TABLE IF NOT EXISTS `gp_category` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Data exporting was unselected.
-
+DROP TABLE IF EXISTS `gp_event_category`;
+CREATE TABLE IF NOT EXISTS `gp_event_category` (
+  `eventId` int(10) NOT NULL,
+  `cateId` int(10) NOT NULL,
+  `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Dumping structure for table openfire.gp_event_message
 DROP TABLE IF EXISTS `gp_event_message`;

@@ -49,6 +49,7 @@ import com.goparty.webservice.model.PhotoInfo;
 import com.goparty.webservice.utils.ResponseUtil;
 
 @Service("eventService")
+@Transactional
 public class EventServiceImpl implements EventService {
 	private Log log = LogFactory.getLog(MomentServiceImpl.class);
 	
@@ -74,6 +75,8 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public Response read(String id) {
 		Event ret = eventDao.read(id);
+		ret.setAttendees(null);
+		ret.setOwner(null);
 		return ResponseUtil.buildResponse(ret);
 	}
 

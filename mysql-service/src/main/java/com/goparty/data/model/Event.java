@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -53,7 +54,7 @@ public class Event{
 	private String description;
 
 	// can't change to LAZY and add cascade=CascadeType.ALL
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "gp_event_attendee", joinColumns = @JoinColumn(name = "eventId"), inverseJoinColumns = @JoinColumn(name = "userId"))
 	@IndexedEmbedded
 	private List<User> attendees;
@@ -61,13 +62,12 @@ public class Event{
 	@OneToOne
 	@JoinColumn(name = "ownerId")
 	@IndexedEmbedded
-	private User owner;
+	private User owner; 
 
-	@OneToOne
-	@JoinColumn(name = "cateId")
-	@IndexedEmbedded
-	private Category eventCategory;
-
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "gp_event_category", joinColumns = @JoinColumn(name = "eventId"), inverseJoinColumns = @JoinColumn(name = "cateId"))	 
+	private List<Category> categories;
+	
 	@Enumerated(EnumType.ORDINAL)
 	private EventStatus eventStatus;
 
@@ -137,6 +137,14 @@ public class Event{
 		this.attendees = attendees;
 	}
 
+	public List<Category> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(List<Category> categories) {
+		this.categories = categories;
+	}
+
 	public User getOwner() {
 		return owner;
 	}
@@ -144,14 +152,7 @@ public class Event{
 	public void setOwner(User owner) {
 		this.owner = owner;
 	}
-
-	public Category getEventCategory() {
-		return eventCategory;
-	}
-
-	public void setEventCategory(Category eventCategory) {
-		this.eventCategory = eventCategory;
-	}
+ 
 	
 	public EventStatus getEventStatus() {
 		return eventStatus;

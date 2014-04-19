@@ -3,6 +3,8 @@ package com.goparty.data.service;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,8 +12,14 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.DeserializationConfig;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.goparty.data.constant.EventStatus;
 import com.goparty.data.constant.EventVisibility;
@@ -52,7 +60,9 @@ public class EventDaoTest extends AbstractRepositoryTest {
 		
 		Category cate = new Category();
 		cate.setId("1");
-		event.setEventCategory(cate);		
+		List<Category> cates = new ArrayList<Category>();
+		cates.add(cate);
+		event.setCategories(cates);		
 		event = eventDao.create(event);
 		
 		Event e = eventDao.read(event.getId()); 
@@ -70,8 +80,12 @@ public class EventDaoTest extends AbstractRepositoryTest {
 		evt.setLocation("Shenzhen");
 		evt.setDescription("test");
 		Category cate = new Category();
-		cate.setId("1");
-		evt.setEventCategory(cate);
+		cate.setId("1"); 
+		
+		List<Category> cates = new ArrayList<Category>();
+		cates.add(cate);
+		evt.setCategories(cates);
+		
 		
 		List<User> attendees = new ArrayList<User>();
 		
@@ -86,7 +100,7 @@ public class EventDaoTest extends AbstractRepositoryTest {
 		evt.setAttendees(attendees);
 		
 		User owner = new User();
-		owner.setId("21");
+		owner.setId("18");
 		evt.setOwner(owner);
 		
 		evt.setEventStatus(EventStatus.INIT);
@@ -94,12 +108,16 @@ public class EventDaoTest extends AbstractRepositoryTest {
 		evt = eventDao.create(evt);
 	}
 	
-//	@Test
-	public void testMany2ManyRead(){
-//		Event e = eventDataService.read("33");	
-//		for(User u : e.getAttendees()){
-//			System.out.println(e.getTitle() + " -- User:" + u.getId());
-//		}
+	@Test
+	@Transactional
+	public void testMany2ManyRead() throws JsonGenerationException, JsonMappingException, IOException{
+		Event e = eventDao.read("34");	
+		for(User u : e.getAttendees()){
+			System.out.println(e.getTitle() + " -- User:" + u.getId() + u.getNickName());
+		}
+		for(Category c : e.getCategories()){
+			System.out.println(c.getName());
+		}
 	}
 	
 
