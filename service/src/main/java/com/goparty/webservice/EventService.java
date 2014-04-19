@@ -133,6 +133,6 @@ public interface EventService {
 	@WebMethod
 	@GET
 	@Path("{eventId}/moments")
-	public Response list(@PathParam("eventId") String eventId, @HeaderParam("token") String token, @QueryParam("offset") int offset,@QueryParam("limit") int limit);
+	public Response list(@PathParam("eventId") String eventId, @HeaderParam("token") String token, @QueryParam("offset") int offset,@QueryParam("limit") int limit, @QueryParam("before") Date before, @QueryParam("after") Date after, @QueryParam("keyword") String keyword);
 }
 	
