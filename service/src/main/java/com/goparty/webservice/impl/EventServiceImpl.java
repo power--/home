@@ -222,7 +222,7 @@ public class EventServiceImpl implements EventService {
 	
 	@Override
 	@Transactional
-	public Response create(String eventId, String token, MomentRequest request) {
+	public Response createMoment(String eventId, String token, MomentRequest request) {
 		
 		Moment model = new Moment();
 		model.setId(UUID.randomUUID().toString());
@@ -314,7 +314,7 @@ public class EventServiceImpl implements EventService {
 	
 	
 	@Override
-	public Response list(String eventId, String token,int offset, int limit,Date before, Date after, String keyword) {
+	public Response listMoments(String eventId, String token,int offset, int limit,Date before, Date after, String keyword) {
 		List<Moment> list = momentDao.list(eventId, token, offset, limit, before, after, keyword);
 		
 		List<MomentRepsone> resp = new ArrayList<MomentRepsone>(list.size());
