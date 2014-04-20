@@ -77,6 +77,7 @@ CREATE TABLE IF NOT EXISTS `gp_event_attendee` (
   `eventId` int(10) NOT NULL,
   `userId` int(10) NOT NULL,
   `status` char(5) DEFAULT 'INIT' COMMENT 'INIT  AGREE REJECT',
+  `admin` char(1) DEFAULT 'N',
   `updateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`eventId`,`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='attendees';
