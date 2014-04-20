@@ -46,6 +46,7 @@ import com.goparty.photo.PhotoStore;
 import com.goparty.webservice.EventService;
 import com.goparty.webservice.model.CommentRequest;
 import com.goparty.webservice.model.EventApplicationRequest;
+import com.goparty.webservice.model.EventApplierRequest;
 import com.goparty.webservice.model.EventInvitationRequest;
 import com.goparty.webservice.model.InvitationResponse;
 import com.goparty.webservice.model.MessageRequest;
@@ -211,14 +212,20 @@ public class EventServiceImpl implements EventService {
 	}
 	
 	@Override
-	public Response list(String token, String scope, Date after, Date before,
+	public Response getEvents(String token, String scope, Date after, Date before,
 			String categories, String search, long offset, long limit) {
 		User user = userDao.getUserByToken(token);		
 		List<Event> ret = eventDao.getEvents(user.getId(),scope,after, before,categories,search,offset,limit);
 		return ResponseUtil.buildResponse(ret);
 	}
 	
-	
+	@Override
+	public Response getUserEvents(String token, String userId, Date after, Date before,
+			String categories, String search, long offset, long limit) {
+		User user = userDao.getUserByToken(token);		
+		List<Event> ret = eventDao.getEvents(userId,"all",after, before,categories,search,offset,limit);
+		return ResponseUtil.buildResponse(ret);
+	}
 	
 	@Override
 	@Transactional
@@ -368,6 +375,25 @@ public class EventServiceImpl implements EventService {
 		User user = userDao.getUserByToken(token);				
 		List<EventInvitation> eventInvitatins = eventDao.getRespondedInvitations(user.getId(), offset, limit);
 		return ResponseUtil.buildResponse(eventInvitatins); 
+	}
+	
+	//application
+	@Override
+	public Response applyEvent(String token, String eventId, EventApplierRequest request) {
+		User user = userDao.getUserByToken(token);	
+		
+		EventApplication application = new EventApplication();
+		application.setEventId(eventId);
+		application.setApplicantId(user.getId());
+		application.setApplicantMessage(request.getApplierMessage());
+		String adminIds = "";
+		// getadminIds
+		application.setAdminIds(adminIds);
+		application.setStatus(InvitationStatus.INIT);
+		application.setUpdateTime(new Date());
+		eventDao.addApplication(application);
+				
+		return ResponseUtil.buildResponse(true);
 	}
 
 	@Override

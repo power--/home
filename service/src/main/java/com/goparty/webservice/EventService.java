@@ -22,6 +22,7 @@ import org.apache.cxf.jaxrs.model.wadl.DocTarget;
 import com.goparty.data.model.Event;
 import com.goparty.webservice.model.CommentRequest;
 import com.goparty.webservice.model.EventApplicationRequest;
+import com.goparty.webservice.model.EventApplierRequest;
 import com.goparty.webservice.model.EventInvitationRequest;
 import com.goparty.webservice.model.MessageRequest;
 import com.goparty.webservice.model.MomentRequest;
@@ -61,8 +62,8 @@ public interface EventService {
 	@DELETE
 	@Path("{id}")
 	@Descriptions({
-		@Description(value = "deletes a user data", target = DocTarget.METHOD),
-		@Description(value = "the result of delete user action", target = DocTarget.RETURN)
+		@Description(value = "deletes a event data", target = DocTarget.METHOD),
+		@Description(value = "the result of delete event action", target = DocTarget.RETURN)
 	})
 	public Response delete(@Description(value = "the id of the event") @PathParam("id")String id);
 	
@@ -123,9 +124,23 @@ public interface EventService {
 		@Description(value = "return events", target = DocTarget.METHOD),
 		@Description(value = "return events", target = DocTarget.RETURN)
 	})
-	@Path("list")
-	public Response list(@HeaderParam("token") String token, @QueryParam("scope") String scope,@QueryParam("after") Date after, @QueryParam("before") Date before, @QueryParam("categories") String categories, @QueryParam("search") String search, @QueryParam("offset") long offset, @QueryParam("limit") long limit);
+	@Path(" /events?scope={scope}&after={after}&before={before}&categories={categories}&search={search}&offset={offset}&limit={limit}")
+	public Response getEvents(@HeaderParam("token") String token, @QueryParam("scope") String scope,@QueryParam("after") Date after, @QueryParam("before") Date before, @QueryParam("categories") String categories, @QueryParam("search") String search, @QueryParam("offset") long offset, @QueryParam("limit") long limit);
 
+	@WebMethod
+	@GET
+	@Descriptions({
+		@Description(value = "return events", target = DocTarget.METHOD),
+		@Description(value = "return events", target = DocTarget.RETURN)
+	})
+	@Path(" /users/{userId}/events?after={after}&before={before}&categories={categories}&search={search}&offset={offset}&limit={limit}")
+	public Response getUserEvents(@HeaderParam("token") String token,@QueryParam("userId") String userId,@QueryParam("after") Date after, @QueryParam("before") Date before, @QueryParam("categories") String categories, @QueryParam("search") String search, @QueryParam("offset") long offset, @QueryParam("limit") long limit);
+	
+	@WebMethod
+	@POST
+	@Path("{eventId}/{eventId}/member")
+	public Response applyEvent(@HeaderParam("token") String token,@PathParam("eventId") String eventId, EventApplierRequest request);
+	
 	@WebMethod
 	@GET
 	@Path(" /events/unrespondedInvitations?offset={offset}&limits={limit} ")

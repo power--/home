@@ -120,6 +120,13 @@ public class EventDaoTest extends AbstractRepositoryTest {
 		}
 	}
 	
-
+	@Test
+	@Transactional
+	public void testList() throws JsonGenerationException, JsonMappingException, IOException{
+		List<Event> list = eventDao.getEvents("18", "all", null, null, "1|2", "hello|world", 0, 10);		
+		for (Event event:list){
+			System.out.println(event);
+		}
+	}
 	
 }
