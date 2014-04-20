@@ -128,11 +128,11 @@ public interface EventService {
 	@WebMethod
 	@POST
 	@Path("{eventId}/moments")
-	public Response create(@PathParam("eventId") String eventId, @HeaderParam("token") String token, MomentRequest request);
+	public Response createMoment(@PathParam("eventId") String eventId, @HeaderParam("token") String token, MomentRequest request);
 	
 	@WebMethod
 	@GET
 	@Path("{eventId}/moments")
-	public Response list(@PathParam("eventId") String eventId, @HeaderParam("token") String token, @QueryParam("offset") int offset,@QueryParam("limit") int limit, @QueryParam("before") Date before, @QueryParam("after") Date after, @QueryParam("keyword") String keyword);
+	public Response listMoments(@PathParam("eventId") String eventId, @HeaderParam("token") String token, @QueryParam("offset") int offset,@QueryParam("limit") int limit, @QueryParam("before") Date before, @QueryParam("after") Date after, @QueryParam("keyword") String keyword);
 }
 	
