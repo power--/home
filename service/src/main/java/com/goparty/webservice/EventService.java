@@ -21,6 +21,8 @@ import org.apache.cxf.jaxrs.model.wadl.DocTarget;
 
 import com.goparty.data.model.Event;
 import com.goparty.webservice.model.CommentRequest;
+import com.goparty.webservice.model.EventApplicationRequest;
+import com.goparty.webservice.model.EventInvitationRequest;
 import com.goparty.webservice.model.MessageRequest;
 import com.goparty.webservice.model.MomentRequest;
 
@@ -124,7 +126,36 @@ public interface EventService {
 	@Path("list")
 	public Response list(@HeaderParam("token") String token, @QueryParam("scope") String scope,@QueryParam("after") Date after, @QueryParam("before") Date before, @QueryParam("categories") String categories, @QueryParam("search") String search, @QueryParam("offset") long offset, @QueryParam("limit") long limit);
 
-
+	@WebMethod
+	@GET
+	@Path(" /events/unrespondedInvitations?offset={offset}&limits={limit} ")
+	public Response getUnrespondedInvitations( @HeaderParam("token") String token, @QueryParam("offset") long offset, @QueryParam("limit") long limit);
+	
+	@WebMethod
+	@PUT
+	@Path(" /events/unrespondedInvitations/{invitationId} ")
+	public Response respondedInvitations( @HeaderParam("token") String token, @QueryParam("invitationId") String  invitationId,EventInvitationRequest request);
+	
+	@WebMethod
+	@GET
+	@Path(" /events/respondedInvitations?offset={offset}&limits={limit} ")
+	public Response getRespondedInvitations( @HeaderParam("token") String token, @QueryParam("offset") long offset, @QueryParam("limit") long limit);
+	
+	@WebMethod
+	@GET
+	@Path(" /events/unrespondedApplications?offset={offset}&limits={limit} ")
+	public Response getUnrespondedApplications( @HeaderParam("token") String token, @QueryParam("offset") long offset, @QueryParam("limit") long limit);
+	
+	@WebMethod
+	@PUT
+	@Path(" /events/unrespondedApplications/{applicationId} ")
+	public Response respondedApplications( @HeaderParam("token") String token, @QueryParam("applicationId") String  applicationId,EventApplicationRequest request);
+	
+	@WebMethod
+	@GET
+	@Path(" /events/respondedApplications?offset={offset}&limits={limit} ")
+	public Response getRespondedApplications( @HeaderParam("token") String token, @QueryParam("offset") long offset, @QueryParam("limit") long limit);
+	
 	@WebMethod
 	@POST
 	@Path("{eventId}/moments")

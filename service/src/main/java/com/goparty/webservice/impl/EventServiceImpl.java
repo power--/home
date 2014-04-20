@@ -18,7 +18,10 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
+import com.goparty.data.constant.InvitationAcceptance;
+import com.goparty.data.constant.InvitationStatus;
 import com.goparty.data.constant.MessageType;
 import com.goparty.data.dao.CommentDao;
 import com.goparty.data.dao.EventDao;
@@ -27,19 +30,29 @@ import com.goparty.data.dao.MomentDao;
 import com.goparty.data.dao.UserDao;
 import com.goparty.data.exception.BaseException;
 import com.goparty.data.model.Event;
+import com.goparty.data.model.EventApplication;
 import com.goparty.data.model.EventComment;
+import com.goparty.data.model.EventInvitation;
 import com.goparty.data.model.EventMessage;
+import com.goparty.data.model.FriendInvitation;
+import com.goparty.data.model.Group;
 import com.goparty.data.model.Moment;
 import com.goparty.data.model.Photo;
 import com.goparty.data.model.User;
+import com.goparty.data.model.UserFriend;
 import com.goparty.data.repository.IMomentRepository;
+import com.goparty.data.vo.FriendInvitatinVo;
 import com.goparty.photo.PhotoStore;
 import com.goparty.webservice.EventService;
 import com.goparty.webservice.model.CommentRequest;
+import com.goparty.webservice.model.EventApplicationRequest;
+import com.goparty.webservice.model.EventInvitationRequest;
+import com.goparty.webservice.model.InvitationResponse;
 import com.goparty.webservice.model.MessageRequest;
 import com.goparty.webservice.model.MomentRepsone;
 import com.goparty.webservice.model.MomentRequest;
 import com.goparty.webservice.model.PhotoInfo;
+import com.goparty.webservice.model.UserResponse;
 import com.goparty.webservice.utils.ResponseUtil;
 
 @Service("eventService")
@@ -117,7 +130,7 @@ public class EventServiceImpl implements EventService {
 			throw new BaseException("user_existed_in_attendees"); 			 
 		}		
 		evt.getMembers().add(user);
-		eventDao.update(evt);
+		eventDao.update(evt);		
 		 
 		return ResponseUtil.buildResponse(true);
 	}
@@ -311,5 +324,95 @@ public class EventServiceImpl implements EventService {
 		}
 		
 		return ResponseUtil.buildResponse(resp);
-	}	
+	}
+
+	@Override
+	public Response getUnrespondedInvitations(String token, long offset,
+			long limit) {
+		User user = userDao.getUserByToken(token);		
+		List<EventInvitation> eventInvitatins = eventDao.getUnrespondedInvitations(user.getId(), offset, limit);
+		return ResponseUtil.buildResponse(eventInvitatins);
+	}
+
+	@Override
+	public Response respondedInvitations(String token, String invitationId,
+			EventInvitationRequest request) {
+		User user = userDao.getUserByToken(token);	
+		//invitation
+		EventInvitation invitation = eventDao.getInvitation(invitationId);
+		if(!user.getId().equals(invitation.getInviteeId())){
+			throw new BaseException("You have no permission to respond this invitation.");
+		}
+		
+		if(request.getParticipance().equals(InvitationAcceptance.Y.toString())){
+			invitation.setParticipance(InvitationAcceptance.Y);
+		}else{
+			invitation.setParticipance(InvitationAcceptance.N);
+		}
+		invitation.setStatus(InvitationStatus.RESP);
+		invitation.setInviteeMessage(request.getInviteeMessage());
+		invitation.setUpdateTime(new Date());
+		eventDao.updateInvitation(invitation);
+		
+		//update event members
+		if(invitation.getParticipance().equals(InvitationAcceptance.Y)){
+			
+		}		
+		
+		return ResponseUtil.buildResponse(true);
+	}
+
+	@Override
+	public Response getRespondedInvitations(String token, long offset,
+			long limit) {
+		User user = userDao.getUserByToken(token);				
+		List<EventInvitation> eventInvitatins = eventDao.getRespondedInvitations(user.getId(), offset, limit);
+		return ResponseUtil.buildResponse(eventInvitatins); 
+	}
+
+	@Override
+	public Response getUnrespondedApplications(String token, long offset,
+			long limit) { 
+		User user = userDao.getUserByToken(token);		
+		List<EventApplication> applications = eventDao.getUnrespondedApplications(user.getId(), offset, limit);
+		return ResponseUtil.buildResponse(applications);
+	}
+
+	@Override
+	public Response respondedApplications(String token, String applicationId,
+			EventApplicationRequest request) {
+		User user = userDao.getUserByToken(token);	
+		
+		EventApplication application = eventDao.getApplication(applicationId);
+		if(!user.getId().equals(application.getApproverId())){
+			throw new BaseException("You have no permission to respond this application.");
+		}
+		
+		if(request.getApproval().equals(InvitationAcceptance.Y.toString())){
+			application.setApproval(InvitationAcceptance.Y);
+		}else{
+			application.setApproval(InvitationAcceptance.N);
+		}
+		application.setStatus(InvitationStatus.RESP);
+		application.setApplicantMessage(request.getApproverMessage());
+		application.setUpdateTime(new Date());
+		eventDao.updateApplication(application);
+		
+		//update event members
+		if(application.getApproval().equals(InvitationAcceptance.Y)){
+			
+		}		
+		
+		return ResponseUtil.buildResponse(true);
+	}
+
+	@Override
+	public Response getRespondedApplications(String token, long offset,
+			long limit) {
+		User user = userDao.getUserByToken(token);		
+		List<EventApplication> applications = eventDao.getRespondedApplications(user.getId(), offset, limit);
+		return ResponseUtil.buildResponse(applications);
+	}
+
+	
 }

@@ -10,10 +10,18 @@ import javax.persistence.Query;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.goparty.data.constant.InvitationStatus;
 import com.goparty.data.model.Event;
+import com.goparty.data.model.EventApplication;
+import com.goparty.data.model.EventInvitation;
+import com.goparty.data.repository.IEventApplicationRepository;
+import com.goparty.data.repository.IEventInvitationRepository;
 import com.goparty.data.repository.IEventRepository;
 
 
@@ -27,6 +35,12 @@ public class EventDao {
 	
 	@Autowired
 	private IEventRepository eventRepository;
+	
+	@Autowired
+	private IEventInvitationRepository eventInvitationRepository;
+	
+	@Autowired
+	private IEventApplicationRepository eventApplicationRepository;
 	
 	
 	public Event read(String id) {
@@ -84,5 +98,51 @@ public class EventDao {
 		} 
 		return query.getResultList();
 	}	
+	
+	//invitation
+	public void addInvitation(EventInvitation invitation){
+		eventInvitationRepository.save(invitation);
+	}
+	public EventInvitation getInvitation(String invitationId){
+		return eventInvitationRepository.findOne(invitationId);
+	}
+	public void updateInvitation(EventInvitation invitation){
+		eventInvitationRepository.save(invitation);
+	}
+	
+	//application
+	public void addApplication(EventApplication application){
+		eventApplicationRepository.save(application);
+	}
+	public EventApplication getApplication(String applicationId){
+		return eventApplicationRepository.findOne(applicationId);
+	}
+	public void updateApplication(EventApplication application){
+		eventApplicationRepository.save(application);
+	}
+		
+	public List<EventInvitation> getUnrespondedInvitations(String inviteeId, long offset,
+			long limit) {
+		Pageable pageable = new PageRequest((int)offset,(int)limit); 
+		return eventInvitationRepository.findByinviteeIdAndStatus(inviteeId, InvitationStatus.INIT.toString(), pageable);
+	}
+
+	public List<EventInvitation>  getRespondedInvitations(String inviteeId, long offset,
+			long limit) {
+		Pageable pageable = new PageRequest((int)offset,(int)limit); 
+		return eventInvitationRepository.findByinviteeIdAndStatus(inviteeId, InvitationStatus.RESP.toString(), pageable);
+	}
+
+	public List<EventApplication>  getUnrespondedApplications(String approverId, long offset,
+			long limit) {
+		Pageable pageable = new PageRequest((int)offset,(int)limit); 
+		return eventApplicationRepository.findByapproverIdAndStatus(approverId, InvitationStatus.INIT.toString(), pageable);
+	}
+
+	public List<EventApplication> getRespondedApplications(String approverId, long offset,
+			long limit) {
+		Pageable pageable = new PageRequest((int)offset,(int)limit); 
+		return eventApplicationRepository.findByapproverIdAndStatus(approverId, InvitationStatus.RESP.toString(), pageable);
+	}
 	
 }
