@@ -212,3 +212,14 @@ CREATE TABLE IF NOT EXISTS `gp_photo` (
   `updateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `gp_moment_comment`;
+CREATE TABLE IF NOT EXISTS `gp_moment_comment` (
+  `id` char(36) NOT NULL,
+  `momentId` char(36) NOT NULL,
+  `userId` int(10) NOT NULL,
+  `comment` varchar(512) NOT NULL,
+  `likeit` tinyint(1) NOT NULL,
+  `updateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

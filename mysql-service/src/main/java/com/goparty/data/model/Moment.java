@@ -16,7 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cascade;
 
 import com.goparty.data.constant.EventVisibility;
 
@@ -42,6 +41,10 @@ public class Moment {
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "moment", cascade=CascadeType.ALL)
 	private List<Photo> photos = new LinkedList<Photo>();
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "moment", cascade=CascadeType.REMOVE)
+	private List<MomentComment> comments = new LinkedList<MomentComment>();
+	
 	
 	@Column
 	private Date updateTime;

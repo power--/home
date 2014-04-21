@@ -1,24 +1,26 @@
 package com.goparty.webservice.impl;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.goparty.data.dao.UserDao;
 import com.goparty.data.exception.BaseException;
 import com.goparty.data.model.Moment;
+import com.goparty.data.model.MomentComment;
 import com.goparty.data.model.Photo;
 import com.goparty.data.model.User;
+import com.goparty.data.repository.IMomentCommentRepository;
 import com.goparty.data.repository.IMomentRepository;
 import com.goparty.webservice.MomentService;
+import com.goparty.webservice.model.MomentComentResponse;
+import com.goparty.webservice.model.MomentCommentRequest;
 import com.goparty.webservice.model.MomentRepsone;
 import com.goparty.webservice.model.PhotoInfo;
 import com.goparty.webservice.utils.ResponseUtil;
@@ -34,7 +36,8 @@ public class MomentServiceImpl implements MomentService {
 	@Autowired
 	private IMomentRepository momentRepository;
 	
-	
+	@Autowired
+	private IMomentCommentRepository momentCommentRepository;
 
 	@Override
 	public Response read(String token, String momentId) {
@@ -84,7 +87,12 @@ public class MomentServiceImpl implements MomentService {
 
 
 	@Override
+	@Transactional
 	public Response delete(String token, String momentId) {
+		if(! momentRepository.exists(momentId)){
+			throw new BaseException("moment doesn't exist for id: "+momentId);
+		}
+		
 		boolean ret = false;
 		try{
 			momentRepository.delete(momentId);
@@ -96,5 +104,52 @@ public class MomentServiceImpl implements MomentService {
 		
 		return ResponseUtil.buildResponse(ret);
 		
+	}
+
+
+	@Override
+	@Transactional
+	public Response addComment(String token, String momentId,
+			MomentCommentRequest request) {
+		if(momentId ==null){
+			throw new BaseException("momentId cannot be null");
+		}
+		
+		if(! momentRepository.exists(momentId)){
+			throw new BaseException("Moment dosen't exit, momentId = "+momentId);
+		}
+		
+		if(request.getComment()==null||"".equals(request.getComment().trim())){
+			throw new BaseException("Comment text is empty, please check.");
+		}
+		
+		
+		MomentComment comment = new MomentComment();
+		
+		Moment moment = new Moment();
+		moment.setId(momentId);
+		comment.setMoment(moment);
+		
+		User user = userDao.getUserByToken(token);
+		comment.setUser(user);
+		
+		comment.setLikeit(request.isLikeit());
+		
+	    comment.setId(java.util.UUID.randomUUID().toString());
+	    
+	    comment.setComment(request.getComment());
+		
+		comment = momentCommentRepository.save(comment);
+		
+		MomentComentResponse resp  = new MomentComentResponse();
+		resp.setId(comment.getId());
+		resp.setComment(comment.getComment());
+		resp.setLikeit(comment.isLikeit());
+		User sender = new User();
+		sender.setId(comment.getUser().getId());
+		sender.setNickName(comment.getUser().getNickName());
+		sender.setPhoto(comment.getUser().getPhoto());
+		
+		return ResponseUtil.buildResponse(resp);
 	}
 }

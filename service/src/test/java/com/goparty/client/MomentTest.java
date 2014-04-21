@@ -19,10 +19,96 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import com.goparty.data.constant.EventVisibility;
+import com.goparty.webservice.model.MomentCommentRequest;
 import com.goparty.webservice.model.MomentRequest;
 import com.goparty.webservice.model.PhotoInfo;
 
 public class MomentTest {
+	
+	@Test
+	public void testCreateMomentComment() throws Exception{
+		MomentCommentRequest req = new MomentCommentRequest();
+		req.setComment("Hello World");
+		req.setLikeit(true);
+		
+		
+		
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		
+		String data = mapper.writeValueAsString(req);
+		
+		
+		String ret = null;
+
+		HttpURLConnection urlConnection = null;
+		try {
+			URL u = new URL("http://localhost/cxf/rest/moments/0b51da3b-3f1b-4188-95ef-8b547239cfbb/comments");
+			urlConnection = (HttpURLConnection) u.openConnection();
+			urlConnection.setDoOutput(true);
+			urlConnection.setRequestMethod("POST");
+			urlConnection.setUseCaches(false);
+			urlConnection.setConnectTimeout(10000);
+			urlConnection.setReadTimeout(10000);
+			urlConnection
+					.setRequestProperty("Content-Type", "application/json");
+			urlConnection.setRequestProperty("Accept", "application/json");
+			urlConnection.setRequestProperty("charset", "utf-8");
+			urlConnection.setRequestProperty("token", "98326219-4388-4692-a93f-f18b2c7a275e");
+			urlConnection.setRequestProperty("Accept-Encoding", "gzip");
+			urlConnection.setRequestProperty("Content-Encoding", "gzip");
+			
+			byte[] outBytes = toGzip(data);
+			urlConnection.setRequestProperty("Content-Length", "" + outBytes.length);
+
+			OutputStream out = urlConnection.getOutputStream();
+			out.write(outBytes);
+			out.close();
+
+			int HttpResult = urlConnection.getResponseCode();
+			
+			System.out.println(urlConnection.getResponseMessage());
+			
+			StringBuffer sb = new StringBuffer();
+			if (HttpResult == HttpURLConnection.HTTP_OK) {
+				InputStream input = urlConnection.getInputStream();
+				BufferedReader br = new BufferedReader(new InputStreamReader(
+						input, "utf-8"));
+				String line = null;
+				while ((line = br.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+				br.close();
+				ret = sb.toString();
+			} else {
+				InputStream input = urlConnection.getErrorStream();
+				if(input !=null){
+					BufferedReader br = new BufferedReader(new InputStreamReader(
+							input, "utf-8"));
+					String line = null;
+					while ((line = br.readLine()) != null) {
+						sb.append(line + "\n");
+					}
+					br.close();
+					ret = sb.toString();
+				}
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (urlConnection != null)
+				urlConnection.disconnect();
+		}
+		
+		System.out.println("Response");
+		System.out.println(ret);
+		System.out.println("-------------END------------------------");
+		
+	}
+	
+	
 	
 	public void testCreateMoment() throws Exception{
 		MomentRequest req = new MomentRequest();
@@ -111,12 +197,12 @@ public class MomentTest {
 		
 	}
 	
+	
 	public void testReadMoment() throws Exception{
 		String url = "http://localhost/cxf/rest/moments/13845527-c42d-4ed9-b807-ff04c4bcf887";
 		HttpClientUtils.get(url);
 	}
 	
-	@Test
 	public void testListMoment() throws Exception{
 		String url ="http://localhost/cxf/rest/events/10/moments?offset=0&limit=5";
 		HttpClientUtils.get(url);
@@ -127,6 +213,8 @@ public class MomentTest {
 		String url = "http://localhost/cxf/rest/moments/13845527-c42d-4ed9-b807-ff04c4bcf887";
 		HttpClientUtils.delete(url);
 	}
+	
+	
 	
 	private byte[] toGzip(String text) throws Exception {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();

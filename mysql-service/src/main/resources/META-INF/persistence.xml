@@ -13,5 +13,6 @@
 		<class>com.goparty.data.vo.FriendVo</class>
 		<class>com.goparty.data.model.Moment</class>
 		<class>com.goparty.data.model.Photo</class>
+		<class>com.goparty.data.model.MomentComment</class>
 	</persistence-unit>
 </persistence> 

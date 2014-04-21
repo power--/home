@@ -3,12 +3,12 @@ package com.goparty.webservice;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.ws.rs.*;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
 import org.apache.cxf.annotations.GZIP;
+
+import com.goparty.webservice.model.MomentCommentRequest;
+import com.goparty.webservice.model.MomentRequest;
 
 @Path("/moments/")
 @WebService
@@ -28,6 +28,8 @@ public interface MomentService {
 	@Path("{momentId}")
 	public Response delete(@HeaderParam("token") String token, @PathParam("momentId") String momentId);
 	
-	
-
+	@WebMethod
+	@POST
+	@Path("{momentId}/comments")
+	public Response addComment(@HeaderParam("token") String token, @PathParam("momentId") String momentId, MomentCommentRequest request);
 }
