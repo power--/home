@@ -1,6 +1,9 @@
 package com.goparty.webservice.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.ws.rs.core.Response;
 
@@ -10,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.goparty.data.dao.MomentCommentDao;
 import com.goparty.data.dao.UserDao;
 import com.goparty.data.exception.BaseException;
 import com.goparty.data.model.Moment;
@@ -32,6 +36,9 @@ public class MomentServiceImpl implements MomentService {
 	@Autowired
 	private UserDao userDao;
 	
+	@Autowired
+	private MomentCommentDao momentCommentDao;
+	
 	
 	@Autowired
 	private IMomentRepository momentRepository;
@@ -47,13 +54,13 @@ public class MomentServiceImpl implements MomentService {
 			throw new BaseException("Moment doesn't exist for id: "+momentId);
 		}
 		
-		MomentRepsone resp = this.buildRespone(model);
+		MomentRepsone resp = this.buildMomentRespone(model);
 		
 		return ResponseUtil.buildResponse(resp);
 	}
 	
 	
-	private MomentRepsone buildRespone(Moment model){
+	private MomentRepsone buildMomentRespone(Moment model){
 		MomentRepsone resp = new MomentRepsone();
 		resp.setId(model.getId());
 		resp.setMoment(model.getMoment());
@@ -141,6 +148,13 @@ public class MomentServiceImpl implements MomentService {
 		
 		comment = momentCommentRepository.save(comment);
 		
+		MomentComentResponse resp = this.buildMomentComentResponse(comment); 
+		
+		return ResponseUtil.buildResponse(resp);
+	}
+	
+	
+	private MomentComentResponse buildMomentComentResponse(MomentComment comment){
 		MomentComentResponse resp  = new MomentComentResponse();
 		resp.setId(comment.getId());
 		resp.setComment(comment.getComment());
@@ -150,6 +164,22 @@ public class MomentServiceImpl implements MomentService {
 		sender.setNickName(comment.getUser().getNickName());
 		sender.setPhoto(comment.getUser().getPhoto());
 		
-		return ResponseUtil.buildResponse(resp);
+		return resp;
 	}
+
+
+	@Override
+	public Response getCommentsList(String token, String momentId, int offset,
+			int limit, Date before, Date after, String keyword) {
+		List<MomentComment> list = momentCommentDao.list(momentId, token, offset, limit, before, after, keyword);
+		
+		ArrayList<MomentComentResponse> respList = new ArrayList<MomentComentResponse>();
+		
+		for(MomentComment m:list){
+			respList.add(buildMomentComentResponse(m));
+		}
+		return ResponseUtil.buildResponse(respList);
+	}
+	
+	
 }

@@ -1,5 +1,7 @@
 package com.goparty.webservice;
 
+import java.util.Date;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.ws.rs.*;
@@ -32,4 +34,12 @@ public interface MomentService {
 	@POST
 	@Path("{momentId}/comments")
 	public Response addComment(@HeaderParam("token") String token, @PathParam("momentId") String momentId, MomentCommentRequest request);
+	
+	
+
+	@WebMethod
+	@GET
+	@Path("{momentId}/comments")
+	public Response getCommentsList(@HeaderParam("token") String token, @PathParam("momentId") String momentId, int offset, int limit,Date before, Date after, String keyword);
+	
 }

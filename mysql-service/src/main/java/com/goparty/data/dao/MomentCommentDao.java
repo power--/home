@@ -12,21 +12,19 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.goparty.data.model.Moment;
+import com.goparty.data.model.MomentComment;
 
-
-
-@Repository("momentDao")
+@Repository("momentCommentDao")
 @Transactional
-public class MomentDao {
-	private static Log log = LogFactory.getLog(MomentDao.class);
+public class MomentCommentDao {
+	private static Log log = LogFactory.getLog(MomentCommentDao.class);
 	
 	@PersistenceContext
 	private EntityManager em;
 	
-	public List<Moment> list(String eventId, String token,int offset, int limit, Date before, Date after, String keyword){
+	public List<MomentComment> list(String momentId, String token,int offset, int limit, Date before, Date after, String keyword){
 		StringBuffer sql = new StringBuffer();
-		sql.append("from Moment m where m.event.id=:eventId");
+		sql.append("from MomentComment m where m.moment.id=:momentId");
 		
 		if(before!=null){
 			sql.append("and m.updateTime <= :before");
@@ -37,12 +35,12 @@ public class MomentDao {
 		}
 		
 		if(keyword !=null&&(!"".equals(keyword.trim()))){
-			sql.append("and m.moment like  CONCAT('%',CONCAT(:moment, '%'))");
+			sql.append("and m.comment like  CONCAT('%',CONCAT(:comment, '%'))");
 		}
 		
 		Query query = em.createQuery(sql.toString());
 		
-		query.setParameter("eventId", eventId);
+		query.setParameter("momentId", momentId);
 		
 		if(before!=null){
 			query.setParameter("before", before);
@@ -64,8 +62,8 @@ public class MomentDao {
 		
 		query.setMaxResults(limit);
 
-		List<Moment> ret = query.getResultList();
+		List<MomentComment> ret = query.getResultList();
 		return ret;
+		
 	}
-
 }
