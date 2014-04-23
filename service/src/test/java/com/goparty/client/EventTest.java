@@ -12,9 +12,12 @@ import org.junit.Test;
 
 import com.goparty.data.constant.EventStatus;
 import com.goparty.data.constant.EventVisibility;
+import com.goparty.data.constant.InvitationAcceptance;
 import com.goparty.data.model.Category;
 import com.goparty.data.model.Event;
 import com.goparty.data.model.User;
+import com.goparty.webservice.model.EventInvitationRequest;
+import com.goparty.webservice.model.EventInviteRequest;
 import com.goparty.webservice.utils.BaseData;
 
 public class EventTest {
@@ -94,4 +97,79 @@ public class EventTest {
 		
         HttpClientUtils.delete(url);
 	}
+	
+	@Test
+	public void testEventList() throws Exception{
+		String url = "http://localhost/cxf/rest/events?scope={all}&after=&before=&categories=&search=&offset=&limit=";
+		
+		String resp = HttpClientUtils.get(url);
+		
+		System.out.println(resp);
+	}
+	
+	@Test
+	public void testInviteEvent() throws Exception{
+		String url = "http://localhost/cxf/rest/events/16/members/33-96";
+
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'"));
+		mapper.setSerializationInclusion(Inclusion.NON_NULL);
+		mapper.configure(DeserializationConfig.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY,true);
+		
+		EventInviteRequest request = new EventInviteRequest();
+		request.setMessage("test");
+				
+		String data = mapper.writeValueAsString(request).toString();
+		
+
+		String token = "4e8bb1e4-4fab-4c4e-9a9f-cf5ece4cc2aa";
+		HttpUtils http = new HttpUtils(token);
+		
+		String resp = http.postData(url,data);
+		
+		System.out.println(resp);
+	}
+	
+	@Test
+	public void testGetUnrespondedInvitations() throws Exception{
+		String url = "http://localhost/cxf/rest/events/unrespondedInvitations?offset=0&limit=30";
+
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'"));
+		mapper.setSerializationInclusion(Inclusion.NON_NULL);
+		mapper.configure(DeserializationConfig.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY,true);
+		
+		String token = "84a70b99-5b09-4ba3-b4f8-5fe49e7ad83c";
+		HttpUtils http = new HttpUtils(token);
+		
+		String resp = http.getData(url);
+		
+		System.out.println(resp);
+	}
+	
+	@Test
+	public void testRespondedInvitations() throws Exception{
+		String url = "http://localhost/cxf/rest/events/unrespondedInvitations/9";
+
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'"));
+		mapper.setSerializationInclusion(Inclusion.NON_NULL);
+		mapper.configure(DeserializationConfig.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY,true);
+		
+		String token = "84a70b99-5b09-4ba3-b4f8-5fe49e7ad83c";
+		HttpUtils http = new HttpUtils(token);
+		
+		EventInvitationRequest request = new EventInvitationRequest();
+		request.setInviteeMessage("yes");
+		request.setIgnore("N");
+		request.setParticipance(InvitationAcceptance.Y.toString());
+				
+		String data = mapper.writeValueAsString(request).toString();
+		
+		
+		String resp = http.putData(url,data);
+		
+		System.out.println(resp);
+	}
+	
 }

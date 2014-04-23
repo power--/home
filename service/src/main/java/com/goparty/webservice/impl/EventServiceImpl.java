@@ -340,9 +340,10 @@ public class EventServiceImpl implements EventService {
 	public Response inviteUserJoinEvent(String token, String eventId,
 			String userIds, EventInviteRequest request) {
 		User user = userDao.getUserByToken(token);	
-		String[] userIdArray = userIds.split("\\;");
+		String[] userIdArray = userIds.split("-");
 		for (int i=0;i<userIdArray.length;i++){
 			EventInvitation invitation = new EventInvitation();
+			invitation.setEventId(eventId);
 			invitation.setInviterId(user.getId());
 			invitation.setInviterMessage(request.getMessage());		
 			invitation.setInviteeId(userIdArray[i]);

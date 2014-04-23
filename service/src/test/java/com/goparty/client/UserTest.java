@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 public class UserTest {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	private String token = "4e8bb1e4-4fab-4c4e-9a9f-cf5ece4cc2aa";
+	private String token = "";
 	private HttpUtils http = new HttpUtils(token);
 	
 	private String applicationURI = "http://localhost/cxf/rest";
@@ -51,7 +51,7 @@ public class UserTest {
 	@Test 
 	public void testlogin() throws Exception{ 
 		String url = applicationURI + "/login";
-		String content = "{\"openId\": \"test-\",\"tokenId\": \"d--\"}";
+		String content = "{\"openId\": \"test-\",\"tokenId\": \"\"}";
 		String response = http.postData(url, content);
 		System.out.println(response);	
 	}

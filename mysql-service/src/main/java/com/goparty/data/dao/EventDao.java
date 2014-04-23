@@ -136,25 +136,25 @@ public class EventDao {
 	public List<EventInvitation> getUnrespondedInvitations(String inviteeId, long offset,
 			long limit) {
 		Pageable pageable = new PageRequest((int)offset,(int)limit); 
-		return eventInvitationRepository.findByinviteeIdAndStatus(inviteeId, InvitationStatus.INIT.toString(), pageable);
+		return eventInvitationRepository.findByinviteeIdAndStatus(inviteeId, InvitationStatus.INIT, pageable);
 	}
 
 	public List<EventInvitation>  getRespondedInvitations(String inviteeId, long offset,
 			long limit) {
 		Pageable pageable = new PageRequest((int)offset,(int)limit); 
-		return eventInvitationRepository.findByinviteeIdAndStatus(inviteeId, InvitationStatus.RESP.toString(), pageable);
+		return eventInvitationRepository.findByinviteeIdAndStatus(inviteeId, InvitationStatus.RESP, pageable);
 	}
 
 	public List<EventApplication>  getUnrespondedApplications(String approverId, long offset,
 			long limit) {
 		Pageable pageable = new PageRequest((int)offset,(int)limit); 
-		return eventApplicationRepository.findByapproverIdAndStatus(approverId, InvitationStatus.INIT.toString(), pageable);
+		return eventApplicationRepository.findByapproverIdAndStatus(approverId, InvitationStatus.INIT, pageable);
 	}
 
 	public List<EventApplication> getRespondedApplications(String approverId, long offset,
 			long limit) {
 		Pageable pageable = new PageRequest((int)offset,(int)limit); 
-		return eventApplicationRepository.findByapproverIdAndStatus(approverId, InvitationStatus.RESP.toString(), pageable);
+		return eventApplicationRepository.findByapproverIdAndStatus(approverId, InvitationStatus.RESP, pageable);
 	}
 	
 }
