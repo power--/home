@@ -62,7 +62,7 @@ public class EventDaoTest extends AbstractRepositoryTest {
 		System.out.println("event Id=" + event.getId());
 		Event e = eventDao.read(event.getId());
 		for(User user : e.getMembers()){
-			System.out.println("member size = " + e.getMembers().size() + "-- ID: " + user.getId() + " admin: " + user.isAdmin());
+			System.out.println("member size = " + e.getMembers().size() + "-- ID: " + user.getId() + " admin: " + user.isAdmin() + " participance: " + user.getParticipance());
 		}
 		
 		e.setTitle("update Title" );
