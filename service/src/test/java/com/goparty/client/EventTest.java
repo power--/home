@@ -77,14 +77,14 @@ public class EventTest {
 		HttpClientUtils.put(url, data);
 
 		url = "http://localhost/cxf/rest/events/"
-				+ result.getId()+"/invitees/72";
+				+ result.getId()+"/invitees/97";
 		
 		HttpClientUtils.put(url, data);
 		
 		HttpClientUtils.delete(url);
 		
 		url = "http://localhost/cxf/rest/events/"
-				+ result.getId()+"/sponsors/33";
+				+ result.getId()+"/sponsors/19";
 		
 		HttpClientUtils.put(url, data);
 

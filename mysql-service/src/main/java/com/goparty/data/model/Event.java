@@ -12,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -52,19 +51,18 @@ public class Event{
 
 	@Field(index=Index.YES, analyze=Analyze.YES, store=Store.YES )
 	private String description;
-
-	// can't change to LAZY and add cascade=CascadeType.ALL
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "gp_event_attendee", joinColumns = @JoinColumn(name = "eventId"), inverseJoinColumns = @JoinColumn(name = "userId"))
+ 
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "gp_event_member", joinColumns = @JoinColumn(name = "eventId"), inverseJoinColumns = @JoinColumn(name = "userId"))
 	@IndexedEmbedded
-	private List<User> members;
-
+	private List<User> members; 
+	
 	@OneToOne
 	@JoinColumn(name = "ownerId")
 	@IndexedEmbedded
 	private User owner; 
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "gp_event_category", joinColumns = @JoinColumn(name = "eventId"), inverseJoinColumns = @JoinColumn(name = "cateId"))	 
 	private List<Category> categories;
 	

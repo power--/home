@@ -24,6 +24,7 @@ import com.goparty.webservice.model.CommentRequest;
 import com.goparty.webservice.model.EventApplicationRequest;
 import com.goparty.webservice.model.EventApplierRequest;
 import com.goparty.webservice.model.EventInvitationRequest;
+import com.goparty.webservice.model.EventInviteRequest;
 import com.goparty.webservice.model.MessageRequest;
 import com.goparty.webservice.model.MomentRequest;
 
@@ -124,7 +125,7 @@ public interface EventService {
 		@Description(value = "return events", target = DocTarget.METHOD),
 		@Description(value = "return events", target = DocTarget.RETURN)
 	})
-	@Path(" /events?scope={scope}&after={after}&before={before}&categories={categories}&search={search}&offset={offset}&limit={limit}")
+	@Path("/events?scope={scope}&after={after}&before={before}&categories={categories}&search={search}&offset={offset}&limit={limit}")
 	public Response getEvents(@HeaderParam("token") String token, @QueryParam("scope") String scope,@QueryParam("after") Date after, @QueryParam("before") Date before, @QueryParam("categories") String categories, @QueryParam("search") String search, @QueryParam("offset") long offset, @QueryParam("limit") long limit);
 
 	@WebMethod
@@ -133,42 +134,48 @@ public interface EventService {
 		@Description(value = "return events", target = DocTarget.METHOD),
 		@Description(value = "return events", target = DocTarget.RETURN)
 	})
-	@Path(" /users/{userId}/events?after={after}&before={before}&categories={categories}&search={search}&offset={offset}&limit={limit}")
+	@Path("/users/{userId}/events?after={after}&before={before}&categories={categories}&search={search}&offset={offset}&limit={limit}")
 	public Response getUserEvents(@HeaderParam("token") String token,@QueryParam("userId") String userId,@QueryParam("after") Date after, @QueryParam("before") Date before, @QueryParam("categories") String categories, @QueryParam("search") String search, @QueryParam("offset") long offset, @QueryParam("limit") long limit);
+	
 	
 	@WebMethod
 	@POST
-	@Path("{eventId}/{eventId}/member")
+	@Path("/events/{eventId}/members/{userIds}")
+	public Response inviteUserJoinEvent(@HeaderParam("token") String token,@PathParam("eventId") String eventId,@PathParam("userIds") String userIds, EventInviteRequest request);
+	
+	@WebMethod
+	@POST
+	@Path("/events/{eventId}/member")
 	public Response applyEvent(@HeaderParam("token") String token,@PathParam("eventId") String eventId, EventApplierRequest request);
 	
 	@WebMethod
 	@GET
-	@Path(" /events/unrespondedInvitations?offset={offset}&limits={limit} ")
+	@Path("/events/unrespondedInvitations?offset={offset}&limits={limit} ")
 	public Response getUnrespondedInvitations( @HeaderParam("token") String token, @QueryParam("offset") long offset, @QueryParam("limit") long limit);
 	
 	@WebMethod
 	@PUT
-	@Path(" /events/unrespondedInvitations/{invitationId} ")
+	@Path("/events/unrespondedInvitations/{invitationId} ")
 	public Response respondedInvitations( @HeaderParam("token") String token, @QueryParam("invitationId") String  invitationId,EventInvitationRequest request);
 	
 	@WebMethod
 	@GET
-	@Path(" /events/respondedInvitations?offset={offset}&limits={limit} ")
+	@Path("/events/respondedInvitations?offset={offset}&limits={limit} ")
 	public Response getRespondedInvitations( @HeaderParam("token") String token, @QueryParam("offset") long offset, @QueryParam("limit") long limit);
 	
 	@WebMethod
 	@GET
-	@Path(" /events/unrespondedApplications?offset={offset}&limits={limit} ")
+	@Path("/events/unrespondedApplications?offset={offset}&limits={limit} ")
 	public Response getUnrespondedApplications( @HeaderParam("token") String token, @QueryParam("offset") long offset, @QueryParam("limit") long limit);
 	
 	@WebMethod
 	@PUT
-	@Path(" /events/unrespondedApplications/{applicationId} ")
+	@Path("/events/unrespondedApplications/{applicationId} ")
 	public Response respondedApplications( @HeaderParam("token") String token, @QueryParam("applicationId") String  applicationId,EventApplicationRequest request);
 	
 	@WebMethod
 	@GET
-	@Path(" /events/respondedApplications?offset={offset}&limits={limit} ")
+	@Path("/events/respondedApplications?offset={offset}&limits={limit} ")
 	public Response getRespondedApplications( @HeaderParam("token") String token, @QueryParam("offset") long offset, @QueryParam("limit") long limit);
 	
 	@WebMethod
