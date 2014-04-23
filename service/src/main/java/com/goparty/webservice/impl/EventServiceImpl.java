@@ -48,6 +48,7 @@ import com.goparty.webservice.model.CommentRequest;
 import com.goparty.webservice.model.EventApplicationRequest;
 import com.goparty.webservice.model.EventApplierRequest;
 import com.goparty.webservice.model.EventInvitationRequest;
+import com.goparty.webservice.model.EventInviteRequest;
 import com.goparty.webservice.model.InvitationResponse;
 import com.goparty.webservice.model.MessageRequest;
 import com.goparty.webservice.model.MomentRepsone;
@@ -332,6 +333,26 @@ public class EventServiceImpl implements EventService {
 		
 		return ResponseUtil.buildResponse(resp);
 	}
+	
+
+	// invitation
+	@Override
+	public Response inviteUserJoinEvent(String token, String eventId,
+			String userIds, EventInviteRequest request) {
+		User user = userDao.getUserByToken(token);	
+		String[] userIdArray = userIds.split("\\;");
+		for (int i=0;i<userIdArray.length;i++){
+			EventInvitation invitation = new EventInvitation();
+			invitation.setInviterId(user.getId());
+			invitation.setInviterMessage(request.getMessage());		
+			invitation.setInviteeId(userIdArray[i]);
+			invitation.setStatus(InvitationStatus.INIT);
+			invitation.setUpdateTime(new Date());			
+			eventDao.addInvitation(invitation);
+		}
+		return ResponseUtil.buildResponse(true);
+	}
+
 
 	@Override
 	public Response getUnrespondedInvitations(String token, long offset,
@@ -439,6 +460,5 @@ public class EventServiceImpl implements EventService {
 		List<EventApplication> applications = eventDao.getRespondedApplications(user.getId(), offset, limit);
 		return ResponseUtil.buildResponse(applications);
 	}
-
 	
 }

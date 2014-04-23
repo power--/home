@@ -7,4 +7,4 @@ SET MAVEN_OPTS=-Xmx1024m -Xms256m -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjd
 
 cd %GOPARTY_HOME%service
 
-mvn -Djetty.port=80 jetty:run 
+mvn -Djetty.port=8081 jetty:run 
