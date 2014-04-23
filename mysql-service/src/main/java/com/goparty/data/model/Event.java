@@ -53,7 +53,7 @@ public class Event{
 	private String description;
  
 	@OneToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "gp_event_memeber", joinColumns = @JoinColumn(name = "eventId"), inverseJoinColumns = @JoinColumn(name = "userId"))
+	@JoinTable(name = "gp_event_member", joinColumns = @JoinColumn(name = "eventId"), inverseJoinColumns = @JoinColumn(name = "userId"))
 	@IndexedEmbedded
 	private List<User> members; 
 	
