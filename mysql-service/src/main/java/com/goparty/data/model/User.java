@@ -3,6 +3,8 @@ package com.goparty.data.model;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,6 +14,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.goparty.data.constant.ParticipanceType;
 
 @XmlRootElement(name = "user")
 @Entity
@@ -27,7 +31,7 @@ public class User {
 	 private String password; 
 	 private String nickName;
 	 
-	 @DateTimeFormat(pattern="yyyy-mm-dd")
+//	 @DateTimeFormat(pattern="yyyy-mm-dd")
 	 private Date birthdate;
 	 
 	 private String gender;
@@ -39,10 +43,11 @@ public class User {
 	 private String weibo;
 	 
 	 @Transient
-	 private String token;
-	 
+	 private String token;	 
 	 @Transient	 
 	 private boolean admin;
+	 @Transient
+	 private ParticipanceType participance;
 	   
 	public String getId() {
 		return id;
@@ -133,6 +138,12 @@ public class User {
 	}
 	
 	
+	public ParticipanceType getParticipance() {
+		return participance;
+	}
+	public void setParticipance(ParticipanceType participance) {
+		this.participance = participance;
+	}
 	public String getToken() {
 		return token;
 	}

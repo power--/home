@@ -57,6 +57,7 @@ public class EventDao {
 			emId.setUserId(user.getId());
 			EventMember eventMember = eventMemberRepository.findOne(emId);
 			user.setAdmin(eventMember.isAdmin());
+			user.setParticipance(eventMember.getParticipance());
 		}
 		return event;
 	}
