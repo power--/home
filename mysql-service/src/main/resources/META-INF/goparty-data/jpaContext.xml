@@ -40,10 +40,10 @@ http://www.springframework.org/schema/data/repository/spring-repository-1.5.xsd
 		<property name="jpaProperties">
 			<props>
 				<prop key="hibernate.hbm2ddl.auto">none</prop>
-				<prop key="hibernate.search.default.directory_provider">filesystem</prop>
+				<!-- <prop key="hibernate.search.default.directory_provider">filesystem</prop>
 				<prop key="hibernate.search.default.indexBase">c:/lucene/indexes</prop>
 				<prop key="hibernate.enable_lazy_load_no_trans">true</prop>
-				<prop key="hibernate.search.analyzer">org.wltea.analyzer.lucene.IKAnalyzer</prop>
+				<prop key="hibernate.search.analyzer">org.wltea.analyzer.lucene.IKAnalyzer</prop> -->
 			</props>
 		</property>
 	</bean>

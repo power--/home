@@ -20,8 +20,11 @@ import com.goparty.data.constant.InvitationStatus;
 import com.goparty.data.model.Event;
 import com.goparty.data.model.EventApplication;
 import com.goparty.data.model.EventInvitation;
+import com.goparty.data.model.EventMember;
+import com.goparty.data.model.EventMemberId;
 import com.goparty.data.repository.IEventApplicationRepository;
 import com.goparty.data.repository.IEventInvitationRepository;
+import com.goparty.data.repository.IEventMemberRepository;
 import com.goparty.data.model.User;
 import com.goparty.data.repository.IEventRepository;
 
@@ -43,9 +46,18 @@ public class EventDao {
 	@Autowired
 	private IEventApplicationRepository eventApplicationRepository;
 	
+	@Autowired
+	private IEventMemberRepository eventMemberRepository;
 	
 	public Event read(String id) {
 		Event event = eventRepository.findOne(id);
+		for(User user : event.getMembers()){
+			EventMemberId emId = new EventMemberId();
+			emId.setEventId(event.getId());
+			emId.setUserId(user.getId());
+			EventMember eventMember = eventMemberRepository.findOne(emId);
+			user.setAdmin(eventMember.isAdmin());
+		}
 		return event;
 	}
 
