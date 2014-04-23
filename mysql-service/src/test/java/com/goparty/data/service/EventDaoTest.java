@@ -29,8 +29,7 @@ public class EventDaoTest extends AbstractRepositoryTest {
 	 
 	@Test
 	@Transactional
-	public void test() {
-//		Event event = eventDao.read("100");
+	public void test() { 
 		Event event = new Event();
 		event.setDescription("Hello World");
 		event.setTitle("A Title");
@@ -62,7 +61,10 @@ public class EventDaoTest extends AbstractRepositoryTest {
 		event = eventDao.create(event);
 		System.out.println("event Id=" + event.getId());
 		Event e = eventDao.read(event.getId());
-		System.out.println("member size = " + e.getMembers().size() + "--" + e.getMembers().get(0).getId());
+		for(User user : e.getMembers()){
+			System.out.println("member size = " + e.getMembers().size() + "-- ID: " + user.getId() + " admin: " + user.isAdmin());
+		}
+		
 		e.setTitle("update Title" );
 		eventDao.update(event);
 		

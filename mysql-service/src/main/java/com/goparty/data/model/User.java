@@ -1,29 +1,22 @@
 package com.goparty.data.model;
 
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.hibernate.search.annotations.Indexed;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @XmlRootElement(name = "user")
 @Entity
 @Table(name="gp_user")
-@Indexed
+@JsonIgnoreProperties({"loginId","password","token"})
 public class User {
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.AUTO)// //can't create table automatically after add this

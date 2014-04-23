@@ -71,12 +71,12 @@ CREATE TABLE IF NOT EXISTS `gp_event` (
 -- Data exporting was unselected.
 
 
--- Dumping structure for table openfire.gp_event_memeber
-DROP TABLE IF EXISTS `gp_event_memeber`;
-CREATE TABLE IF NOT EXISTS `gp_event_memeber` (
+-- Dumping structure for table openfire.gp_event_member
+DROP TABLE IF EXISTS `gp_event_member`;
+CREATE TABLE IF NOT EXISTS `gp_event_member` (
   `eventId` int(10) NOT NULL,
   `userId` int(10) NOT NULL,
-  `status` char(5) DEFAULT 'INIT' COMMENT 'INIT  AGREE REJECT',
+  `participance` tinyint(1) DEFAULT 1,
   `admin` char(1) DEFAULT 'N',
   `updateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`eventId`,`userId`)
