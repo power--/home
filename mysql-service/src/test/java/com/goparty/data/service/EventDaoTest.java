@@ -1,22 +1,15 @@
 package com.goparty.data.service;
  
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,8 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.goparty.data.constant.EventStatus;
 import com.goparty.data.constant.EventVisibility;
 import com.goparty.data.dao.EventDao;
-import com.goparty.data.model.Event;
 import com.goparty.data.model.Category;
+import com.goparty.data.model.Event;
 import com.goparty.data.model.User;
  
 
@@ -34,14 +27,15 @@ public class EventDaoTest extends AbstractRepositoryTest {
 	@Autowired
 	private EventDao eventDao;
 	 
-
-	
-//	@Test
+	@Test
+	@Transactional
 	public void test() {
-		Event event = new Event(); 
+//		Event event = eventDao.read("100");
+		Event event = new Event();
 		event.setDescription("Hello World");
 		event.setTitle("A Title");
 		event.setStatus(EventStatus.INIT);
+		event.setVisibility(EventVisibility.V_FRIEND);
 		
 		User owner = new User();
 		owner.setId("21");
@@ -49,7 +43,8 @@ public class EventDaoTest extends AbstractRepositoryTest {
 		
 		List<User> attendees = new ArrayList<User>();
 		User user1 = new User();
-		user1.setId("18");  
+		user1.setId("18"); 
+		user1.setAdmin(true);
 		User user2 = new User();
 		user2.setId("19");  
 
@@ -57,6 +52,7 @@ public class EventDaoTest extends AbstractRepositoryTest {
 		attendees.add(user1);
 		attendees.add(user2);		
 		event.setMembers(attendees); 
+		 
 		
 		Category cate = new Category();
 		cate.setId("1");
@@ -64,12 +60,16 @@ public class EventDaoTest extends AbstractRepositoryTest {
 		cates.add(cate);
 		event.setCategories(cates);		
 		event = eventDao.create(event);
+		System.out.println("event Id=" + event.getId());
+		Event e = eventDao.read(event.getId());
+		System.out.println("member size = " + e.getMembers().size() + "--" + e.getMembers().get(0).getId());
+		e.setTitle("update Title" );
+		eventDao.update(event);
 		
-		Event e = eventDao.read(event.getId()); 
-		assertEquals("Hello World",e.getDescription());
-		assertNotNull(e.getOwner().getNickName());
-		 
+		eventDao.delete(e.getId());
 	} 
+	 
+	  
 	
 	@Test
 	public void test2(){

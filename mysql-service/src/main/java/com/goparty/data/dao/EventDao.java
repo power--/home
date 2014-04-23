@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.goparty.data.model.Event;
+import com.goparty.data.model.User;
 import com.goparty.data.repository.IEventRepository;
 
 
@@ -35,11 +36,22 @@ public class EventDao {
 	}
 
 	public Event create(Event event) {
-		return eventRepository.save(event);
+		 em.persist(event);
+		 em.flush();
+		 for(User u : event.getMembers()){
+			 if(u.isAdmin()){
+				 Query query = em.createNativeQuery("update gp_event_memeber set admin='Y' where eventId=? and userId=?");
+				query.setParameter(1, event.getId());
+				query.setParameter(2, u.getId());
+				query.executeUpdate(); 
+			 }
+		 }		 
+		 return event;
 	}
 
 	public Event update(Event event) {
-		return eventRepository.save(event);
+		em.merge(event);
+		return event;
 		
 	}
 
@@ -69,7 +81,7 @@ public class EventDao {
 		} else if ("all".equals(scope)){
 			sb.append(" ge.visibility = 'V_PUBLIC'  ");
 		} else {
-			sb.append(" exists (select 1 from gp_event_attendee gea where ge.event_id = gea.event_id and gae.userId =:userId)  ");
+			sb.append(" exists (select 1 from gp_event_memeber gea where ge.event_id = gea.event_id and gae.userId =:userId)  ");
 		} 
 		sb.append("where ge.start_time>=after and ge.end_time<=before ");
 		sb.append("limit " + offset + "," + limit);
